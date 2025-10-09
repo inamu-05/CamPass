@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  spring:
+    image: openjdk:17-jdk
+    container_name: spring_app
+    working_dir: /app
+    volumes:
+      - ./backend/app
+    command: ["java", "-jar", "app.jar"]
+    ports:
+      - "8080:8080"
+    deponds_on:
+      - mysql
+    networks:
+      - app-network
+  
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  mysql_data:
