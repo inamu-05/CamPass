@@ -5,23 +5,23 @@ services:
     container_name: spring_app
     working_dir: /app
     volumes:
-      - ./backend/app
+      - ./backend:/app
     command: ["java", "-jar", "app.jar"]
     ports:
       - "8080:8080"
-    deponds_on:
+    depends_on:
       - mysql
     networks:
       - app-network
   
   mysql:
     image: mysql:8.0
-    container_name: mysql_db
+    container_name: campass_db
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydatabase
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: campassdb
       MYSQL_USER: user
-      MYSQL_PASSWORD: userpassword
+      MYSQL_PASSWORD: userpass
     ports:
       - "3306:3306"
     volumes:
