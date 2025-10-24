@@ -1,36 +1,51 @@
-version: '3.8'
+# version: '3.8'
 services:
-  spring:
+  # アプリケーションのコンテナ
+  app:
+    # # 開発用イメージ
+    # image: maven:3.9.6-eclipse-temurin-17
+    # # 開発用マウント
+    # volumes:
+    #   - ./backend/app:/app
+    # # 開発用のコマンド
+    # command: ["mvn", "spring-boot:run"]
+    # environment:
+    #   SPRING_BOOT_DOCKER_COMPOSE_ENABLED: "false"
+
+    # 本番用イメージ
     image: openjdk:17-jdk
-    container_name: spring_app
-    working_dir: /app
+    # 本番用マウント
     volumes:
-      - ./backend:/app
-    command: ["java", "-jar", "app.jar"]
+      - ./backend/app/target/app-0.0.1-SNAPSHOT.jar:/app/app.jar
+    # 本番用のコマンド
+    command: ["java", "-jar", "app.jar"]    
+    container_name: campass_app
     ports:
       - "8080:8080"
+    working_dir: /app
     depends_on:
-      - mysql
+      - db
     networks:
-      - app-network
+      - campass-network
   
-  mysql:
+  # データベースのコンテナ
+  db:
     image: mysql:8.0
     container_name: campass_db
+    ports:
+      - "3306:3306"    
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: campassdb
       MYSQL_USER: user
-      MYSQL_PASSWORD: userpass
-    ports:
-      - "3306:3306"
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql:/var/lib/mysql
     networks:
-      - app-network
+      - campass-network
 
 networks:
-  app-network:
+  campass-network:
 
 volumes:
-  mysql_data:
+  mysql:
