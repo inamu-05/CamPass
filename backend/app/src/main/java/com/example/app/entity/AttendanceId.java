@@ -3,6 +3,7 @@ package com.example.app.entity;
 import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.util.Objects;
 
 @Embeddable
 public class AttendanceId implements Serializable{
@@ -36,14 +37,13 @@ public class AttendanceId implements Serializable{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AttendanceId)) return false;
-
         AttendanceId that = (AttendanceId) o;
-        return Object.equals(subjectId, that.subjectId) &&
-               Object.equals(userId, that.userId);
+        return Objects.equals(subjectId, that.subjectId) &&
+               Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Object.hash(subjectId, userId);
+        return Objects.hash(subjectId, userId);
     }
 }

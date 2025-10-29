@@ -24,7 +24,7 @@ public class Student extends User {
 
 	// 論理名称:住所
 	@Column(name = "address", nullable = false)
-	private String userPass;
+	private String address;
 
 	// 論理名称:証明写真
 	@Column(name = "img", nullable = false)
@@ -39,7 +39,7 @@ public class Student extends User {
 	private String entryYear;
 
 	// 論理名称:卒業年
-	@Column(name = "graduation_year",length = 4, nullable = false)
+	@Column(name = "graduation_year",length = 4, nullable = true)
 	private String graduationYear;
 	
 	// 論理名称:学生証無効化フラグ
@@ -68,11 +68,11 @@ public class Student extends User {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-	public String getUserPass() {
-		return userPass;
+	public String getAddress() {
+		return address;	
 	}
-	public void setUserPass(String userPass) {
-		this.userPass = userPass;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	public String getImg() {
 		return img;	

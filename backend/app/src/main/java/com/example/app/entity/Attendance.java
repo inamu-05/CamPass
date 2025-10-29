@@ -21,13 +21,13 @@ public class Attendance {
 	// 論理名称:科目番号
 	@MapsId("subjectId")
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "subject_id", insertable = false, updatable = false, nullable = false)
+	@JoinColumn(name = "subject_id", nullable = false)
 	private Subject subject;
 
 	// 論理名称:学生番号
 	@MapsId("userId")
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "student_id", insertable = false, updatable = false, nullable = false)
+	@JoinColumn(name = "user_id", nullable = false)
 	private Student student;
 
 	// 論理名称:出席日時
