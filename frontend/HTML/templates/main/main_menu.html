@@ -1,0 +1,64 @@
+{% extends 'base/base.html' %}
+{% block title %}メインメニュー{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center g-4">
+
+  <!-- 学生情報管理 -->
+  <div class="col-md-3">
+    <div class="menu-card dropdown hover-dropdown">
+      <div class="menu-header d-flex justify-content-between align-items-center">
+        <span class="menu-title">学生情報管理</span>
+        <div class="triangle"></div>
+      </div>
+      <ul class="dropdown-menu w-100 mt-2">
+        <li><a class="dropdown-item" href="{{ url_for('student.register') }}">学生情報を登録する</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('student.update') }}">学生情報を更新する（進級含）</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('student.list') }}">学生一覧を表示する</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 証明書管理 -->
+  <div class="col-md-3">
+    <div class="menu-card dropdown hover-dropdown">
+      <div class="menu-header d-flex justify-content-between align-items-center">
+        <span class="menu-title">証明書管理</span>
+        <div class="triangle"></div>
+      </div>
+      <ul class="dropdown-menu w-100 mt-2">
+        <li><a class="dropdown-item" href="{{ url_for('certificate.approve') }}">申請された証明書を承認する</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('certificate.issue') }}">仮学生証（紙）を発行する</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 授業管理 -->
+  <div class="col-md-3">
+    <div class="menu-card dropdown hover-dropdown">
+      <div class="menu-header d-flex justify-content-between align-items-center">
+        <span class="menu-title">授業管理</span>
+        <div class="triangle"></div>
+      </div>
+      <ul class="dropdown-menu w-100 mt-2">
+        <li><a class="dropdown-item" href="{{ url_for('lesson.create') }}">授業のワンタイムパスを作成する</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('lesson.attendance') }}">授業別出席を確認する</a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ▼ 矢印回転制御
+  document.querySelectorAll('.hover-dropdown').forEach(menu => {
+    const triangle = menu.querySelector('.triangle');
+    menu.addEventListener('mouseenter', () => {
+      triangle.classList.add('rotate');
+    });
+    menu.addEventListener('mouseleave', () => {
+      triangle.classList.remove('rotate');
+    });
+  });
+</script>
+{% endblock %}
