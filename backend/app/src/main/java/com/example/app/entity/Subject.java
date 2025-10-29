@@ -28,7 +28,7 @@ public class Subject {
 
 	// 論理名称:担当教員
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "staff_id", nullable = false)
+	@JoinColumn(name = "user_id", nullable = false)
 	private Staff staff;
 
 	// 空のコンストラクタ

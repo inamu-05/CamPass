@@ -12,7 +12,7 @@ public class Certificate {
 	// 論理名称:証明書番号
 	@Id
 	@Column(name = "certificate_id", length = 2, nullable = false)
-	private String staffCategory;
+	private String certificateId;
 
 	// 論理名称:証明書名
 	@Column(name = "certificate_name", nullable = false)
@@ -26,11 +26,11 @@ public class Certificate {
 	public Certificate() {}
 
 	// ゲッター・セッター
-	public String getStaffCategory() {
-		return staffCategory;
+	public String getCertificateId() {
+		return certificateId;
 	}
-	public void setStaffCategory(String staffCategory) {
-		this.staffCategory = staffCategory;
+	public void setCertificateId(String certificateId) {
+		this.certificateId = certificateId;
 	}
 	public String getCertificateName() {
 		return certificateName;
