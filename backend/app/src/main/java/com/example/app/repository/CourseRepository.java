@@ -1,4 +1,4 @@
-// File: src/main/java/com/example/demo/StaffRepository.java
+// File: src/main/java/com/example/app/StaffRepository.java
 package com.example.app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;

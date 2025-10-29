@@ -9,6 +9,7 @@ services:
     working_dir: /app
     volumes:
       - ./backend/app:/app
+      - ~/.m2:/root/.m2
     # コマンド
     command: >
       sh -c '
@@ -18,7 +19,8 @@ services:
       java -jar target/app-0.0.1-SNAPSHOT.jar
       '
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - campass-network
   
@@ -35,8 +37,14 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - mysql:/var/lib/mysql
+      - ./backend/db/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql 
     networks:
       - campass-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"] 
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   campass-network:

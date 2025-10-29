@@ -1,5 +1,5 @@
 package com.example.app.entity;
-// File: src/main/java/com/example/demo/Staff.java
+// File: src/main/java/com/example/app/Staff.java
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
