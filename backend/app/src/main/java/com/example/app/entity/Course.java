@@ -7,7 +7,8 @@ import jakarta.persistence.Entity; // Note: Spring Boot 2 uses javax.persistence
 // import javax.persistence.GeneratedValue;
 // import javax.persistence.GenerationType;
 
-@Entity // Marks this class as a JPA entity (maps to a database table)
+@Entity
+ // Marks this class as a JPA entity (maps to a database table)
 public class Course {
 
     @Id // Primary key
