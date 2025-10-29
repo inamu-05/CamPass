@@ -12,7 +12,8 @@
             "driver": "MySQL",
             "name": "campassdb",
             "database": "campassdb",
-            "username": "user"
+            "username": "user",
+            "password": "password"
         }
     ]
 }

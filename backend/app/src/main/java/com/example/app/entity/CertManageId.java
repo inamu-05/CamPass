@@ -6,25 +6,25 @@ import jakarta.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public class AttendanceId implements Serializable{
+public class CertManageId implements Serializable{
 
-    // 論理名称:科目番号
-    @Column(name = "subject_id", length = 2)
-    private String subjectId;
+    // 証明書番号
+    @Column(name = "certificate_id", length = 2)
+    private String certificateId;
 
-    // 論理名称:学生番号
+    // 学生番号
     @Column(name = "user_id")
     private String userId;
 
     // 空のコンストラクタ
-    public AttendanceId() {}
+    public CertManageId() {}
 
     // ゲッター・セッター
-    public String getSubjectId() {
-        return subjectId;
+    public String getCertificateId() {
+        return certificateId;
     }
-    public void setSubjectId(String subjectId) {
-        this.subjectId = subjectId;
+    public void setCertificateId(String certificateId) {
+        this.certificateId = certificateId;
     }
     public String getUserId() {
         return userId;
@@ -33,17 +33,18 @@ public class AttendanceId implements Serializable{
         this.userId = userId;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AttendanceId)) return false;
-        AttendanceId that = (AttendanceId) o;
-        return Objects.equals(subjectId, that.subjectId) &&
+        if (!(o instanceof CertManageId)) return false;
+        CertManageId that = (CertManageId) o;
+        return Objects.equals(certificateId, that.certificateId) &&
                Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(subjectId, userId);
+        return Objects.hash(certificateId, userId);
     }
 }
