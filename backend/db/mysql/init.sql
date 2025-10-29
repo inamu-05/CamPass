@@ -20,7 +20,7 @@ CREATE TABLE user (
     user_id VARCHAR(7) NOT NULL PRIMARY KEY,
     user_name VARCHAR(100) NOT NULL,
     course_id CHAR(2) NOT NULL,
-    user_pass VARCHAR(1) NOT NULL,
+    user_pass VARCHAR(255) NOT NULL,
     FOREIGN KEY (course_id) REFERENCES course(course_id)
 ) ENGINE=InnoDB;
 
