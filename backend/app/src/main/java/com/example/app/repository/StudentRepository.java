@@ -8,4 +8,5 @@ import com.example.app.entity.Student;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, String> {
     // List<Student> findByStudentName(String name);
+    Student findByUserId(String userId);
 }
