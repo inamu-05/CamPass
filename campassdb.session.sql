@@ -1,1 +1,0 @@
-INSERT INTO staff (staff_id, staff_name, course_id, staff_category, staff_pass) VALUES ('01', '情報太郎', '01', '1', 'password' );
