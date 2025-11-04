@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン｜きゃんパス</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>ログイン</h2>
+        <form th:action="@{/login}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            <label for="userId">ユーザーID</label>
+            <input type="text" id="userId" name="userId" placeholder="ユーザーID" required>
+
+            <label for="userPass">パスワード</label>
+            <input type="password" id="userPass" name="userPass" placeholder="パスワード" required>
+
+            <button type="submit">ログイン</button>
+
+            <div th:if="${param.error}" class="error">ユーザーIDまたはパスワードが正しくありません。</div>
+            <div th:if="${param.logout}" class="logout">ログアウトしました。</div>
+        </form>
+    </div>
+</body>
+</html>
