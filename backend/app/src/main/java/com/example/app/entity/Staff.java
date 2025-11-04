@@ -15,6 +15,13 @@ public class Staff extends User {
 	// 空のコンストラクタ
 	public Staff() {}
 
+    public Staff(String userId, String userName, String courseId, String userPass, String staffCategory) {
+        // Calls the constructor in the User parent class
+        super(userId, userName, courseId, userPass);
+        // Initializes Staff-specific field
+        this.staffCategory = staffCategory;
+    }
+
 	// ゲッター・セッター
 	public String getStaffCategory() {
 		return staffCategory;

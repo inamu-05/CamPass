@@ -19,14 +19,15 @@ public class SecurityConfig {
         // セキュリティ設定の詳細
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login").permitAll() // ログインページは全員アクセス可能
+                .requestMatchers("/login", "/css/**", "/js/**").permitAll() // ログインページは全員アクセス可能
                 .anyRequest().authenticated() // その他のリクエストは認証が必要
             )
 
             // フォームログインの設定
             .formLogin(form -> form
                 .loginPage("/login") // ログインページの指定
-                .defaultSuccessUrl("/hello", true) // ログイン成功後のリダイレクト先
+                .defaultSuccessUrl("/main", true) // ログイン成功後のリダイレクト先
+                .failureUrl("/login?error")
                 .usernameParameter("userId") // ユーザーIDのパラメータ名
                 .passwordParameter("userPass") // パスワードのパラメータ名
                 .permitAll()

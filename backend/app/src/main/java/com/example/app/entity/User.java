@@ -32,6 +32,13 @@ public abstract class User {
 	// 空のコンストラクタ
 	public User() {}
 
+    public User(String userId, String userName, String courseId, String userPass) {
+        this.userId = userId;
+        this.userName = userName;
+        this.courseId = courseId;
+        this.userPass = userPass;
+    }
+
 	// ゲッター・セッター
 	public String getUserId() {
 		return userId;
