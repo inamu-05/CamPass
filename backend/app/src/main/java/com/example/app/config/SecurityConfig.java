@@ -37,6 +37,8 @@ public class SecurityConfig {
             .logout(logout -> logout
                 .logoutUrl("/logout") // ログアウトURLの指定
                 .logoutSuccessUrl("/login?logout") // ログアウト成功後のリダイレクト先
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
                 .permitAll()
             );
         return http.build();   
