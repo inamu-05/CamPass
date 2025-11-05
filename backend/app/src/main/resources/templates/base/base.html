@@ -3,15 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>学校管理システム</title>
-  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/css/style.css">
   <script>
-document.addEventListener("DOMContentLoaded", () => {
-  // header を読み込む
-  loadHTML("/templates/base/header.html", "#header-container");
-
-  // main.html を読み込む → 読み込み完了後にボタン処理を登録
-  loadHTML("/templates/main/main.html", "#main-container", setupMainEvents);
-});
 
 // ===== メインイベント設定 =====
 function setupMainEvents() {
@@ -124,7 +117,10 @@ function loadMainPage(url) {
 
 </head>
 <body>
-  <div id="header-container"></div>
-  <div id="main-container"></div>
+  <!-- サーバーサイドで base/header.html の header-content フラグメントを挿入 -->
+    <div id="header-container" th:insert="base/header :: header"></div>
+   
+    <!-- サーバーサイドで main/main.html の main-content フラグメントを挿入 -->
+    <div id="main-container" th:insert="~{/main/main :: main-content}"></div>
 </body>
 </html>

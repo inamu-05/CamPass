@@ -8,6 +8,6 @@ public class MainController {
 
     @GetMapping("/main")
     public String main() {
-        return "main/main"; // resources/templates/main/main.html を返す
+        return "base/base"; // resources/templates/base/base.html を返す
     }
 }

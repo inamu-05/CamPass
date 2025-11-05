@@ -4,12 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ログイン｜きゃんパス</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 
-<body>
+<body class="login-page">
+    <header class="site-header">
+        <h1 class="logo">きゃんパス（学校職員）</h1>
+    </header>
     <div class="login-container">
+        <img th:src="@{/images/logo.png}" alt="きゃんパス ロゴ" class="logomark">
         <h2>ログイン</h2>
+        <div th:if="${param.error}" class="error">ユーザーIDまたはパスワードが正しくありません。</div>
+
         <form th:action="@{/login}" method="post">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
@@ -20,9 +27,6 @@
             <input type="password" id="userPass" name="userPass" placeholder="パスワード" required>
 
             <button type="submit">ログイン</button>
-
-            <div th:if="${param.error}" class="error">ユーザーIDまたはパスワードが正しくありません。</div>
-            <div th:if="${param.logout}" class="logout">ログアウトしました。</div>
         </form>
     </div>
 </body>

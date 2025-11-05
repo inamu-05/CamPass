@@ -1,0 +1,109 @@
+/* login.css */
+@charset "UTF-8";
+
+html, body {
+  height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* 背景と全体レイアウト */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;  /* フォームを少し上寄せ */
+  height: 100vh;            /* ← min-heightではなくheight */
+  overflow: hidden;          /* ← スクロール防止 */
+}
+
+.login-page {
+  padding-top: 70px;   /* 上部余白 */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* フォームを中央寄せ＋上下余白 */
+.login-container {
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 380px;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* アニメーション */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* タイトル/ロゴ等 */
+h2 {
+  margin: auto;
+  color: #333;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.logomark {
+  display: block;
+  margin: auto ;
+  width: clamp(120px, 25vw, 170px);
+  height: auto;
+}
+
+/* フォーム要素 */
+form { 
+  display: flex; flex-direction: column;
+  margin-top: auto;
+ }
+
+label {
+  text-align: left;
+  margin-bottom: .5rem;
+  color: #555;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: .75rem 1rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: clamp(.9rem, 2vw, 1rem);
+}
+
+/* ボタン */
+button {
+  padding: .75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #4A90E2;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* スマホ時の微調整 */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1.2rem;
+    border-radius: 12px;
+    margin-top: 4vh;
+  }
+}
+
+.error {
+  color: red;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+  font-size: small;
+}

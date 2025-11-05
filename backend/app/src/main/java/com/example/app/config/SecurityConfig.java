@@ -19,7 +19,7 @@ public class SecurityConfig {
         // セキュリティ設定の詳細
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/css/**", "/js/**").permitAll() // ログインページは全員アクセス可能
+                .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll() // ログインページは全員アクセス可能
                 .anyRequest().authenticated() // その他のリクエストは認証が必要
             )
 
