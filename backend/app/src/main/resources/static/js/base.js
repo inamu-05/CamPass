@@ -1,35 +1,36 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // header を読み込む
-  loadHTML("/templates/base/header.html", "#header-container");
+// base.js（Spring Boot用に修正版）
 
-  // main.html を読み込む → 読み込み完了後にボタン処理を登録
-  loadHTML("/templates/main/main.html", "#main-container", setupMainEvents);
+document.addEventListener("DOMContentLoaded", () => {
+  // HTMLはThymeleafでサーバー側挿入済みなので、直接イベントをセットすればOK
+  setupMainEvents();
+  setupDropdowns();
 });
 
 // ===== メインイベント設定 =====
 function setupMainEvents() {
-  setupDropdowns();
-
-  // 学生情報を登録する
+  // 学生情報登録ボタン
   const registerBtn = document.getElementById("btn-student-register");
   if (registerBtn) {
     registerBtn.addEventListener("click", () => {
-      window.location.href = "/templates/main/student_register.html";
+      // Spring Boot のルーティングに遷移（例：/student/register）
+      window.location.href = "/student/register";
     });
   }
-  
+
+  // 学生情報更新ボタン
   const updateBtn = document.getElementById("btn-student-update");
   if (updateBtn) {
-      updateBtn.addEventListener("click", () => {
-        window.location.href = "/templates/main/student_search.html";
-      });
+    updateBtn.addEventListener("click", () => {
+      window.location.href = "/student/search";
+    });
   }
 
+  // ワンタイムパス作成
   const passBtn = document.getElementById("btn-pass-create");
   if (passBtn) {
-      passBtn.addEventListener("click", () => {
-        window.location.href = "/templates/main/onetimepass.html";
-      });
+    passBtn.addEventListener("click", () => {
+      window.location.href = "/onetimepass";
+    });
   }
 
   // 未実装のボタンたち
@@ -45,36 +46,7 @@ function setupMainEvents() {
   });
 }
 
-function loadHTML(url, selector, callback) {
-  fetch(url)
-    .then(response => {
-      if (!response.ok) throw new Error("読み込み失敗: " + url);
-      return response.text();
-    })
-    .then(data => {
-      const container = document.querySelector(selector);
-      container.innerHTML = data;
-
-      // ページ内 <script> を再実行
-      container.querySelectorAll("script").forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
-      });
-
-      if (callback) callback(); // ✅ main.html 読み込み完了後にイベント登録
-    })
-    .catch(error => {
-      document.querySelector(selector).innerHTML =
-        `<p style="color:red">${error}</p>`;
-      console.error(error);
-    });
-}
-
+// ===== ドロップダウン制御 =====
 function setupDropdowns() {
   const dropdownButtons = document.querySelectorAll('.dropbtn');
 
@@ -92,28 +64,4 @@ function setupDropdowns() {
       document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
     }
   });
-}
-
-function loadMainPage(url) {
-  fetch(url)
-    .then(response => {
-      if (!response.ok) throw new Error("ページ読み込み失敗: " + url);
-      return response.text();
-    })
-    .then(data => {
-      const container = document.querySelector("#main-container");
-      container.innerHTML = data;
-
-      // ページ内スクリプトを再実行
-      container.querySelectorAll("script").forEach(oldScript => {
-        const newScript = document.createElement("script");
-        newScript.textContent = oldScript.textContent;
-        document.body.appendChild(newScript);
-      });
-    })
-    .catch(error => {
-      document.querySelector("#main-container").innerHTML =
-        `<p style="color:red">${error}</p>`;
-      console.error(error);
-    });
 }

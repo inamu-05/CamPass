@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>学生情報検索</title>
+  <link rel="stylesheet" href="/static/css/header.css">
+  <link rel="stylesheet" href="/static/css/student_search.css">
+  <script src="/static/js/student_search.js" defer></script>
+</head>
+<body>
+  <div id="header-container"></div> <!-- ✅ 共通ヘッダーをここに読み込む -->
+
+  <section class="student-search-container">
+    <h2>学生情報検索</h2>
+
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="学生名やIDを入力">
+      <button id="search-btn">検索</button>
+    </div>
+
+    <div class="search-results">
+      <table id="student-table">
+        <thead>
+          <tr>
+            <th>学生番号</th>
+            <th>氏名</th>
+            <th>クラス</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+</body>
+</html>
