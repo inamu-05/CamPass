@@ -1,5 +1,3 @@
-// base.js（Spring Boot用に修正版）
-
 document.addEventListener("DOMContentLoaded", () => {
   // HTMLはThymeleafでサーバー側挿入済みなので、直接イベントをセットすればOK
   setupMainEvents();
@@ -8,15 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===== メインイベント設定 =====
 function setupMainEvents() {
-  // 学生情報登録ボタン
   const registerBtn = document.getElementById("btn-student-register");
   if (registerBtn) {
     registerBtn.addEventListener("click", () => {
-      // Spring Boot のルーティングに遷移（例：/student/register）
-      window.location.href = "/student/register";
+      window.location.href = "main/student/register"; // ✅ コントローラで定義したURL
     });
   }
-
+  
   // 学生情報更新ボタン
   const updateBtn = document.getElementById("btn-student-update");
   if (updateBtn) {
