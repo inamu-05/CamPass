@@ -21,6 +21,10 @@ public abstract class User {
 	@Column(name = "user_name", nullable = false)
 	private String userName;
 
+	// 論理名称:フリガナ
+	@Column(name = "furigana", nullable = false)
+	private String furigana;
+
 	// 論理名称:所属学科
 	@Column(name = "course_id", length = 2, nullable = false)
 	private String courseId;
@@ -32,9 +36,10 @@ public abstract class User {
 	// 空のコンストラクタ
 	public User() {}
 
-    public User(String userId, String userName, String courseId, String userPass) {
+    public User(String userId, String userName, String furigana, String courseId, String userPass) {
         this.userId = userId;
         this.userName = userName;
+		this.furigana = furigana;
         this.courseId = courseId;
         this.userPass = userPass;
     }
@@ -51,6 +56,12 @@ public abstract class User {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public String getFurigana() {
+		return furigana;
+	}
+	public void setFurigana(String furigana) {
+		this.furigana = furigana;
 	}
 	public String getCourseId() {
 		return courseId;

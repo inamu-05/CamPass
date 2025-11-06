@@ -19,6 +19,7 @@ CREATE TABLE course (
 CREATE TABLE user (
     user_id VARCHAR(7) NOT NULL PRIMARY KEY,
     user_name VARCHAR(100) NOT NULL,
+    furigana VARCHAR(255) NOT NULL,
     course_id CHAR(2) NOT NULL,
     user_pass VARCHAR(255) NOT NULL,
     FOREIGN KEY (course_id) REFERENCES course(course_id)
@@ -103,7 +104,3 @@ CREATE TABLE certManage (
     PRIMARY KEY (certificate_id, user_id)
 ) ENGINE=InnoDB;
 
-
--- INSERT QUERIES:
-DELETE FROM course;
-INSERT INTO course (course_id, course_name) VALUES ('01', '情報');
