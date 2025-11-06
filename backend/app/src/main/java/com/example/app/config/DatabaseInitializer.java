@@ -23,6 +23,7 @@ public class DatabaseInitializer {
         
         return args -> {
             final String initialStaffId = "admin";
+            final String initialFurigana = "アドミン";
             final String initialPassword = "adminpass"; // Plain text password for test user
             final String initialCourseId = "01"; 
             final String initialStaffCategory = "0";
@@ -38,6 +39,7 @@ public class DatabaseInitializer {
                 Staff initialStaff = new Staff(
                     initialStaffId, 
                     "Admin Test User", 
+                    initialFurigana,
                     initialCourseId, 
                     hashedPassword,
                     initialStaffCategory
