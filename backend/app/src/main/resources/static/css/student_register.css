@@ -1,0 +1,117 @@
+/* ===== 学生登録画面（③パターン：モダン・上品） ===== */
+body {
+  font-family: "Noto Sans JP", "Helvetica Neue", sans-serif;
+  background-color: #eef0f3;
+  margin: 0;
+  padding: 0;
+  color: #2f3542;
+}
+
+/* メインコンテナ */
+.student-register {
+  max-width: 820px;
+  margin: 60px auto;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  padding: 40px 50px;
+  border-top: 6px solid #34495e;
+}
+
+/* タイトル */
+.student-register h2 {
+  text-align: center;
+  color: #2f3542;
+  margin-bottom: 30px;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 12px;
+}
+
+/* フォーム全体 */
+.form-grid {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 18px 24px;
+  align-items: center;
+}
+
+/* ラベル */
+.form-grid label {
+  font-weight: 600;
+  color: #555;
+  text-align: right;
+}
+
+/* 入力欄 */
+.form-grid input[type="text"],
+.form-grid input[type="email"],
+.form-grid input[type="number"],
+.form-grid input[type="tel"],
+.form-grid input[type="date"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: 0.2s ease;
+}
+
+.form-grid input:focus {
+  border-color: #4b6584;
+  background-color: #fff;
+  box-shadow: 0 0 6px rgba(75, 101, 132, 0.3);
+  outline: none;
+}
+
+/* 写真アップロード */
+.photo-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#photo-preview {
+  border: 1px dashed #aaa;
+  border-radius: 8px;
+  text-align: center;
+  padding: 18px;
+  color: #777;
+  font-size: 14px;
+  background-color: #f7f8fa;
+}
+
+.preview-img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* 登録ボタン */
+.form-actions {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.submit-btn {
+  background-color: #34495e;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  transition: all 0.25s ease;
+}
+
+.submit-btn:hover {
+  background-color: #2c3e50;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
