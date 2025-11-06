@@ -9,7 +9,7 @@ function setupMainEvents() {
   const registerBtn = document.getElementById("btn-student-register");
   if (registerBtn) {
     registerBtn.addEventListener("click", () => {
-      window.location.href = "main/student/register"; // ✅ コントローラで定義したURL
+      window.location.href = "/student/register";
     });
   }
   
