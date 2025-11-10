@@ -14,6 +14,15 @@
         <option th:each="c : ${courses}" th:value="${c.courseId}" th:text="${c.courseName}"></option>
       </select>
 
+      <label>クラス:</label>
+      <select>
+        <!--/* th:field="*{classId}" */--> 
+        <option value="" disabled selected>選択して下さい</option>
+        <option>
+          <!--/* th:each="cl : ${classes}" th:value="${cl.classId}" th:text="${cl.className}" */--> 
+        </option>
+      </select>
+      
       <label>学生番号:</label>
       <input type="text" th:field="*{userId}" placeholder="例：S12345">
 
