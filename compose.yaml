@@ -9,6 +9,7 @@ services:
     working_dir: /app
     volumes:
       - ./backend/app:/app
+      - ./backend/app/uploads:/app/uploads  # 画像アップロード用ディレクトリのマウント
       - ~/.m2:/root/.m2
     # # 本番用コマンド
     # command: >

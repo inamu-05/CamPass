@@ -8,7 +8,7 @@
 </head>
 <body>
   <!-- サーバーサイドで base/header.html の header-content フラグメントを挿入 -->
-    <div id="header-container" th:insert="base/header :: header"></div>
+    <div id="header-container" th:insert="~{base/header :: header}"></div>
    
     <!-- サーバーサイドで main/main.html の main-content フラグメントを挿入 -->
     <div id="main-container" th:insert="~{/main/main :: main-content}"></div>

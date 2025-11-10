@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PageController {
 
 
-    // 学生登録ページ
-    @GetMapping("/student/register")
-    public String showStudentRegisterPage() {
-        return "main/student_register";  // templates/main/student_register.html
-    }
+    // // 学生登録ページ
+    // @GetMapping("/student/register")
+    // public String showStudentRegisterPage() {
+    //     return "main/student_register";  // templates/main/student_register.html
+    // }
 
     // // 学生検索ページ
     // @GetMapping("/student/search")
@@ -24,4 +24,24 @@ public class PageController {
     // public String oneTimePass() {
     //     return "main/onetimepass";
     // }
+    
+    // 学生検索ページ
+    @GetMapping("/student/search")
+    public String studentSearch() {
+        return "main/student_search";
+    }
+ 
+    // 学生更新ページ
+    @GetMapping("/student/update")
+    public String showStudentUpdatePage() {
+        return "main/student_update";  // templates/main/student_update.html
+    }
+ 
+    // 更新完了ページ
+    @GetMapping("/student/update/comp")
+    public String showUpdateCompletePage() {
+        return "main/update_completed";  // templates/main/update_completed.html に対応
+    }
+ 
+ 
 }

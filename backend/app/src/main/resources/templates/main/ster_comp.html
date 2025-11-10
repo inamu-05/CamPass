@@ -3,17 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>登録完了</title>
-  <link rel="stylesheet" href="/static/css/student_update_complete.css">
-  <script src="/static/js/register_comp.js" defer></script>
+  <!-- ✅ 共通ヘッダー用CSS -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <!-- ✅ このページ専用のCSS -->
+  <link rel="stylesheet" th:href="@{/css/update_comp.css}">
+  <script src="@{/js/sregister_comp.js}" defer></script>
 </head>
 <body>
-  <div id="header-container"></div> <!-- ✅ 共通ヘッダーをここに読み込む -->
+  <div id="header-container" th:replace="base/header :: header"></div> <!-- ✅ 共通ヘッダーをここに読み込む -->
 
   <main class="complete-container">
     <div class="complete-card">
       <h2>登録完了しました</h2>
       <p>学生情報の登録が正常に完了しました。</p>
-      <button class="ok-button" id="ok-btn">OK</button>
+      <button class="ok-button" onclick="location.href='/student/register'">OK</button>
     </div>
   </main>
 </body>

@@ -14,13 +14,4 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  const form = document.querySelector(".student-form");
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      // ✅ Spring Controller に合わせてURLを変更
-      window.location.href = "/student/register/complete";
-    });
-  }
 });

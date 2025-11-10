@@ -3,39 +3,45 @@
 
   <h2>学生情報登録</h2>
 
-  <form class="student-form">
+  <form class="student-form" th:action="@{/student/register}" th:object="${student}" method="post" enctype="multipart/form-data">
     <div class="form-grid">
       <label>入学年度:</label>
-      <input type="number" name="admission_year" placeholder="例：2025">
+      <input type="number" th:field="*{entryYear}" placeholder="例：2025">
+
+      <label>所属学科:</label>
+      <select th:field="*{courseId}">
+        <option value="" disabled selected>選択して下さい</option>
+        <option th:each="c : ${courses}" th:value="${c.courseId}" th:text="${c.courseName}"></option>
+      </select>
 
       <label>学生番号:</label>
-      <input type="text" name="student_id" placeholder="例：S12345">
+      <input type="text" th:field="*{userId}" placeholder="例：S12345">
 
       <label>氏名:</label>
-      <input type="text" name="name" placeholder="山田 太郎">
+      <input type="text" th:field="*{userName}" placeholder="山田 太郎">
 
       <label>フリガナ:</label>
-      <input type="text" name="kana" placeholder="ヤマダ タロウ">
-
-      <label>クラス:</label>
-      <input type="text" name="class_name" placeholder="例：情報システム科A">
-
-      <label>メール:</label>
-      <input type="email" name="email" placeholder="例：example@school.jp">
-
-      <label>住所:</label>
-      <input type="text" name="address" placeholder="札幌市中央区...">
-
-      <label>電話番号:</label>
-      <input type="tel" name="phone" placeholder="例：09012345678">
+      <input type="text" th:field="*{furigana}" placeholder="ヤマダ タロウ">
 
       <label>生年月日:</label>
-      <input type="date" name="birthdate">
+      <input type="date" th:field="*{birth}">
+
+      <label>電話番号:</label>
+      <input type="tel" th:field="*{tel}" placeholder="例：09012345678">
+
+      <label>メール:</label>
+      <input type="email" th:field="*{mail}" placeholder="例：example@school.jp">
+
+      <label>住所:</label>
+      <input type="text" th:field="*{address}" placeholder="札幌市中央区...">
 
       <label>写真:</label>
       <div class="photo-upload">
-        <input type="file" id="photo" accept="image/*">
+        <input type="file" name="file" accept="image/*">
       </div>
+
+      <label>パスワード:</label>
+      <input type="text" th:field="*{userPass}" placeholder="パスワードを入力">
     </div>
 
     <div class="form-actions">

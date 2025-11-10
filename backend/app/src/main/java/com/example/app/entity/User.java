@@ -10,7 +10,7 @@ import jakarta.persistence.InheritanceType;
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User {
+public class User {
 
 	// 論理名称:ユーザ番号
 	@Id

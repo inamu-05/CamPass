@@ -26,7 +26,7 @@ public class Student extends User {
 	@Column(name = "address", nullable = false)
 	private String address;
 
-	// 論理名称:証明写真
+	// 論理名称:証明写真　(画像パスを保存)
 	@Column(name = "img", nullable = false)
 	private String img;
 
