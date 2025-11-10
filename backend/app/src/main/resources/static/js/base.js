@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // HTMLはThymeleafでサーバー側挿入済みなので、直接イベントをセットすればOK
   setupMainEvents();
   setupDropdowns();
 });
@@ -29,11 +28,17 @@ function setupMainEvents() {
     });
   }
 
-  // 未実装のボタンたち
   const attendBtn = document.getElementById("btn-attendance-check");
+  if (attendBtn) {
+    attendBtn.addEventListener("click", () => {
+      window.location.href = "/student/attendance";
+    });
+  }
+
+  // 未実装のボタンたち
   const certBtn = document.getElementById("btn-certificate-approve");
 
-  [attendBtn, certBtn].forEach(btn => {
+  [certBtn].forEach(btn => {
     if (btn) {
       btn.addEventListener("click", () => {
         alert("この機能は現在準備中です。");

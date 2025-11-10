@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>学生情報検索</title>
-  <link rel="stylesheet" href="/static/css/header.css">
-  <link rel="stylesheet" href="/static/css/student_search.css">
-  <script src="/static/js/student_search.js" defer></script>
+  <link rel="stylesheet" th:href="@{/css/student_search.css}">
+  <script th:src="@{/js/student_search.js}"></script>
 </head>
+
 <body>
-  <div id="header-container"></div> <!-- ✅ 共通ヘッダーをここに読み込む -->
 
   <section class="student-search-container">
     <h2>学生情報検索</h2>
@@ -25,7 +24,7 @@
             <th>学生番号</th>
             <th>氏名</th>
             <th>クラス</th>
-            <th>操作</th>
+            <th>更新</th>
           </tr>
         </thead>
         <tbody></tbody>

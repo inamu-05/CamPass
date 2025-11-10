@@ -3,14 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("search-input");
   const tableBody = document.querySelector("#student-table tbody");
 
-  // ✅ 共通ヘッダー読み込み
-    fetch("/templates/base/header.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("header-container").innerHTML = html;
-      })
-      .catch(err => console.error("ヘッダー読み込み失敗:", err));
-    
   searchBtn.addEventListener("click", () => {
     const query = searchInput.value.trim();
 
@@ -45,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("selectedStudent", JSON.stringify(student));
 
         // ✅ 更新画面へ遷移
-        window.location.href = "student_update.html";
+        window.location.href = "/student/update";
       });
     });
   });

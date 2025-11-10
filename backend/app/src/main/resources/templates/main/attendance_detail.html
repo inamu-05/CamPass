@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>出席詳細</title>
+  <link rel="stylesheet" th:href="@{/css/attendance_detail.css}">
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const record = JSON.parse(localStorage.getItem("selectedRecord"));
+      const container = document.getElementById("detail-container");
+
+      if (record) {
+        container.innerHTML = `
+          <h2>授業出席詳細</h2>
+          <p><strong>日付：</strong> ${record.date}</p>
+          <p><strong>授業名：</strong> ${record.subjectName}</p>
+          <p><strong>出席人数：</strong> ${record.attendanceCount}</p>
+          <button onclick="history.back()">戻る</button>
+        `;
+      } else {
+        container.innerHTML = "<p>データが見つかりません。</p>";
+      }
+    });
+  </script>
+</head>
+<body>
+  <header th:replace="~{base/header :: header}"></header>
+  <main id="detail-container" class="attendance-detail"></main>
+</body>
+</html>

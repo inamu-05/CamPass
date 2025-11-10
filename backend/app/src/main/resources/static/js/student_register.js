@@ -19,7 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      window.location.href = "ster_comp.html";
+      // ✅ Spring Controller に合わせてURLを変更
+      window.location.href = "/student/register/complete";
     });
   }
 });

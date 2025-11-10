@@ -1,0 +1,68 @@
+body {
+  font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+  background-color: #f7f9fc;
+  margin: 0;
+  padding: 0;
+}
+
+.attendance-detail-container {
+  width: 90%;
+  margin: 30px auto;
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+  text-align: center;
+  color: #333;
+}
+
+.class-info {
+  background-color: #eef4ff;
+  border-left: 5px solid #4a90e2;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.class-info p {
+  margin: 6px 0;
+  font-size: 15px;
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.attendance-table th, .attendance-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 10px;
+}
+
+.attendance-table th {
+  background-color: #e6f0ff;
+  color: #333;
+}
+
+.attendance-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.back-button {
+  display: block;
+  margin: 25px auto;
+  padding: 8px 16px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #0b7dda;
+}
