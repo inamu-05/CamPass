@@ -13,12 +13,6 @@ public class PageController {
     //     return "main/student_register";  // templates/main/student_register.html
     // }
 
-    // // 学生検索ページ
-    // @GetMapping("/student/search")
-    // public String studentSearch() {
-    //     return "main/student_search";
-    // }
-
     // // ワンタイムパスページ
     // @GetMapping("/onetimepass")
     // public String oneTimePass() {
@@ -31,11 +25,11 @@ public class PageController {
         return "main/student_search";
     }
  
-    // 学生更新ページ
-    @GetMapping("/student/update")
-    public String showStudentUpdatePage() {
-        return "main/student_update";  // templates/main/student_update.html
-    }
+    // // 学生更新ページ
+    // @GetMapping("/student/update")
+    // public String showStudentUpdatePage() {
+    //     return "main/student_update";  // templates/main/student_update.html
+    // }
  
     // 更新完了ページ
     @GetMapping("/student/update/comp")

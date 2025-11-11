@@ -78,12 +78,8 @@ public class StudentController {
         return "main/ster_comp"; // Corresponds to src/main/resources/templates/main/ster_comp.html
     }
 
-    /**
-     * UPDATE (Show Form)
-     * URL: GET /student/edit/{id}
-     * Shows the form to edit an existing student, pre-filled with their data.
-     */
-    @GetMapping("/edit/{id}")
+    // 学生情報更新画面
+    @GetMapping("/update/{id}")
     public String showEditForm(@PathVariable String id, Model model) {
         Student student = studentService.getStudentById(id);
         model.addAttribute("student", student);
@@ -96,7 +92,7 @@ public class StudentController {
      * URL: POST /student/edit/{id}
      * Saves the changes to the existing student.
      */
-    @PostMapping("/edit/{id}")
+    @PostMapping("/update/{id}")
     public String updateStudent(@PathVariable String id, @ModelAttribute("student") Student studentDetails) {
         studentService.updateStudent(id, studentDetails);
         return "redirect:/students"; // Redirect back to the student list
