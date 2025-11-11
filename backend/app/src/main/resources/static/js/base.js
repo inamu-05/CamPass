@@ -35,16 +35,12 @@ function setupMainEvents() {
     });
   }
 
-  // 未実装のボタンたち
   const certBtn = document.getElementById("btn-certificate-approve");
-
-  [certBtn].forEach(btn => {
-    if (btn) {
-      btn.addEventListener("click", () => {
-        alert("この機能は現在準備中です。");
-      });
-    }
-  });
+  if (certBtn) {
+    certBtn.addEventListener("click", () => {
+      window.location.href = "/cert/list";
+    });
+  }
 }
 
 // ===== ドロップダウン制御 =====

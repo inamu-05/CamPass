@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (e) => {
     e.preventDefault(); // ページ遷移を防止
 
-    const subject = subjectInput.value.trim();
+    const subject = subjectInput.value;
     const date = dateInput.value.trim();
 
     // === 条件に合うデータを抽出 ===
