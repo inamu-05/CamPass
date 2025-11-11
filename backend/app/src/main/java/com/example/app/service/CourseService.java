@@ -14,7 +14,7 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    // コース取得メソッド
+    // コース取得メソッド　
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }

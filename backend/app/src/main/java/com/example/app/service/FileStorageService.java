@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.nio.file.*;
 
-// 画像の保存や管理を行うサービスクラス
+// 画像の保存や管理を行うサービスクラス　
 @Service
 public class FileStorageService {
 

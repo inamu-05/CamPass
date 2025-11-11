@@ -18,7 +18,7 @@ public class StudentService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // 学生一覧を取得
+    // 学生一覧を取得　
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
