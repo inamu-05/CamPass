@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>証明書管理 - 承認一覧</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/certificate_list.css}">
+  <script defer th:src="@{/js/certificate_list.js}"></script>
+</head>
+<body>
+  <!-- 共通ヘッダー -->
+  <header th:replace="~{base/header :: header}"></header>
+
+  <main class="certificate-container">
+    <h1>証明書管理</h1>
+    <p id="pendingCount" class="pending-count">未承認件数：0件</p>
+
+    <!-- 未承認セクション -->
+    <section class="pending-section">
+      <h2>未承認</h2>
+      <table class="certificate-table" id="pendingTable">
+        <thead>
+          <tr>
+            <th>申請日</th>
+            <th>学籍番号</th>
+            <th>氏名</th>
+            <th>書類名</th>
+            <th>部数</th>
+            <th>受取方法</th>
+            <th>承認</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- JSで動的に生成 -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 承認済セクション -->
+    <section class="approved-section">
+      <h2>承認済み</h2>
+      <table class="certificate-table" id="approvedTable">
+        <thead>
+          <tr>
+            <th>申請日</th>
+            <th>学籍番号</th>
+            <th>氏名</th>
+            <th>書類名</th>
+            <th>部数</th>
+            <th>受取方法</th>
+            <th>状態</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- JSで動的に生成 -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

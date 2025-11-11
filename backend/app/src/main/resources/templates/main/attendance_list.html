@@ -6,7 +6,6 @@
   
   <link rel="stylesheet" th:href="@{/css/attendance_list.css}">
   <script th:src="@{/js/attendance_list.js}"></script>
-
 </head>
 <body>
   <!-- 共通ヘッダーを読み込み -->
@@ -16,32 +15,40 @@
     <h2>授業出席一覧</h2>
 
     <!-- 検索フォーム -->
-  <form class="search-form">
-    <label for="subject">授業名：</label>
-    <input type="text" id="subject" name="subject" placeholder="例）情報処理">
+    <form class="search-form">
+      <label for="subject">授業名：</label>
 
-    <label for="date">日付：</label>
-    <input type="date" id="date" name="date">
+      <!-- ▼ 修正：入力欄 → 選択欄に変更 -->
+      <select id="subject" name="subject">
+        <option value="">すべて</option>
+        <option value="情報処理">情報処理</option>
+        <option value="データベース">データベース</option>
+        <option value="ネットワーク基礎">ネットワーク基礎</option>
+      </select>
+      <!-- ▲ 修正ここまで -->
 
-    <button type="submit">検索</button>
-  </form>
+      <label for="date">日付：</label>
+      <input type="date" id="date" name="date">
 
-  <section class="result-section">
-    <h3>検索結果</h3>
-    <table class="attendance-table" id="attendanceTable">
-      <thead>
-        <tr>
-          <th>日付</th>
-          <th>授業名</th>
-          <th>出席人数</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- JSで動的に生成 -->
-      </tbody>
-    </table>
-  </section>
+      <button type="submit">検索</button>
+    </form>
+
+    <section class="result-section">
+      <h3>検索結果</h3>
+      <table class="attendance-table" id="attendanceTable">
+        <thead>
+          <tr>
+            <th>日付</th>
+            <th>授業名</th>
+            <th>出席人数</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- JSで動的に生成 -->
+        </tbody>
+      </table>
+    </section>
 
   </main>
 </body>

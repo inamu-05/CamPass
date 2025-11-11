@@ -5,26 +5,31 @@ body {
   padding: 0;
 }
 
+/* ===== 詳細コンテナ ===== */
 .attendance-detail-container {
-  width: 90%;
-  margin: 30px auto;
+  max-width: 1200px;       /* ← 900px → 1200px に拡大 */
+  width: 95%;              /* ← 幅を90% → 95% に拡大 */
+  margin: 50px auto;
   background: #fff;
-  padding: 20px 30px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px 50px;      /* ← 内側も広げてゆったり感 */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-h2, h3 {
+.attendance-detail-container h2 {
   text-align: center;
   color: #333;
+  margin-bottom: 25px;
 }
 
+/* ===== 授業情報カード ===== */
 .class-info {
+  max-width: 1000px;       /* ← テーブルに合わせて拡大 */
   background-color: #eef4ff;
   border-left: 5px solid #4a90e2;
-  padding: 10px 20px;
-  margin-bottom: 20px;
-  border-radius: 5px;
+  padding: 18px 100px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .class-info p {
@@ -32,37 +37,56 @@ h2, h3 {
   font-size: 15px;
 }
 
-.attendance-table {
+/* ===== 学生リスト部分 ===== */
+.student-list-section {
+  margin-top: 40px;
+  max-width: 1000px;       /* ← class-info と同じ幅で中央揃え */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.student-list-section h3 {
+  color: #333;
+  border-left: 4px solid #4b8df8;
+  padding-left: 10px;
+  margin-bottom: 15px;
+}
+
+/* ===== テーブル ===== */
+.student-table {
   width: 100%;
   border-collapse: collapse;
+  background-color: #fff;
+  table-layout: fixed;
 }
 
-.attendance-table th, .attendance-table td {
-  border: 1px solid #ddd;
+.student-table th,
+.student-table td {
+  border: 1px solid #ccc;
+  padding: 12px 10px;
   text-align: center;
-  padding: 10px;
+  word-wrap: break-word;
 }
 
-.attendance-table th {
-  background-color: #e6f0ff;
-  color: #333;
+.student-table th {
+  background-color: #eef3fb;
+  font-weight: bold;
 }
 
-.attendance-table tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.back-button {
+/* ===== ボタン ===== */
+.back-btn {
   display: block;
-  margin: 25px auto;
-  padding: 8px 16px;
-  background-color: #2196F3;
-  color: white;
+  margin: 40px auto 0;
+  background-color: #4b8df8;
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  padding: 12px 30px;
+  border-radius: 6px;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.back-button:hover {
-  background-color: #0b7dda;
+.back-btn:hover {
+  background-color: #3a78d3;
 }
