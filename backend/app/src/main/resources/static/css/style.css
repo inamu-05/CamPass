@@ -2,7 +2,7 @@
 body {
   font-family: "Hiragino Kaku Gothic ProN", sans-serif;
   margin: 0;
-  background: #abe0ef;
+  background: rgba(245, 253, 255, 255);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -10,8 +10,8 @@ body {
 
 /* ====== ヘッダー部分 ====== */
 .site-header {
-  background-color: #1976D2;
-  color: white;
+  background-color: rgba(147, 218, 231, 255);
+  color: black;
   padding: 16px 32px;
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@ body {
 }
 
 .navbar a {
-  color: white;
+  color: black;
   text-decoration: none;
   font-weight: bold;
   transition: opacity 0.2s;
@@ -67,10 +67,11 @@ main {
 
 /* 外側ボタン */
 .dropbtn {
-  background-color: #2196F3;
-  color: white;
+  background-color: rgba(147, 218, 231, 255);
+  color: black;
   padding: 14px 24px;
   font-size: 16px;
+  font-weight: bold;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -82,7 +83,7 @@ main {
 }
 
 .dropbtn:hover {
-  background-color: #1976D2;
+  background-color: #c0d1e0;
 }
 
 /* 矢印 */
@@ -101,9 +102,9 @@ main {
   position: absolute;
   top: 110%;
   left: 0;
-  background-color: #fff;
+  background-color: rgba(245, 253, 255, 255);
   min-width: 220px;
-  box-shadow: 0px 8px 16px rgba(0,0,0,0.15);
+  /* box-shadow: 0px 8px 16px rgba(0,0,0,0.15); */
   border-radius: 8px;
   z-index: 1;
   text-align: left;
@@ -125,20 +126,19 @@ main {
   width: 100%;
   padding: 12px 16px;
   border: none;
-  background-color: #4CAF50;
-  color: white;
+  background-color: rgba(147, 218, 231, 255);
+  color: black;
   text-align: left;
   cursor: pointer;
   font-size: 15px;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  font-weight: bold;
   transition: background 0.2s, transform 0.2s;
   margin: 4px 0;
 }
 
 .dropdown-content .menu-btn:hover {
-  background-color: #45a049;
+  background-color: #c0d1e0;
   transform: translateX(3px);
 }
 
