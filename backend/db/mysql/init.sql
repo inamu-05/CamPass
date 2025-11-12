@@ -43,10 +43,11 @@ CREATE TABLE student (
     user_id VARCHAR(7) NOT NULL PRIMARY KEY,
     -- stu_name VARCHAR(100) NOT NULL,
     birth DATE NOT NULL,
-    tel CHAR(12) NOT NULL,
+    tel CHAR(13) NOT NULL,
     mail VARCHAR(100) NOT NULL,
     -- course_id CHAR(2) NOT NULL,
     address VARCHAR(255) NOT NULL,
+    class_group_id CHAR(3) NOT NULL,
     -- stu_pass VARCHAR(255) NOT NULL,
     img VARCHAR(255) NOT NULL,
     enrollment_status CHAR(1) NOT NULL,
@@ -72,12 +73,13 @@ CREATE TABLE subject (
 CREATE TABLE attendance (
     subject_id CHAR(2) NOT NULL,
     user_id VARCHAR(7) NOT NULL,
-    attnded_on DATETIME NOT NULL,
-    is_attend BOOLEAN NOT NULL DEFAULT FALSE,
+    session_datetime DATETIME NOT NULL,
+    attended_on DATETIME,
+    is_attended BOOLEAN NOT NULL DEFAULT FALSE,
     remark CHAR(1) NOT NULL,
     FOREIGN KEY (subject_id) REFERENCES subject(subject_id),
     FOREIGN KEY (user_id) REFERENCES user(user_id),
-    PRIMARY KEY (subject_id, user_id)
+    PRIMARY KEY (subject_id, user_id, session_datetime)
 ) ENGINE=InnoDB;
 
 
@@ -104,3 +106,14 @@ CREATE TABLE certManage (
     PRIMARY KEY (certificate_id, user_id)
 ) ENGINE=InnoDB;
 
+
+-- Create Junction Table: Links a Subject to a Class Group
+CREATE TABLE subject_class (
+    subject_id CHAR(2) NOT NULL,
+    user_id CHAR(6) NOT NULL,
+    -- class_group_id CHAR(3) NOT NULL,
+    PRIMARY KEY (subject_id, user_id),
+    FOREIGN KEY (subject_id) REFERENCES subject(subject_id),
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+    -- FOREIGN KEY (class_group_id) REFERENCES student(class_group_id), -- Assuming you create a class_group table
+) ENGINE=InnoDB;
