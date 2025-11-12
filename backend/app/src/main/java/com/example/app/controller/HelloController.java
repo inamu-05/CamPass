@@ -8,7 +8,7 @@ import com.example.app.entity.Course;
 import com.example.app.repository.CourseRepository;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired; // For dependency injection
+// import org.springframework.beans.factory.annotation.Autowired; // For dependency injection
 // import com.example.app.controller.Course;
 // import com.example.app.controller.CourseRepository;
 
@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired; // For dependency
 public class HelloController {
     private final CourseRepository courseRepository;
 
-    @Autowired // Inject the repository here
+    // @Autowired // Inject the repository here
     public HelloController(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
     }
