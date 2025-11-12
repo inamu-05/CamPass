@@ -26,7 +26,11 @@ public class Student extends User {
 	@Column(name = "address", nullable = false)
 	private String address;
 
-	// 論理名称:証明写真　(画像パスを保存)
+	// 論理名称:クラス
+	@Column(name = "class_group_id", nullable = false)
+	private String classGroupId;
+    
+	// 論理名称:証明写真
 	@Column(name = "img", nullable = false)
 	private String img;
 
@@ -49,6 +53,24 @@ public class Student extends User {
 	// 空のコンストラクタ
 	public Student() {}
 
+	public Student(String userId, String userName, String furigana, String courseId, 
+                   String userPass, LocalDate birth, String tel, String mail, String address, String classGroupId,
+                   String img, String enrollmentStatus, String entryYear, String graduationYear, 
+                   Boolean isDisabled) {
+        super(userId, userName, furigana, courseId, userPass);
+        // Initializes Staff-specific field
+        this.birth = birth;
+        this.tel = tel;
+        this.mail = mail;
+        this.address = address;
+        this.classGroupId = classGroupId;
+        this.img = img;
+        this.enrollmentStatus = enrollmentStatus;
+        this.entryYear = entryYear;
+        this.graduationYear = graduationYear;
+        this.isDisabled = isDisabled;
+    }
+
 	// ゲッター・セッター
 	public LocalDate getBirth() {
 		return birth;
@@ -67,6 +89,12 @@ public class Student extends User {
 	}
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+    public String getClassGroupId() {
+		return classGroupId;	
+	}
+	public void setClassGroupId(String classGroupId) {
+		this.classGroupId = classGroupId;
 	}
 	public String getAddress() {
 		return address;	

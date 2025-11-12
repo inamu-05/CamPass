@@ -1,7 +1,10 @@
 package com.example.app.config;
 
 import com.example.app.entity.Staff;
+import com.example.app.entity.Student;
 import com.example.app.repository.StaffRepository;
+import com.example.app.repository.StudentRepository;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,14 +22,13 @@ public class DatabaseInitializer {
     @Bean
     public CommandLineRunner initDatabase(
             StaffRepository staffRepository, 
+            StudentRepository studentRepository,
             PasswordEncoder passwordEncoder) {
         
         return args -> {
             final String initialStaffId = "admin";
-            final String initialFurigana = "アドミン";
             final String initialPassword = "adminpass"; // Plain text password for test user
             final String initialCourseId = "01"; 
-            final String initialStaffCategory = "0";
 
             // 1. Check if the user already exists to prevent duplicate creation
             // We use findById() which is safe to call before the user is saved.
@@ -39,14 +41,15 @@ public class DatabaseInitializer {
                 Staff initialStaff = new Staff(
                     initialStaffId, 
                     "Admin Test User", 
-                    initialFurigana,
+                    "アドミン",
                     initialCourseId, 
                     hashedPassword,
-                    initialStaffCategory
+                    "0"
                 );
 
                 // 4. Save the user to the database
                 staffRepository.save(initialStaff);
+                System.out.println("-> Staff 'admin' created.");
                 
                 // Console output for confirmation
                 System.out.println("-----------------------------------------------------------------");
@@ -54,6 +57,63 @@ public class DatabaseInitializer {
                 System.out.println("ID: " + initialStaffId + " | Pass: " + initialPassword);
                 System.out.println("-----------------------------------------------------------------");
             }
+
+            final String stu1Id = "S101";
+            final String initialStudentPassword = "stupass";
+            if (studentRepository.findById(stu1Id).isEmpty()) {
+                String hashedPassword = passwordEncoder.encode(initialStudentPassword);
+                
+                Student student1 = new Student(
+                    stu1Id, 
+                    "学生太郎", 
+                    "ガクセイタロウ",
+                    "01", 
+                    hashedPassword,
+                    java.time.LocalDate.of(2000, 1, 1), // birth
+                    "090-1234-5678", // tel
+                    "s101@test.com", // mail
+                    "東京都", // address
+                    "1-1",
+                    "/path/to/img1.jpg", // img
+                    "0", // enrollment_status
+                    "2023", // entry_year
+                    null, // graduation_year
+                    false // is_disabled
+                );
+                studentRepository.save(student1);
+                System.out.println("-> Student 'S101' created.");
+            }
+
+            // Student 2
+            final String stu2Id = "S102";
+            if (studentRepository.findById(stu2Id).isEmpty()) {
+                String hashedPassword = passwordEncoder.encode(initialStudentPassword);
+                
+                Student student2 = new Student(
+                    stu2Id, 
+                    "学生花子", 
+                    "ガクセイハナコ",
+                    "01", 
+                    hashedPassword,
+                    java.time.LocalDate.of(2001, 5, 15), // birth
+                    "090-8765-4321", // tel
+                    "s102@test.com", // mail
+                    "大阪府", // address
+                    "1-1",
+                    "/path/to/img2.jpg", // img
+                    "0", // enrollment_status
+                    "2023", // entry_year
+                    null, // graduation_year
+                    false // is_disabled
+                );
+                studentRepository.save(student2);
+                System.out.println("-> Student 'S102' created.");
+            }
+            
+            System.out.println("-----------------------------------------------------------------");
+            System.out.println("Database initialization complete.");
+            System.out.println("-----------------------------------------------------------------");
+        
         };
     }
 }

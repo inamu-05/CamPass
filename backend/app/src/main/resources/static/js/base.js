@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // HTMLはThymeleafでサーバー側挿入済みなので、直接イベントをセットすればOK
   setupMainEvents();
   setupDropdowns();
 });
@@ -24,10 +25,11 @@ function setupMainEvents() {
   const passBtn = document.getElementById("btn-pass-create");
   if (passBtn) {
     passBtn.addEventListener("click", () => {
-      window.location.href = "/onetimepass";
+      window.location.href = "/attendance/otp/create";
     });
   }
 
+  // 未実装のボタンたち
   const attendBtn = document.getElementById("btn-attendance-check");
   if (attendBtn) {
     attendBtn.addEventListener("click", () => {

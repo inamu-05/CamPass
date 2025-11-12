@@ -6,6 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const backBtn = document.getElementById("back-btn");
   const messageArea = document.getElementById("message-area"); // 🔹 追加: メッセージ表示用
 
+
+  function formatToFourDigits(num) {
+    return String(num).padStart(4, '0');
+  }
+
+// console.log(formatToFourDigits(7));
+
   // 🔹 メッセージ表示用の関数
   function showMessage(text, isError = false) {
     messageArea.textContent = text;
@@ -19,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showMessage("科目を選択してください。", true);
       return;
     }
-    const pass = Math.floor(0 + Math.random() * 9000);
+    const pass = formatToFourDigits(Math.floor(Math.random() * 10000));
     passField.value = pass;
     showMessage("ワンタイムパスが作成されました。", false);
   });
@@ -38,21 +45,30 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Get the CSRF token (Important for Spring Security POST)
+    const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
     const response = await fetch("/save-onetime-pass", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ subject, pass })
-    });
-
+      headers: { 
+            "Content-Type": "application/json",
+            [header]: token // Add CSRF token to header
+        },
+      body: JSON.stringify({ subjectId: subject, pass: pass }) // Send correct JSON
+    })
+    
     if (response.ok) {
-      showMessage("ワンタイムパスを保存しました。", false);
+        console.log('OTP saved successfully via browser!');
+        showMessage("ワンタイムパスを保存しました。", false);
     } else {
-      showMessage("保存に失敗しました。", true);
+        console.error('Failed to save OTP:', response.statusText);
+        showMessage("保存に失敗しました。", true);
     }
   });
 
   // ✅ 戻る（メインメニューへ）
   backBtn.addEventListener("click", () => {
-    window.location.href = "/templates/base/base.html";
+    window.location.href = "/main";
   });
 });

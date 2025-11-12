@@ -29,9 +29,15 @@ services:
     environment:
       SPRING_BOOT_DOCKER_COMPOSE_SKIP: "true"
       SPRING_BOOT_DOCKER_COMPOSE_DISABLED: "true"
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/campassdb # データベースの情報
+      SPRING_DATASOURCE_USERNAME: user        # データベースのユーザー
+      SPRING_DATASOURCE_PASSWORD: password    # データベースのパスワード
+      SPRING_REDIS_HOST : redis   # OTP 用のサービス
     depends_on:
       db:
         condition: service_healthy
+      redis: 
+        condition: service_started  # redisが起動したら
     networks:
       - campass-network
   
@@ -57,8 +63,19 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: "redis:7-alpine"   # redisイメージ
+    container_name: redis     # Springが使うコンテナ名
+    ports:
+      - "6379:6379"           # ポート
+    volumes:
+      - redis_data:/data      # (Optional)コンテナをリスタートしてもデータを保存する
+    networks:
+      - campass-network
+
 networks:
   campass-network:
 
 volumes:
+  redis_data: {}  # redisのボリューム
   mysql:

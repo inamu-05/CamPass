@@ -1,6 +1,9 @@
 <section class="otp-create">
-  <link rel="stylesheet" href="/static/css/one_time_pass.css">
-  <div id="header-container"></div>
+  <link rel="stylesheet" th:href="@{/css/one_time_pass.css}">  <!-- Edited  -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">  <!-- Edited  -->
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  <div id="header-container" th:insert="~{base/header :: header}"></div>
 
   <div class="otp-card">
     <h2>ワンタイムパス作成</h2>
@@ -9,10 +12,10 @@
       <label for="subject">科目を選択:</label>
       <select id="subject">
         <option value="">選択してください</option>
-        <option value="情報処理">情報処理</option>
-        <option value="ネットワーク">ネットワーク</option>
-        <option value="プログラミング">プログラミング</option>
-        <option value="データベース">データベース</option>
+        <option th:each="s : ${subjects}" 
+                th:value="${s.subjectId}" 
+                th:text="${s.subjectName}">
+        </option>
       </select>
     </div>
 
@@ -30,5 +33,5 @@
     </div>
   </div>
 
-  <script src="/static/js/one_time_pass.js" defer></script>
+  <script th:src="@{/js/one_time_pass.js}" defer></script>
 </section>

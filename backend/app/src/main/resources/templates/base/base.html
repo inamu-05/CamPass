@@ -2,6 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
   <title>学校管理システム</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <script th:src="@{/js/base.js}"></script>

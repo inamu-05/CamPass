@@ -41,6 +41,18 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Attendan
     List<Attendance> findByIdUserIdAndIdSubjectId(String userId, String subjectId);
 
     /**
+     * Finds all attendance records for a specific student, subject and session datatime.
+     * This demonstrates querying by both fields in the composite key.
+     */
+    Attendance findByIdSubjectIdAndIdUserIdAndIdSessionDatetime(String subjectId, String userId, LocalDateTime sessionDatetime);
+
+    /**
+     * Finds all attendance records for a specific session datatime.
+     * This demonstrates querying by both fields in the composite key.
+     */
+    Attendance findByIdSessionDatetime(LocalDateTime sessionDatetime);
+
+    /**
      * Finds all records where the student attended (isAttended = TRUE)
      */
     List<Attendance> findByIsAttendedTrue();
@@ -48,5 +60,5 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Attendan
     /**
      * Finds all records attended after a specific date/time.
      */
-    List<Attendance> findByAttendanceOnAfter(LocalDateTime dateTime);
+    List<Attendance> findByAttendedOnAfter(LocalDateTime dateTime);
 }

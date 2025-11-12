@@ -31,8 +31,8 @@ public class Attendance {
 	private Student student;
 
 	// 論理名称:出席日時
-	@Column(name = "attendance_on")
-	private LocalDateTime attendanceOn;
+	@Column(name = "attended_on")
+	private LocalDateTime attendedOn;
 
 	// 出欠（FALSE:欠席、TRUE:出席）
 	@Column(name = "is_attended", nullable = false)
@@ -49,5 +49,74 @@ public class Attendance {
 	public AttendanceId getId() {
 		return id;
 	}
+    public void setId(AttendanceId id) {
+		this.id = id;
+	}
+    // public String getSubjectId() {
+    //     return subject.getSubjectId();
+    // }
+    public void setSubjectId(String subjectId) {
+        subject.setSubjectId(subjectId);
+    }
+    // public String getUserId() {
+    //     return student.getUserId();
+    // }
+    public void setUserId(String userId) {
+        student.setUserId(userId);
+    }
+    // public LocalDateTime getSessionDatetime() {
+    //     return id.getSessionDatetime();
+    // }
+    // public void setSessionDatetime(LocalDateTime sessionDatetime) {
+    //     id.setSessionDatetime(sessionDatetime);
+    // }
+    public LocalDateTime getAttendedOn() {
+        return attendedOn;
+    }
+    public void setAttendedOn(LocalDateTime attendedOn) {
+        this.attendedOn = attendedOn;
+    }
+    public Boolean getIsAttended() {
+        return isAttended;
+    }
+    public void setIsAttended(Boolean isAttended) {
+        this.isAttended = isAttended;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public String getSubjectId() {
+        return subject != null ? subject.getSubjectId() : null;
+    }
+    public String getUserId() {
+        return student != null ? student.getUserId() : null;
+    }
+    public LocalDateTime getSessionDatetime() {
+        return id != null ? id.getSessionDatetime() : null;
+    }
+    public void setSessionDatetime(LocalDateTime sessionDatetime) {
+        if (this.id == null) {
+            this.id = new AttendanceId();
+        }
+        this.id.setSessionDatetime(sessionDatetime);
+    }
 }
 
