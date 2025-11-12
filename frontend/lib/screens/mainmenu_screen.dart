@@ -6,6 +6,7 @@ import 'studentcard_screen.dart';
 import 'classhistory_screen.dart'; // ✅ ← 授業履歴画面を追加インポート
 import 'certificate_application_screen.dart'; 
 import 'certificatehistory_screen.dart';
+import 'test_screen.dart';
  
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({Key? key}) : super(key: key);
@@ -119,6 +120,16 @@ class MainMenuScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const CertificateApplicationScreen()),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+              _buildMainButton(
+                label: 'Testing',
+                 onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const TestScreen()),
                   );
                 },
               ),
