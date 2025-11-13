@@ -1,7 +1,9 @@
 package com.example.app.config;
 
+import com.example.app.entity.ClassGroup;
 import com.example.app.entity.Staff;
 import com.example.app.entity.Student;
+import com.example.app.repository.ClassGroupRepository;
 import com.example.app.repository.StaffRepository;
 import com.example.app.repository.StudentRepository;
 
@@ -23,9 +25,18 @@ public class DatabaseInitializer {
     public CommandLineRunner initDatabase(
             StaffRepository staffRepository, 
             StudentRepository studentRepository,
+            ClassGroupRepository classGroupRepository,
             PasswordEncoder passwordEncoder) {
         
         return args -> {
+
+            final String classId = "01";
+            if (classGroupRepository.findById(classId).isEmpty()) {
+                ClassGroup classGroup = new ClassGroup(classId, "1-1");
+                classGroupRepository.save(classGroup);
+                System.out.println("-> Class Group '01' (1-1) created.");
+            }
+
             final String initialStaffId = "admin";
             final String initialPassword = "adminpass"; // Plain text password for test user
             final String initialCourseId = "01"; 
@@ -58,7 +69,7 @@ public class DatabaseInitializer {
                 System.out.println("-----------------------------------------------------------------");
             }
 
-            final String stu1Id = "S101";
+            final String stu1Id = "2201001";
             final String initialStudentPassword = "stupass";
             if (studentRepository.findById(stu1Id).isEmpty()) {
                 String hashedPassword = passwordEncoder.encode(initialStudentPassword);
@@ -71,21 +82,21 @@ public class DatabaseInitializer {
                     hashedPassword,
                     java.time.LocalDate.of(2000, 1, 1), // birth
                     "090-1234-5678", // tel
-                    "s101@test.com", // mail
+                    "2201001@test.com", // mail
                     "東京都", // address
-                    "1-1",
+                    classId,
                     "/path/to/img1.jpg", // img
                     "0", // enrollment_status
-                    "2023", // entry_year
+                    "2022", // entry_year
                     null, // graduation_year
                     false // is_disabled
                 );
                 studentRepository.save(student1);
-                System.out.println("-> Student 'S101' created.");
+                System.out.println("-> Student '2201001' created.");
             }
 
             // Student 2
-            final String stu2Id = "S102";
+            final String stu2Id = "2201002";
             if (studentRepository.findById(stu2Id).isEmpty()) {
                 String hashedPassword = passwordEncoder.encode(initialStudentPassword);
                 
@@ -97,17 +108,17 @@ public class DatabaseInitializer {
                     hashedPassword,
                     java.time.LocalDate.of(2001, 5, 15), // birth
                     "090-8765-4321", // tel
-                    "s102@test.com", // mail
+                    "2201002@test.com", // mail
                     "大阪府", // address
-                    "1-1",
+                    classId,
                     "/path/to/img2.jpg", // img
                     "0", // enrollment_status
-                    "2023", // entry_year
+                    "2022", // entry_year
                     null, // graduation_year
                     false // is_disabled
                 );
                 studentRepository.save(student2);
-                System.out.println("-> Student 'S102' created.");
+                System.out.println("-> Student '2201002' created.");
             }
             
             System.out.println("-----------------------------------------------------------------");
