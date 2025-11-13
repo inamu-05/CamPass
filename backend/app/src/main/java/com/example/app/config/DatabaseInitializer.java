@@ -1,6 +1,7 @@
 package com.example.app.config;
 
 import com.example.app.entity.ClassGroup;
+import com.example.app.entity.Course;
 import com.example.app.entity.Staff;
 import com.example.app.entity.Student;
 import com.example.app.repository.ClassGroupRepository;
@@ -30,16 +31,11 @@ public class DatabaseInitializer {
         
         return args -> {
 
-            final String classId = "01";
-            if (classGroupRepository.findById(classId).isEmpty()) {
-                ClassGroup classGroup = new ClassGroup(classId, "1-1");
-                classGroupRepository.save(classGroup);
-                System.out.println("-> Class Group '01' (1-1) created.");
-            }
+            final ClassGroup classId = new ClassGroup("01","1-1");
 
             final String initialStaffId = "admin";
             final String initialPassword = "adminpass"; // Plain text password for test user
-            final String initialCourseId = "01"; 
+            final Course initialCourseId = new Course("01", "情報"); 
 
             // 1. Check if the user already exists to prevent duplicate creation
             // We use findById() which is safe to call before the user is saved.
@@ -78,7 +74,7 @@ public class DatabaseInitializer {
                     stu1Id, 
                     "学生太郎", 
                     "ガクセイタロウ",
-                    "01", 
+                    initialCourseId, 
                     hashedPassword,
                     java.time.LocalDate.of(2000, 1, 1), // birth
                     "090-1234-5678", // tel
@@ -104,7 +100,7 @@ public class DatabaseInitializer {
                     stu2Id, 
                     "学生花子", 
                     "ガクセイハナコ",
-                    "01", 
+                    initialCourseId, 
                     hashedPassword,
                     java.time.LocalDate.of(2001, 5, 15), // birth
                     "090-8765-4321", // tel
