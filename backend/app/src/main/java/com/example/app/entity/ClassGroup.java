@@ -1,8 +1,12 @@
 package com.example.app.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "class_group")
 public class ClassGroup {
     
     @Id
@@ -14,6 +18,12 @@ public class ClassGroup {
 
     // 空のコンストラクタ
     public ClassGroup() {}
+    
+    // 全フィールドコンストラクタ
+    public ClassGroup(String classGroupId, String classGroup) {
+        this.classGroupId = classGroupId;
+        this.classGroup = classGroup;
+    }
 
     // ゲッター・セッター
     public String getClassGroupId() {
