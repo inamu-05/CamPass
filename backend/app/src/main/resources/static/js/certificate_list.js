@@ -13,12 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const approvedTable = document.querySelector("#approvedTable tbody");
   const pendingCount = document.getElementById("pendingCount");
 
-  // === 未承認件数の更新 ===
+  // === 未発行件数の更新 ===
   const updatePendingCount = () => {
-    pendingCount.textContent = `未承認件数：${pendingList.length}件`;
+    pendingCount.textContent = `未発行件数：${pendingList.length}件`;
   };
 
-  // === 未承認リスト描画 ===
+  // === 未発行リスト描画 ===
   const renderPending = () => {
     pendingTable.innerHTML = "";
     pendingList.forEach((item, index) => {
@@ -30,14 +30,14 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${item.doc}</td>
         <td>${item.copies}</td>
         <td>${item.receive}</td>
-        <td><button class="approve-btn" data-index="${index}">承認</button></td>
+        <td><button class="approve-btn" data-index="${index}">発行</button></td>
       `;
       pendingTable.appendChild(tr);
     });
     updatePendingCount();
   };
 
-  // === 承認済リスト描画 ===
+  // === 発行済リスト描画 ===
   const renderApproved = () => {
     approvedTable.innerHTML = "";
     approvedList.forEach((item) => {
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${item.doc}</td>
         <td>${item.copies}</td>
         <td>${item.receive}</td>
-        <td class="status-approved">承認済</td>
+        <td class="status-approved">発行済</td>
       `;
       approvedTable.appendChild(tr);
     });
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderPending();
   renderApproved();
 
-  // === 承認ボタンのクリック処理 ===
+  // === 発行ボタンのクリック処理 ===
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("approve-btn")) {
       const index = e.target.dataset.index;
