@@ -7,6 +7,10 @@ DELETE IGNORE FROM course;
 INSERT IGNORE INTO course (course_id, course_name) VALUES ('01', '情報');
 INSERT IGNORE INTO course (course_id, course_name) VALUES ('02', '簿記');
 
+DELETE IGNORE FROM class;
+INSERT IGNORE INTO class (class_group_id, class_group) VALUES ('01', '1-1');
+INSERT IGNORE INTO class (class_group_id, class_group) VALUES ('02', '1-2');
+
 
 -- DELETE IGNORE FROM user;
 -- INSERT IGNORE INTO user (user_id, user_name, furigana, course_id, user_pass) VALUES ("admin", "asd", "asd", "01", "asd")

@@ -16,7 +16,7 @@ CREATE TABLE course (
 
 
 -- Create the Class table
-CREATE TABLE class (
+CREATE TABLE class_group (
     class_group_id CHAR(2) NOT NULL PRIMARY KEY,
     class_group CHAR(3) NOT NULL
 ) ENGINE=InnoDB;
@@ -61,8 +61,8 @@ CREATE TABLE student (
     entry_year CHAR(4) NOT NULL,
     graduation_year CHAR(4),
     is_disabled BOOLEAN NOT NULL DEFAULT FALSE,
-    FOREIGN KEY (user_id) REFERENCES user(user_id)
-    FOREIGN KEY (class_group_id) REFERENCES class(class_group_id)
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
+    FOREIGN KEY (class_group_id) REFERENCES class_group(class_group_id)
 ) ENGINE=InnoDB;
 
 
