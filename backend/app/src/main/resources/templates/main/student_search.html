@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <title>学生情報検索</title>
   <link rel="stylesheet" th:href="@{/css/student_search.css}">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
   <script th:src="@{/js/student_search.js}"></script>
 </head>
 
-<body>
+<!-- サーバーサイドで base/header.html の header-content フラグメントを挿入 -->
+<div id="header-container" th:insert="~{base/header :: header}"></div>
 
   <section class="student-search-container">
     <h2>学生情報検索</h2>
@@ -32,5 +34,3 @@
     </div>
   </section>
 
-</body>
-</html>
