@@ -43,28 +43,30 @@ public class StudentService {
             return null; // Or throw an exception
         }
 
-        // 2. Update all the fields from the form (studentDetails)
+        // 更新情報の取得と設定
+        existingStudent.setUserId(userId);
         existingStudent.setUserName(studentDetails.getUserName());
-        existingStudent.setCourseId(studentDetails.getCourseId());
-        existingStudent.setBirth(studentDetails.getBirth());
+        existingStudent.setClassGroup(studentDetails.getClassGroup());
+        // existingStudent.setCourseId(studentDetails.getCourseId());
+        // existingStudent.setBirth(studentDetails.getBirth());
         existingStudent.setTel(studentDetails.getTel());
         existingStudent.setMail(studentDetails.getMail());
         existingStudent.setAddress(studentDetails.getAddress());
-        existingStudent.setImg(studentDetails.getImg()); // You might handle file uploads differently
+        // existingStudent.setImg(studentDetails.getImg());
         existingStudent.setEnrollmentStatus(studentDetails.getEnrollmentStatus());
-        existingStudent.setEntryYear(studentDetails.getEntryYear());
-        existingStudent.setGraduationYear(studentDetails.getGraduationYear());
+        // existingStudent.setEntryYear(studentDetails.getEntryYear());
+        // existingStudent.setGraduationYear(studentDetails.getGraduationYear());
         existingStudent.setIsDisabled(studentDetails.getIsDisabled());
 
-        // 3. Check if a new password was provided
-        String newPassword = studentDetails.getUserPass();
-        if (newPassword != null && !newPassword.isEmpty()) {
-            // If yes, hash and set the new password
-            existingStudent.setUserPass(passwordEncoder.encode(newPassword));
-        }
-        // If no new password was provided, we do nothing (keeping the old one)
+        // // 3. Check if a new password was provided
+        // String newPassword = studentDetails.getUserPass();
+        // if (newPassword != null && !newPassword.isEmpty()) {
+        //     // If yes, hash and set the new password
+        //     existingStudent.setUserPass(passwordEncoder.encode(newPassword));
+        // }
+        // // If no new password was provided, we do nothing (keeping the old one)
 
-        // 4. Save the updated student
+        // 学生情報を更新して保存
         return studentRepository.save(existingStudent);
     }
 
