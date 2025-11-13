@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,8 +29,9 @@ public class Student extends User {
 	private String address;
 
 	// 論理名称:クラス
-	@Column(name = "class_group_id", nullable = false)
-	private String classGroupId;
+	@ManyToOne
+	@JoinColumn(name = "class_group_id", nullable = false)
+	private ClassGroup classGroup;
     
 	// 論理名称:証明写真
 	@Column(name = "img", nullable = false)
@@ -53,17 +56,17 @@ public class Student extends User {
 	// 空のコンストラクタ
 	public Student() {}
 
-	public Student(String userId, String userName, String furigana, String courseId, 
-                   String userPass, LocalDate birth, String tel, String mail, String address, String classGroupId,
+	public Student(String userId, String userName, String furigana, Course course, 
+                   String userPass, LocalDate birth, String tel, String mail, String address, ClassGroup classGroup,
                    String img, String enrollmentStatus, String entryYear, String graduationYear, 
                    Boolean isDisabled) {
-        super(userId, userName, furigana, courseId, userPass);
+        super(userId, userName, furigana, course, userPass);
         // Initializes Staff-specific field
         this.birth = birth;
         this.tel = tel;
         this.mail = mail;
         this.address = address;
-        this.classGroupId = classGroupId;
+        this.classGroup = classGroup;
         this.img = img;
         this.enrollmentStatus = enrollmentStatus;
         this.entryYear = entryYear;
@@ -90,11 +93,11 @@ public class Student extends User {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-    public String getClassGroupId() {
-		return classGroupId;	
+    public ClassGroup getClassGroup() {
+		return classGroup;	
 	}
-	public void setClassGroupId(String classGroupId) {
-		this.classGroupId = classGroupId;
+	public void setClassGroup(ClassGroup classGroup) {
+		this.classGroup = classGroup;
 	}
 	public String getAddress() {
 		return address;	

@@ -2,10 +2,13 @@ package com.example.app.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 @Table(name = "user")
@@ -26,8 +29,9 @@ public class User {
 	private String furigana;
 
 	// 論理名称:所属学科
-	@Column(name = "course_id", length = 2, nullable = false)
-	private String courseId;
+	@ManyToOne(fetch =  FetchType.LAZY)
+	@JoinColumn(name = "course_id", nullable = false)
+	private Course course;
 
 	// 論理名称:ユーザパスワード
 	@Column(name = "user_pass", nullable = false)
@@ -36,11 +40,11 @@ public class User {
 	// 空のコンストラクタ
 	public User() {}
 
-    public User(String userId, String userName, String furigana, String courseId, String userPass) {
+    public User(String userId, String userName, String furigana, Course course, String userPass) {
         this.userId = userId;
         this.userName = userName;
 		this.furigana = furigana;
-        this.courseId = courseId;
+        this.course = course;
         this.userPass = userPass;
     }
 
@@ -63,11 +67,11 @@ public class User {
 	public void setFurigana(String furigana) {
 		this.furigana = furigana;
 	}
-	public String getCourseId() {
-		return courseId;
+	public Course getCourse() {
+		return course;
 	}
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
+	public void setCourseId(Course course) {
+		this.course = course;
 	}
 	public String getUserPass() {
 		return userPass;
