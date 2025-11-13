@@ -3,7 +3,7 @@ package com.example.app.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 
-public class Class {
+public class ClassGroup {
     
     @Id
     @Column(name = "class_group_id", length=2, nullable = false)
@@ -13,7 +13,7 @@ public class Class {
     private String classGroup;
 
     // 空のコンストラクタ
-    public Class() {}
+    public ClassGroup() {}
 
     // ゲッター・セッター
     public String getClassGroupId() {
