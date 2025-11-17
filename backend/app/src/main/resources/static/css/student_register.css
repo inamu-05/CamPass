@@ -16,7 +16,7 @@ body {
   border-radius: 14px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   padding: 40px 40px;
-  border-top: 6px solid rgba(117, 188, 201, 0.8);
+  border-top: 6px solid rgba(67, 138, 151, 0.8);
 }
 
 /* タイトル */
@@ -112,7 +112,7 @@ body {
 }
 
 .submit-btn:hover {
-  background-color: rgba(117, 188, 201, 0.8);
+  background-color:  #c0d1e0;
   transform: translateY(-2px);
   box-shadow: 0 5px 12px rgba(0,0,0,0.15);
 }

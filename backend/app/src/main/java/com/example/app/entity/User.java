@@ -70,7 +70,7 @@ public class User {
 	public Course getCourse() {
 		return course;
 	}
-	public void setCourseId(Course course) {
+	public void setCourse(Course course) {
 		this.course = course;
 	}
 	public String getUserPass() {

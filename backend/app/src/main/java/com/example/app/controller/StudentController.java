@@ -3,9 +3,11 @@ package com.example.app.controller;
 
 import com.example.app.entity.Course;
 import com.example.app.entity.Student;
+import com.example.app.entity.ClassGroup;
 import com.example.app.service.CourseService;
 import com.example.app.service.FileStorageService;
 import com.example.app.service.StudentService;
+import com.example.app.service.ClassGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,9 @@ public class StudentController {
     private CourseService courseService;
 
     @Autowired
+    private ClassGroupService classGroupService;
+
+    @Autowired
     private FileStorageService fileStorageService;
 
     // 学生一覧表示
@@ -39,9 +44,16 @@ public class StudentController {
     // 学生登録フォーム表示
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        model.addAttribute("student", new Student()); 
+        Student student = new Student();
+        student.setCourse(new Course("","")); // 初期値をnullに設定
+        student.setClassGroup(new ClassGroup("","")); // 初期値をnullに設定
+        model.addAttribute("student", student); 
+
         List<Course> courses = courseService.getAllCourses();
         model.addAttribute("courses", courses);
+
+        List<ClassGroup> classGroups = classGroupService.getAllClassGroups();
+        model.addAttribute("classGroups", classGroups);
         return "main/student_register"; // templates/main/student_register.html
     }
 
@@ -80,22 +92,24 @@ public class StudentController {
 
     // 学生情報更新画面
     @GetMapping("/update/{id}")
-    public String showEditForm(@PathVariable String id, Model model) {
+    public String showUpdateForm(@PathVariable String id, Model model) {
         Student student = studentService.getStudentById(id);
         model.addAttribute("student", student);
-        model.addAttribute("isNew", false);
-        return "main/student-form"; // Re-use the same form
+        return "main/student_update";
     }
 
-    /**
-     * UPDATE (Process Form)
-     * URL: POST /student/edit/{id}
-     * Saves the changes to the existing student.
-     */
+    //学生情報更新処理
     @PostMapping("/update/{id}")
     public String updateStudent(@PathVariable String id, @ModelAttribute("student") Student studentDetails) {
         studentService.updateStudent(id, studentDetails);
-        return "redirect:/students"; // Redirect back to the student list
+        // 更新完了ページへリダイレクト
+        return "redirect:/student/update/complete";
+    }
+
+    // 更新完了画面表示
+    @GetMapping("/update/complete")
+    public String showUpdateComplete() {
+        return "main/update_completed"; // Corresponds to src/main/resources/templates/main/update_completed.html
     }
 
     // /**

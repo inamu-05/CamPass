@@ -2,39 +2,26 @@ package com.example.app.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import com.example.app.entity.Student;
+import com.example.app.service.StudentService;
+
+import java.util.List;
+
 
 @Controller
 public class PageController {
-
-    // // 学生登録ページ
-    // @GetMapping("/student/register")
-    // public String showStudentRegisterPage() {
-    //     return "main/student_register";
-    // }
-
-    // // 登録完了ページ
-    // @GetMapping("/student/register/comp")
-    // public String registerStudent() {
-    //     return "main/register_comp";
-    // }
+    @Autowired
+    private StudentService studentService;
 
     // 学生検索ページ
     @GetMapping("/student/search")
-    public String studentSearch() {
+    public String studentSearch(Model model) {
+        List<Student> students = studentService.getAllStudents();
+        model.addAttribute("students", students);
         return "main/student_search";
     }
-
-    // // 学生更新ページ
-    // @GetMapping("/student/update")
-    // public String showStudentUpdatePage() {
-    //     return "main/student_update";  // templates/main/student_update.html
-    // }
-
-    // // 更新完了ページ
-    // @GetMapping("/student/update/comp")
-    // public String showUpdateCompletePage() {
-    //     return "main/update_completed";  // templates/main/update_completed.html に対応
-    // }
 
     // ワンタイムパスページ
     @GetMapping("/onetimepass")
