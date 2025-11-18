@@ -9,13 +9,13 @@ body {
 
 /* メインコンテナ */
 .student-register {
-  max-width: 820px;
+  max-width: 720px;
   width: 90%;
   margin: 100px auto;
   background: #ffffff;
   border-radius: 14px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  padding: 40px 40px;
+  padding: 10px 40px;
   border-top: 6px solid rgba(67, 138, 151, 0.8);
 }
 
@@ -52,7 +52,7 @@ body {
 .form-grid input[type="number"],
 .form-grid input[type="tel"],
 .form-grid input[type="date"] {
-  width: 100%;
+  width: 90%;
   padding: 10px 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -67,11 +67,21 @@ body {
   outline: none;
 }
 
+/* セレクトボックス */
+.form-grid select {
+  width: 90%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  appearance: none;
+}
+
 /* 写真アップロード */
 .photo-upload {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
 }
 
 #photo-preview {

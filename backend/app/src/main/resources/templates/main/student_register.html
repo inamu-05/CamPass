@@ -1,12 +1,12 @@
+<title>学生情報登録</title>
+<link rel="stylesheet" th:href="@{/css/student_register.css}">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+
 <!-- サーバーサイドで base/header.html の header-content フラグメントを挿入 -->
 <div id="header-container" th:insert="~{base/header :: header}"></div>
 
 <section class="student-register">
-  <link rel="stylesheet" th:href="@{/css/student_register.css}">
-  <link rel="stylesheet" th:href="@{/css/style.css}">
-
   <h2>学生情報登録</h2>
-
   <form class="student-form" th:action="@{/student/register}" th:object="${student}" method="post" enctype="multipart/form-data">
     <div class="form-grid">
       <label>入学年度:</label>
