@@ -59,35 +59,67 @@ public class StudentController {
 
     // 学生登録処理
     @PostMapping("/register")
-    public String registerStudent(@ModelAttribute("student") Student student, @RequestParam("file") MultipartFile file) throws IOException{
+    public String registerStudent(@ModelAttribute("student") Student student, 
+        @RequestParam("file") MultipartFile file, Model model) {
+        
         // デフォルト値の設定
         student.setEnrollmentStatus("1");
         student.setIsDisabled(false); 
         
-        // 画像ファイル名の作成（学生番号を利用）
-        String studentId = student.getUserId();
-        String originalFilename = file.getOriginalFilename();
-        String fileExtension = "";
-        if (originalFilename != null && originalFilename.contains(".")) {
-            fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        try {
+            // 画像ファイル名の作成（学生番号を利用）
+            String studentId = student.getUserId();
+            String originalFilename = file.getOriginalFilename();
+            String fileExtension = "";
+            if (originalFilename != null && originalFilename.contains(".")) {
+                fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            }
+            String filename = studentId + fileExtension;
+
+            // 画像ファイルをFileStorageServiceで保存
+            String filePath = fileStorageService.storeFile(file, filename);
+            student.setImg(filePath);
+
+            // 学生情報をDBに保存
+            studentService.createStudent(student);
+
+            // 登録完了ページへリダイレクト
+            return "redirect:/student/register/complete";
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "ファイルのアップロードに失敗しました。もう一度お試しください。");
+            model.addAttribute("student", student);
+
+            List<Course> courses = courseService.getAllCourses();
+            model.addAttribute("courses", courses); 
+            List<ClassGroup> classGroups = classGroupService.getAllClassGroups();
+            model.addAttribute("classGroups", classGroups);
+
+            return "main/student_register";
         }
-        String filename = studentId + fileExtension;
-
-        // 画像ファイルをFileStorageServiceで保存
-        String filePath = fileStorageService.storeFile(file, filename);
-        student.setImg(filePath);
-
-        // 学生情報をDBに保存
-        studentService.createStudent(student);
-
-        // 登録完了ページへリダイレクト
-        return "redirect:/student/register/complete";
     }
 
     // 登録完了画面表示
     @GetMapping("/register/complete")
     public String showRegisterComplete() {
         return "main/ster_comp"; // Corresponds to src/main/resources/templates/main/ster_comp.html
+    }
+
+    // 学生検索ページ
+    @GetMapping("/search")
+    public String studentSearch(Model model, @RequestParam(required = false) String keyword) {
+        List<Student> students;
+        if (keyword == null || keyword.isEmpty()) {
+            students = studentService.getAllStudents();
+            keyword ="";            
+        } else {
+            students = studentService.searchStudents(keyword);
+        }
+
+        model.addAttribute("students", students);
+        model.addAttribute("keyword", keyword);
+        return "main/student_search";
     }
 
     // 学生情報更新画面

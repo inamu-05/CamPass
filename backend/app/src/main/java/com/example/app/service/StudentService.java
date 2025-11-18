@@ -37,27 +37,33 @@ public class StudentService {
 
     // 学生情報更新
     public Student updateStudent(String userId, Student studentDetails) {
-        // 1. Find the existing student
+        // 既存の学生情報を取得
         Student existingStudent = getStudentById(userId);
         if (existingStudent == null) {
-            return null; // Or throw an exception
+            return null;
         }
 
         // 更新情報の取得と設定
-        existingStudent.setUserId(userId);
-        existingStudent.setUserName(studentDetails.getUserName());
-        existingStudent.setClassGroup(studentDetails.getClassGroup());
+        // existingStudent.setUserId(userId);
+        // existingStudent.setUserName(studentDetails.getUserName());
+        // existingStudent.setFurigana(studentDetails.getFurigana());
         // existingStudent.setCourseId(studentDetails.getCourseId());
         // existingStudent.setBirth(studentDetails.getBirth());
-        existingStudent.setTel(studentDetails.getTel());
-        existingStudent.setMail(studentDetails.getMail());
-        existingStudent.setAddress(studentDetails.getAddress());
+        // existingStudent.setTel(studentDetails.getTel());
+        // existingStudent.setMail(studentDetails.getMail());
+        if (studentDetails.getAddress() != null) {
+            existingStudent.setAddress(studentDetails.getAddress());            
+        }
+        // existingStudent.setClassGroup(studentDetails.getClassGroup());
         // existingStudent.setImg(studentDetails.getImg());
-        existingStudent.setEnrollmentStatus(studentDetails.getEnrollmentStatus());
+        if (studentDetails.getEnrollmentStatus() != null) {
+            existingStudent.setEnrollmentStatus(studentDetails.getEnrollmentStatus());            
+        }
         // existingStudent.setEntryYear(studentDetails.getEntryYear());
         // existingStudent.setGraduationYear(studentDetails.getGraduationYear());
-        existingStudent.setIsDisabled(studentDetails.getIsDisabled());
-
+        if (studentDetails.getIsDisabled() != null) {
+            existingStudent.setIsDisabled(studentDetails.getIsDisabled());            
+        }
         // // 3. Check if a new password was provided
         // String newPassword = studentDetails.getUserPass();
         // if (newPassword != null && !newPassword.isEmpty()) {
@@ -70,8 +76,17 @@ public class StudentService {
         return studentRepository.save(existingStudent);
     }
 
-    // DELETE
-    public void deleteStudent(String userId) {
-        studentRepository.deleteById(userId);
+    // 学生情報検索
+    public List<Student> searchStudents(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return studentRepository.findAll();
+        } else {
+            return studentRepository.findByUserIdContainingOrUserNameContaining(keyword, keyword);
+        }
     }
+
+    // // DELETE
+    // public void deleteStudent(String userId) {
+    //     studentRepository.deleteById(userId);
+    // }
 }

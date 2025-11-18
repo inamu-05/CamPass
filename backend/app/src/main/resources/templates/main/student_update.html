@@ -24,21 +24,21 @@
 				<input type="text" th:field="*{address}">
 
 			<label>在籍状況:</label>
-				<select id="student-class">
-					<option value="1" th:selected="*{enrollmentStatus == '1'}">在学</option>
-					<option value="2" th:selected="*{enrollmentStatus == '2'}">休学</option>
-					<option value="3" th:selected="*{enrollmentStatus == '3'}">退学</option>
-					<option value="4" th:selected="*{enrollmentStatus == '4'}">卒業</option>
+				<select id="student-class" th:field="*{enrollmentStatus}">
+					<option value="1">在学</option>
+					<option value="2">休学</option>
+					<option value="3">退学</option>
+					<option value="4">卒業</option>
 				</select>
 
 			<label>学生証無効化:</label>
-				<input type="checkbox"  th:field="*{isDisabled}">
+				<input type="checkbox" th:field="*{isDisabled}">
 		</div>
 		
 		<div class="form-buttons">
 			<div></div>
 			<button type="submit" class="update-btn">更新</button>
-			<a th:href="@{/student/search/}" class="cancel">戻る</button>
+			<a th:href="@{/student/search}" class="cancel">戻る</button>
 		</div>
 	</form>
 </section>

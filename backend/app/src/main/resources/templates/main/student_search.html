@@ -13,8 +13,10 @@
   <h2>学生情報検索</h2>
 
   <div class="search-bar">
-    <input type="text" id="search-input" placeholder="学生名やIDを入力">
-    <button id="search-btn">検索</button>
+    <form th:action="@{/student/search}" method="get">
+      <input type="text" name="keyword" placeholder="学生名やIDを入力" th:value="${keyword}">
+      <button type="submit">検索</button>
+    </form>
   </div>
 
   <div class="search-results">
