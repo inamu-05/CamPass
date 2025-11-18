@@ -1,5 +1,7 @@
 package com.example.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,6 +33,7 @@ public class User {
 	// 論理名称:所属学科
 	@ManyToOne(fetch =  FetchType.LAZY)
 	@JoinColumn(name = "course_id", nullable = false)
+    @JsonIgnore
 	private Course course;
 
 	// 論理名称:ユーザパスワード
