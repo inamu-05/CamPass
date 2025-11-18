@@ -4,14 +4,24 @@ import com.example.app.entity.ClassGroup;
 import com.example.app.entity.Course;
 import com.example.app.entity.Staff;
 import com.example.app.entity.Student;
+import com.example.app.entity.Subject;
+import com.example.app.entity.SubjectClass;
 import com.example.app.repository.ClassGroupRepository;
+import com.example.app.repository.CourseRepository;
 import com.example.app.repository.StaffRepository;
 import com.example.app.repository.StudentRepository;
+import com.example.app.repository.SubjectClassRepository;
+import com.example.app.repository.SubjectRepository;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Ensures a default test user is present in the database on application startup.
@@ -21,15 +31,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class DatabaseInitializer {
 
+    private static final Logger log = LoggerFactory.getLogger(DatabaseInitializer.class);
+
     // Define a Bean that runs code on application startup
     @Bean
     public CommandLineRunner initDatabase(
             StaffRepository staffRepository, 
             StudentRepository studentRepository,
             ClassGroupRepository classGroupRepository,
+            CourseRepository courseRepository,
+            SubjectRepository subjectRepository,
+            SubjectClassRepository subjectClassRepository,
             PasswordEncoder passwordEncoder) {
         
         return args -> {
+            try {
+
+            // --- Course Data ---
+            Course courseInfo = courseRepository.save(new Course("01", "情報"));
+            courseRepository.save(new Course("02", "簿記"));
+            System.out.println("-> Course data created.");
+
+            // --- 3. Insert ClassGroup Data ---
+            ClassGroup class1_1 = classGroupRepository.save(new ClassGroup("01", "1-1"));
+            ClassGroup class1_2 = classGroupRepository.save(new ClassGroup("02", "1-2"));
+            System.out.println("-> ClassGroup data created.");
+
+            
 
             final ClassGroup classId = new ClassGroup("01","1-1");
 
@@ -57,20 +85,35 @@ public class DatabaseInitializer {
                 // 4. Save the user to the database
                 staffRepository.save(initialStaff);
                 System.out.println("-> Staff 'admin' created.");
-                
+
                 // Console output for confirmation
                 System.out.println("-----------------------------------------------------------------");
                 System.out.println("Initial user created successfully:");
                 System.out.println("ID: " + initialStaffId + " | Pass: " + initialPassword);
                 System.out.println("-----------------------------------------------------------------");
+            } else {
+                System.out.println("-> Staff 'admin' already exists. Skipping.");
             }
+
+            Staff adminStaff = staffRepository.findById(initialStaffId).orElseThrow();
+
+
+            // --- 5. Insert Subject Data ---
+            Subject sub01 = subjectRepository.save(new Subject("01", "情報", courseInfo, adminStaff));
+            subjectRepository.save(new Subject("02", "簿記", courseInfo, adminStaff));
+            subjectRepository.save(new Subject("03", "ネットワーク", courseInfo, adminStaff));
+            subjectRepository.save(new Subject("04", "データベース", courseInfo, adminStaff));
+            System.out.println("-> Subject data created.");
+
+
 
             final String stu1Id = "2201001";
             final String initialStudentPassword = "stupass";
+            Student student1;
             if (studentRepository.findById(stu1Id).isEmpty()) {
                 String hashedPassword = passwordEncoder.encode(initialStudentPassword);
                 
-                Student student1 = new Student(
+                student1 = new Student(
                     stu1Id, 
                     "学生太郎", 
                     "ガクセイタロウ",
@@ -89,14 +132,17 @@ public class DatabaseInitializer {
                 );
                 studentRepository.save(student1);
                 System.out.println("-> Student '2201001' created.");
+            } else {
+                student1 = studentRepository.findById(stu1Id).orElseThrow(); // Fetch existing
             }
 
             // Student 2
             final String stu2Id = "2201002";
+            Student student2;
             if (studentRepository.findById(stu2Id).isEmpty()) {
                 String hashedPassword = passwordEncoder.encode(initialStudentPassword);
                 
-                Student student2 = new Student(
+                student2 = new Student(
                     stu2Id, 
                     "学生花子", 
                     "ガクセイハナコ",
@@ -115,12 +161,31 @@ public class DatabaseInitializer {
                 );
                 studentRepository.save(student2);
                 System.out.println("-> Student '2201002' created.");
+            } else {
+                student2 = studentRepository.findById(stu2Id).orElseThrow(); // Fetch existing
             }
+
+            // Student 1 enrolled in Subject 01
+            subjectClassRepository.save(new SubjectClass(sub01, student1)); 
+            
+            // Student 2 enrolled in Subject 01
+            subjectClassRepository.save(new SubjectClass(sub01, student2));
+            
+            System.out.println("-> Subject enrollment data created.");
             
             System.out.println("-----------------------------------------------------------------");
             System.out.println("Database initialization complete.");
             System.out.println("-----------------------------------------------------------------");
         
-        };
+        }
+        catch (Exception e) {
+                // THIS WILL CATCH ANY FAILURE (like a constraint violation)
+                log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                log.error("!!! FAILED TO INITIALIZE DATABASE !!!");
+                log.error("Error: {}", e.getMessage());
+                log.error("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                // e.printStackTrace(); // Uncomment this for a full stack trace
     }
+};
+}
 }

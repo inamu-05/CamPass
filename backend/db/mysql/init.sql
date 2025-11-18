@@ -8,6 +8,18 @@ CREATE DATABASE IF NOT EXISTS campassdb
 -- Use the database
 USE campassdb;
 
+-- Drop tables in reverse order of foreign key dependencies for a clean start (Good practice for development)
+DROP TABLE IF EXISTS certManage;
+DROP TABLE IF EXISTS certificate;
+DROP TABLE IF EXISTS attendance;
+DROP TABLE IF EXISTS subject_class;
+DROP TABLE IF EXISTS subject;
+DROP TABLE IF EXISTS student;
+DROP TABLE IF EXISTS staff;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS class_group;
+DROP TABLE IF EXISTS course;
+
 -- Create the Course table
 CREATE TABLE course (
     course_id CHAR(2) NOT NULL PRIMARY KEY,
@@ -71,7 +83,7 @@ CREATE TABLE subject (
     subject_id CHAR(2) NOT NULL PRIMARY KEY,
     subject_name VARCHAR(100) NOT NULL,
     course_id CHAR(2) NOT NULL,
-    user_id CHAR(6) NOT NULL,
+    user_id CHAR(7) NOT NULL,
     FOREIGN KEY (course_id) REFERENCES course(course_id),
     FOREIGN KEY (user_id) REFERENCES user(user_id)
 ) ENGINE=InnoDB;
@@ -118,7 +130,7 @@ CREATE TABLE certManage (
 -- Create Junction Table: Links a Subject to a Class Group
 CREATE TABLE subject_class (
     subject_id CHAR(2) NOT NULL,
-    user_id CHAR(6) NOT NULL,
+    user_id CHAR(7) NOT NULL,
     -- class_group_id CHAR(3) NOT NULL,
     PRIMARY KEY (subject_id, user_id),
     FOREIGN KEY (subject_id) REFERENCES subject(subject_id),

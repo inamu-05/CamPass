@@ -33,6 +33,6 @@ INSERT IGNORE INTO subject (subject_id, subject_name, course_id, user_id) VALUES
 
 
 DELETE IGNORE FROM subject_class;
-INSERT IGNORE INTO subject_class (subject_id, user_id) VALUES ('01', 'S101');
-INSERT IGNORE INTO subject_class (subject_id, user_id) VALUES ('01', 'S102');
-INSERT IGNORE INTO subject_class (subject_id, user_id) VALUES ('02', 'S101');
+INSERT IGNORE INTO subject_class (subject_id, user_id) VALUES ('01', '2201001');
+INSERT IGNORE INTO subject_class (subject_id, user_id) VALUES ('01', '2201002');
+-- INSERT IGNORE INTO subject_class (subject_id, user_id) VALUES ('02', '2201001');
