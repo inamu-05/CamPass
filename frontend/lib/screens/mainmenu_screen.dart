@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // new
+import '../providers/user_provider.dart'; // new
 import 'logout_screen.dart';
 import '../main.dart'; // CustomAppBar 用
 import 'attendance_screen.dart';
@@ -59,6 +61,7 @@ class MainMenuScreen extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: CustomAppBar(
         title: "メインメニュー",
@@ -93,6 +96,30 @@ class MainMenuScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: user.img.isNotEmpty 
+                    ? NetworkImage(API_BASE_URL + user.img) // careful with localhost here
+                    : null,
+                child: user.img.isEmpty ? const Icon(Icons.person, size: 50) : null,
+              ),
+              const SizedBox(height: 20),
+              
+              // Display the Name!
+              Text(
+                "ようこそ, ${user.userName} さん", // "Welcome, [Name] san"
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              
+              const SizedBox(height: 10),
+              Text(
+                "学科 ID: ${user.courseId}",
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              Text(
+                "Email: ${user.email}",
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
+              ),
               const SizedBox(height: 20),
               _buildMainButton(
                 label: '学生証表示',

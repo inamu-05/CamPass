@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // New
+import 'providers/user_provider.dart';   // New
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
 import 'services/api_service.dart';
@@ -32,7 +34,14 @@ final String API_BASE_URL = getApiBaseUrl();
 // --- APP ENTRY POINT ---
  
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
  
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {

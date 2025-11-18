@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // new
+import '../providers/user_provider.dart'; // new
+import 'dart:convert'; // for utf8 New
 import '../main.dart';
 
 // 1. Add these imports for HTTP and JSON
@@ -81,6 +84,15 @@ class _LoginScreenState extends State<LoginScreen> {
         // --- SUCCESS ---
         // The backend sent back the student data
         final studentData = jsonDecode(utf8.decode(response.bodyBytes));
+
+        // 2. Save to Provider (accessing provider without listening)
+        // 'listen: false' is important inside a function!
+        Provider.of<UserProvider>(context, listen: false).setUser(studentData);
+        
+        setState(() {
+          isLoading = false;
+          errorMessage = null;
+        });
         
         // TODO: Save the student data securely (e.g., using flutter_secure_storage)
         // For now, just navigate

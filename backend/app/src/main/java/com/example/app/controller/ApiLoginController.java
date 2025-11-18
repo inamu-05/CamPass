@@ -71,7 +71,7 @@ public class ApiLoginController {
             
             // Send back the Student data on success (HTTP 200 OK)
             // The Flutter app can use this data (e.g., to show "Welcome, [Name]")
-            return ResponseEntity.ok(student); 
+            return ResponseEntity.ok(response); 
         }
 
         log.warn("Login FAILED for userId: {}", loginRequest.getUserId()); // Log failure
