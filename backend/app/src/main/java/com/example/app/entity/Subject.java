@@ -34,6 +34,13 @@ public class Subject {
 	// 空のコンストラクタ
 	public Subject() {}
 
+    public Subject(String subjectId, String subjectName, Course course, Staff staff) {
+        this.subjectId = subjectId;
+        this.subjectName = subjectName;
+        this.course = course;
+        this.staff = staff;
+    }
+
 	// ゲッター・セッター
 	public String getSubjectId() {
 		return subjectId;

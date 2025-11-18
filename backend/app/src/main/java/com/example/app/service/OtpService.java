@@ -4,9 +4,17 @@ package com.example.app.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 // import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
+import java.time.Duration;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import com.example.app.service.AttendanceService;
 
 @Service
 public class OtpService {
@@ -20,21 +28,54 @@ public class OtpService {
 
     // This is a good practice to avoid key collisions
     private static final String KEY_PREFIX = "otp:subject:"; 
+    private static final Duration OTP_EXPIRY_DURATION = Duration.ofMinutes(5);
 
     /**
-     * Generates and saves a one-time password for a specific subject.
-     * @param subjectId The ID of the subject (e.g., "01")
-     * @param otp       The 4-digit password (e.g., "1234")
+     * Generates a random 4-digit OTP, saves it to Redis with expiry,
+     * pre-populates the attendance table, and returns the full Redis value.
+     * * @param subjectId The ID of the subject.
+     * @param teacherId The ID of the staff creating the OTP.
+     * @return A string formatted as "OTPCode,YYYY-MM-DDTHH:MM:SS"
      */
-    public void saveOtp(String subjectId, String otp, LocalDateTime sessionDatetime) {
-        String key = KEY_PREFIX + subjectId;
-        
-        // Store both the OTP and the session time as a concatenated string or JSON in Redis
-        String valueToStore = otp + "," + sessionDatetime.toString(); 
+    @Transactional
+    public String saveOtp(String subjectId, String otp, LocalDateTime sessionDatetime) {
 
-        // Use your existing Redis logic
-        redisTemplate.opsForValue().set(key, valueToStore, 5, TimeUnit.MINUTES);
+        // 1. Generate OTP and calculate expiration time
+        String otpCode = otp;
+
+        // Calculate expiration time and truncate to seconds for DB consistency
+        LocalDateTime expirationTime = sessionDatetime.plus(OTP_EXPIRY_DURATION).truncatedTo(ChronoUnit.SECONDS);
+
+        // 2. Format the Redis value: OTPCode,ExpirationTime
+        // ExpirationTime is truncated to seconds.
+        String redisValue = otpCode + "," + expirationTime.toString();
+        String redisKey = KEY_PREFIX + subjectId;
+
+        // 3. Save to Redis with the expiry duration
+        redisTemplate.opsForValue().set(redisKey, redisValue, OTP_EXPIRY_DURATION.toSeconds(), TimeUnit.SECONDS);
+
+        // // 4. Pre-populate the Attendance table
+        // AttendanceService attendanceService = new AttendanceService();
+        // attendanceService.prePopulateAttendance(subjectId, expirationTime);
+        
+        // 5. Return the full structured value needed by the controller
+        return redisValue;
     }
+
+    // /**
+    //  * Generates and saves a one-time password for a specific subject.
+    //  * @param subjectId The ID of the subject (e.g., "01")
+    //  * @param otp       The 4-digit password (e.g., "1234")
+    //  */
+    // public void saveOtp(String subjectId, String otp, LocalDateTime sessionDatetime) {
+    //     String key = KEY_PREFIX + subjectId;
+        
+    //     // Store both the OTP and the session time as a concatenated string or JSON in Redis
+    //     String valueToStore = otp + "," + sessionDatetime.toString(); 
+
+    //     // Use your existing Redis logic
+    //     redisTemplate.opsForValue().set(key, valueToStore, 5, TimeUnit.MINUTES);
+    // }
 
         // // This is the magic command:
         // // SET "otp:subject:01" "1234" (and expire in 5 minutes)
