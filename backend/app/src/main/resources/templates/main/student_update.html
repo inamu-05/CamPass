@@ -1,50 +1,44 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-    <meta charset="UTF-8">
-    <title>学生情報更新</title>
-    <link rel="stylesheet" th:href="@{/css/student_update.css}">
-    <script th:src="@{/js/student_update.js}" defer></script>
-    </head>
-    <body>
-    <section class="update-container">
-        <h2>学生情報更新</h2>
+<title>学生情報更新</title>
+<link rel="stylesheet" th:href="@{/css/student_update.css}">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script th:src="@{/js/student_update.js}" defer></script>
 
-        <form id="update-form">
-            <div class="form-group">
-                <label>学生番号</label>
-                <input type="text" id="student-id" readonly>
-            </div>
-            <div class="form-group">
-                <label>氏名</label>
-                <input type="text" id="student-name">
-            </div>
-            <div class="form-group">
-                <label>クラス</label>
-                <input type="text" id="student-class">
-            </div>
-            <div class="form-group">
-                <label>住所</label>
-                <input type="text" id="student-class">
-            </div>
-            <div class="form-group">
-                <label>在籍状況</label>
-                <select id="student-class">
-                    <option value="1">在学</option>
-                    <option value="2">休学</option>
-                    <option value="3">退学</option>
-                    <option value="4">卒業</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>学生証無効化</label>
-                <input type="checkbox" id="student-class">
-            </div>
-            <div class="form-buttons">
-                <button type="submit" class="btn-update">更新</button>
-                <button type="button" id="cancel-btn" class="btn-cancel">戻る</button>
-            </div>
-        </form>
-    </section>
-    </body>
-</html>
+
+<!-- サーバーサイドで base/header.html の header-content フラグメントを挿入 -->
+<div id="header-container" th:insert="~{base/header :: header}"></div>
+
+<section class="update-container">
+	<h2>学生情報更新</h2>
+	<form id="update-form" th:action="@{'/student/update/' + ${student.userId}}" th:object="${student}" method="post">
+		<div class="form-group">
+			<label>学生番号:</label>
+				<span th:text="*{userId}"></span>
+
+			<label>氏名:</label>
+				<span th:text="*{userName}"></span>
+
+			<label>クラス:</label>
+				<span th:text="*{classGroup.classGroup}"></span>
+
+			<label>住所:</label>
+				<input type="text" th:field="*{address}">
+
+			<label>在籍状況:</label>
+				<select id="student-class">
+					<option value="1" th:selected="*{enrollmentStatus == '1'}">在学</option>
+					<option value="2" th:selected="*{enrollmentStatus == '2'}">休学</option>
+					<option value="3" th:selected="*{enrollmentStatus == '3'}">退学</option>
+					<option value="4" th:selected="*{enrollmentStatus == '4'}">卒業</option>
+				</select>
+
+			<label>学生証無効化:</label>
+				<input type="checkbox"  th:field="*{isDisabled}">
+		</div>
+		
+		<div class="form-buttons">
+			<div></div>
+			<button type="submit" class="update-btn">更新</button>
+			<a th:href="@{/student/search/}" class="cancel">戻る</button>
+		</div>
+	</form>
+</section>
