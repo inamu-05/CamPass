@@ -7,6 +7,7 @@ class UserProvider with ChangeNotifier {
   String? _courseId;
   String? _email;
   String? _img; // Path to image
+  String? _token;
 
   // Getters to access the data safely
   String get userId => _userId ?? "";
@@ -14,6 +15,7 @@ class UserProvider with ChangeNotifier {
   String get courseId => _courseId ?? "";
   String get email => _email ?? "";
   String get img => _img ?? "";
+  String? get token => _token;
 
   // Check if user is logged in
   bool get isLoggedIn => _userId != null;
@@ -25,8 +27,17 @@ class UserProvider with ChangeNotifier {
     _courseId = data['courseId'];
     _email = data['email'];
     _img = data['img'];
+
+    if (data.containsKey('token')) {
+      _token = data['token'];
+    }
     
     // Notify all screens that listen to this provider to update
+    notifyListeners();
+  }
+
+  void setToken(String token) {
+    _token = token;
     notifyListeners();
   }
 
@@ -37,6 +48,7 @@ class UserProvider with ChangeNotifier {
     _courseId = null;
     _email = null;
     _img = null;
+    _token = null;
     notifyListeners();
   }
 }

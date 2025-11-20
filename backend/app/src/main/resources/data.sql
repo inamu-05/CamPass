@@ -36,3 +36,8 @@ DELETE IGNORE FROM subject_class;
 INSERT IGNORE INTO subject_class (subject_id, user_id) VALUES ('01', '2201001');
 INSERT IGNORE INTO subject_class (subject_id, user_id) VALUES ('01', '2201002');
 -- INSERT IGNORE INTO subject_class (subject_id, user_id) VALUES ('02', '2201001');
+
+-- Certificate テーブルの初期データを挿入
+DELETE IGNORE FROM certificate;
+INSERT IGNORE INTO certificate (certificate_id, certificate_name, price) VALUES ('01', '履歴書', 200);
+INSERT IGNORE INTO certificate (certificate_id, certificate_name, price) VALUES ('02', '成績証明書', 600);

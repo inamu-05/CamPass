@@ -3,10 +3,11 @@ import 'package:provider/provider.dart'; // new
 import '../providers/user_provider.dart'; // new
 import 'dart:convert'; // for utf8 New
 import '../main.dart';
+import '../services/auth_service.dart'; // 3. Import AuthService
 
 // 1. Add these imports for HTTP and JSON
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+//import 'dart:convert'; //重複している
 import 'dart:io'; // To check platform
  
 class LoginScreen extends StatefulWidget {
@@ -78,37 +79,35 @@ class _LoginScreenState extends State<LoginScreen> {
 
        print(response.statusCode);
        print(body);
-
+      
       // Handle the response
       if (response.statusCode == 200) {
-        // --- SUCCESS ---
-        // The backend sent back the student data
         final studentData = jsonDecode(utf8.decode(response.bodyBytes));
-
-        // 2. Save to Provider (accessing provider without listening)
-        // 'listen: false' is important inside a function!
+    
+        // JWT を取り出す
+        final token = studentData['token'];
+    
+        // Provider に保存（既存の setUser() の後でOK）
         Provider.of<UserProvider>(context, listen: false).setUser(studentData);
-        
+        await AuthService.saveJwtToken(token);
+        Provider.of<UserProvider>(context, listen: false).setToken(token);
+    
+        // 将来的に安全に端末に保存する場合は flutter_secure_storage などを使用可能
+        // final storage = FlutterSecureStorage();
+        // await storage.write(key: "jwt_token", value: token);
+    
         setState(() {
           isLoading = false;
           errorMessage = null;
         });
-        
-        // TODO: Save the student data securely (e.g., using flutter_secure_storage)
-        // For now, just navigate
-        
-        setState(() {
-          isLoading = false;
-          errorMessage = null;
-        });
+    
         Navigator.pushReplacementNamed(context, '/mainmenu');
-
       } else if (response.statusCode == 401) {
-        // --- AUTHENTICATION FAILED ---
-        setState(() {
-          isLoading = false;
-          errorMessage = "学生番号またはパスワードが間違っています。";
-        });
+          // --- AUTHENTICATION FAILED ---
+          setState(() {
+            isLoading = false;
+            errorMessage = "学生番号またはパスワードが間違っています。";
+          });
       } else {
         // --- OTHER SERVER ERROR ---
         setState(() {

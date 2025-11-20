@@ -27,6 +27,9 @@ public class ApiLoginController {
     @Autowired
     private AuthService authService; // Using the service you already built!
 
+    @Autowired
+    private com.example.app.security.JwtUtil jwtUtil;
+
     /**
      * Handles student login requests from the Flutter app.
      */
@@ -51,6 +54,8 @@ public class ApiLoginController {
             // Cast the user to a Student
             Student student = (Student) user;
 
+            String token = jwtUtil.generateToken(student.getUserId());
+
             // Instead of returning 'student' directly create a clean Map with only the data we want to send.
             
             Map<String, Object> response = new HashMap<>();
@@ -65,6 +70,7 @@ public class ApiLoginController {
             response.put("graduationYear", student.getGraduationYear());
             response.put("isDisabled", student.getIsDisabled());
             
+            response.put("token", token);
 
             // IMPORTANT: Never send the password back to the client
             student.setUserPass(null); 
