@@ -34,7 +34,16 @@ public class StudentService {
         student.setUserPass(passwordEncoder.encode(student.getUserPass()));
         return studentRepository.save(student);
     }
-
+    
+    // 学生情報検索
+    public List<Student> searchStudents(String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return studentRepository.findAll();
+        } else {
+            return studentRepository.findByUserIdContainingOrUserNameContaining(keyword, keyword);
+        }
+    }
+    
     // 学生情報更新
     public Student updateStudent(String userId, Student studentDetails) {
         // 既存の学生情報を取得
@@ -64,6 +73,7 @@ public class StudentService {
         if (studentDetails.getIsDisabled() != null) {
             existingStudent.setIsDisabled(studentDetails.getIsDisabled());            
         }
+
         // // 3. Check if a new password was provided
         // String newPassword = studentDetails.getUserPass();
         // if (newPassword != null && !newPassword.isEmpty()) {
@@ -74,15 +84,6 @@ public class StudentService {
 
         // 学生情報を更新して保存
         return studentRepository.save(existingStudent);
-    }
-
-    // 学生情報検索
-    public List<Student> searchStudents(String keyword) {
-        if (keyword == null || keyword.isEmpty()) {
-            return studentRepository.findAll();
-        } else {
-            return studentRepository.findByUserIdContainingOrUserNameContaining(keyword, keyword);
-        }
     }
 
     // // DELETE
