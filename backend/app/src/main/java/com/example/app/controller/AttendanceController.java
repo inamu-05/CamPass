@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -50,24 +51,35 @@ public class AttendanceController {
         try {
             // 1. Define the unique session identifier NOW
             ZoneId japanZoneId = ZoneId.of("Asia/Tokyo");
-            LocalDateTime sessionDatetime = LocalDateTime.now(japanZoneId);
-            sessionDatetime = sessionDatetime.truncatedTo(ChronoUnit.SECONDS);
+            LocalDateTime sessionDatetime = LocalDateTime.now(japanZoneId).truncatedTo(ChronoUnit.SECONDS);
             // System.out.println(japanZoneId);
+            final Duration OTP_EXPIRY_DURATION = Duration.ofMinutes(5);
 
             // 2. Pre-Populate Attendance Records (The "Create Class" action)
             // This inserts an 'Absent' record for every student in the class.
+            // System.out.println(request.getSubjectId());
+            // System.out.println(sessionDatetime);
             attendanceService.prePopulateAttendance(request.getSubjectId(), sessionDatetime);
+            // System.out.println("prePopulate Ended");
 
             // 3. Save the OTP to Redis, storing the sessionDatetime with it (Optional, but useful)
             // NOTE: You'll need to update your OtpService.saveOtp to accept sessionDatetime
-            otpService.saveOtp(request.getSubjectId(), request.getPass(), sessionDatetime); 
+            // OtpServiceを使って Redisに保存
+            String response = otpService.saveOtp(request.getSubjectId(), request.getPass(), sessionDatetime); 
+            
+            // System.out.println("Save response: "+response);
 
-            return ResponseEntity.ok("OTP created and attendance records pre-populated.");
+            String otpCode = response.split(",")[0];
+            // System.out.println("otpCode: "+otpCode);
+            // String sessionStartTimeString = response.split(",")[1];
+            // System.out.println("sessionStartTimeString: "+sessionStartTimeString);
 
-            // // OtpServiceを使って Redisに保存
-            // otpService.saveOtp(request.getSubjectId(), request.getPass());
-            // return ResponseEntity.ok().build(); // HTTP 200 OK
-        
+            LocalDateTime expirationTime = sessionDatetime.plus(OTP_EXPIRY_DURATION).truncatedTo(ChronoUnit.SECONDS);
+
+            OtpResponse sendResponse = new OtpResponse(otpCode, expirationTime);
+            // System.out.println(sendResponse.toString());
+            return ResponseEntity.ok(sendResponse);
+
         } catch (Exception e) {
             // Log the error for debugging
             System.err.println("Error during OTP save and pre-population: " + e.getMessage());
@@ -94,11 +106,13 @@ public class AttendanceController {
                 
                 // The session datetime string should be the second part (index 1)
                 String sessionDatetimeString = parts[1]; 
-                System.out.println(parts[0]+parts[1]);
+                // System.out.println(parts[0]+parts[1]);
                 
                 // Convert the string back to LocalDateTime
                 LocalDateTime sessionDatetime = LocalDateTime.parse(sessionDatetimeString); 
-                sessionDatetime = sessionDatetime.truncatedTo(ChronoUnit.SECONDS);
+                // sessionDatetime = sessionDatetime.truncatedTo(ChronoUnit.SECONDS);
+
+                // System.out.println("sessionDatetime: "+sessionDatetime);
 
                 // 3. Record Attendance using the CORRECT sessionDatetime
                 attendanceService.recordAttendance(request, sessionDatetime);
@@ -114,5 +128,11 @@ public class AttendanceController {
             // 4. Validation failed (pass wrong, expired, or already used)
             return ResponseEntity.status(401).body("Invalid or Expired Pass.");
         }
+    }
+
+    @GetMapping("/attendance/otp/display")
+    public String showOtpDisplayPage() {
+        // This simply returns the display.html template
+        return "main/display"; 
     }
 }

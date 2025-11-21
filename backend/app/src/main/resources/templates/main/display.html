@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業出席パスワード</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" th:href="@{/css/one_time_pass.css}"> 
+    <style>
+        /* Re-use your large display styles */
+        .otp-display-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .otp-code { font-size: 10rem; }
+        .timer-display { font-size: 5rem; }
+        /* Add CSS to hide the print button on the main screen */
+        @media print {
+            #print-btn { display: none; }
+        }
+    </style>
+</head>
+<body class="bg-teal-50">
+    <div id="otp-display-container" class="w-full max-w-4xl text-center p-10">
+        <h1 class="text-3xl font-extrabold text-gray-700 mb-6">授業出席パスワード</h1>
+        
+        <div class="p-8 bg-white rounded-2xl shadow-2xl mb-8 border-4 border-teal-500">
+            <span id="otp-code-display" class="otp-code text-teal-600">----</span>
+        </div>
+        
+        <h3 class="text-2xl font-semibold text-gray-600 mb-4">残り時間</h3>
+        
+        <div class="p-4 bg-white rounded-xl shadow-lg inline-block min-w-[300px] border border-red-500">
+            <span id="timer-display" class="timer-display text-red-500">05:00</span>
+        </div>
+        
+        <p class="mt-8 text-gray-500 text-base">パスワードは期限切れになると自動的に無効になります。</p>
+        
+        <!-- <button id="print-btn" onclick="window.print()" class="mt-8 main-btn">画面を印刷</button> -->
+    </div>
+
+    <script th:src="@{/js/display_timer.js}" defer></script>
+</body>
+</html>

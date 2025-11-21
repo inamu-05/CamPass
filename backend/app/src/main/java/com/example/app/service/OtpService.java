@@ -39,21 +39,21 @@ public class OtpService {
      */
     @Transactional
     public String saveOtp(String subjectId, String otp, LocalDateTime sessionDatetime) {
-
-        // 1. Generate OTP and calculate expiration time
-        String otpCode = otp;
-
         // Calculate expiration time and truncate to seconds for DB consistency
-        LocalDateTime expirationTime = sessionDatetime.plus(OTP_EXPIRY_DURATION).truncatedTo(ChronoUnit.SECONDS);
+        // LocalDateTime expirationTime = sessionDatetime.plus(OTP_EXPIRY_DURATION).truncatedTo(ChronoUnit.SECONDS);
+
+        // System.out.println("expirationTime: "+expirationTime);
+        // System.out.println("otpCode: "+otp);
 
         // 2. Format the Redis value: OTPCode,ExpirationTime
         // ExpirationTime is truncated to seconds.
-        String redisValue = otpCode + "," + expirationTime.toString();
+        String redisValue = otp + "," + sessionDatetime.toString();
+        // System.out.println("redisValue: "+redisValue);
         String redisKey = KEY_PREFIX + subjectId;
 
         // 3. Save to Redis with the expiry duration
         redisTemplate.opsForValue().set(redisKey, redisValue, OTP_EXPIRY_DURATION.toSeconds(), TimeUnit.SECONDS);
-
+        // System.out.println("redis set ended");
         // // 4. Pre-populate the Attendance table
         // AttendanceService attendanceService = new AttendanceService();
         // attendanceService.prePopulateAttendance(subjectId, expirationTime);
