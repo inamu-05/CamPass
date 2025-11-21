@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 // import java.util.Arrays;
 import java.util.List;
 // import java.util.Optional;
@@ -44,6 +46,12 @@ public class AttendanceService {
     public void recordAttendance(AttendanceRequest request, LocalDateTime sessionDatetime) {
         String subjectId = request.getSubjectId();
         String userId = request.getUserId();
+
+        // final Duration OTP_EXPIRY_DURATION = Duration.ofMinutes(5);
+        // LocalDateTime expirationTime = sessionDatetime.plus(OTP_EXPIRY_DURATION).truncatedTo(ChronoUnit.SECONDS);
+
+        // System.out.println("Flutter sessionDatetime: "+sessionDatetime);
+        // System.out.println("Flutter expirationTime: "+expirationTime);
         // 1. Find the existing pre-populated attendance record (the "absent" record)
         Attendance attendanceRecord = attendanceRepository
             .findByIdSubjectIdAndIdUserIdAndIdSessionDatetime(subjectId, userId, sessionDatetime);
@@ -73,6 +81,9 @@ public class AttendanceService {
      */
     @Transactional
     public void prePopulateAttendance(String subjectId, LocalDateTime sessionDatetime) {
+
+        // final Duration OTP_EXPIRY_DURATION = Duration.ofMinutes(5);
+        // LocalDateTime expirationTime = sessionDatetime.plus(OTP_EXPIRY_DURATION).truncatedTo(ChronoUnit.SECONDS);
         
         // 1. Get the list of student IDs for this subject using the RosterRepository
         List<String> studentIds = rosterRepository.findStudentIdsBySubjectId(subjectId);
