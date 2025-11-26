@@ -9,7 +9,7 @@ CREATE DATABASE IF NOT EXISTS campassdb
 USE campassdb;
 
 -- Drop tables in reverse order of foreign key dependencies for a clean start (Good practice for development)
-DROP TABLE IF EXISTS certManage;
+DROP TABLE IF EXISTS cert_manage;
 DROP TABLE IF EXISTS certificate;
 DROP TABLE IF EXISTS attendance;
 DROP TABLE IF EXISTS subject_class;
@@ -112,7 +112,8 @@ CREATE TABLE certificate (
 
 
 -- Create the CertManage table
-CREATE TABLE certManage (
+CREATE TABLE cert_manage (
+    application_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     certificate_id CHAR(2) NOT NULL,
     user_id VARCHAR(7) NOT NULL,
     quantity INT(1) NOT NULL,
@@ -122,8 +123,7 @@ CREATE TABLE certManage (
     is_printed BOOLEAN NOT NULL DEFAULT FALSE,
     situation CHAR(1) NOT NULL,
     FOREIGN KEY (certificate_id) REFERENCES certificate(certificate_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id),
-    PRIMARY KEY (certificate_id, user_id)
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
 ) ENGINE=InnoDB;
 
 

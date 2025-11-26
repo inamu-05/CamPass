@@ -175,10 +175,22 @@ class _CertificateApplicationScreenState
                     errorMessage = null;
                   });
 
+                  // ★選択した証明書のリストを作成（Payment画面へ渡す用）
+                  final appliedCertificates = certificates
+                      .where((c) => (c.quantity ?? 0) > 0)
+                      .map((c) => {
+                            "name": c.certificateName,
+                            "price": c.price,
+                            "quantity": c.quantity,
+                          })
+                      .toList();
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CertificatePaymentScreen(),
+                      builder: (context) => CertificatePaymentScreen(
+                        appliedCertificates: appliedCertificates,  // ★ データを渡す
+                      ),
                     ),
                   );
                 },

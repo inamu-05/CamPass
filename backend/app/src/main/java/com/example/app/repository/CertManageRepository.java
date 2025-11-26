@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.app.entity.CertManage;
-import com.example.app.entity.CertManageId;
 // import java.util.List;
 // import java.time.LocalDateTime;
 
@@ -15,5 +14,5 @@ import com.example.app.entity.CertManageId;
  * 2. AttendanceId: The class representing the composite primary key (@Embeddable).
  */
 @Repository
-public interface CertManageRepository extends JpaRepository<CertManage, CertManageId> {
+public interface CertManageRepository extends JpaRepository<CertManage, Integer> {
 }
