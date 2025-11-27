@@ -1,55 +1,66 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>授業出席一覧</title>
-  
-  <link rel="stylesheet" th:href="@{/css/attendance_list.css}">
-  <script th:src="@{/js/attendance_list.js}"></script>
-</head>
+    <meta charset="UTF-8">
+    <title>授業出席一覧</title>
+    
+    <link rel="stylesheet" th:href="@{/css/attendance_list.css}">
+    </head>
 <body>
-  <!-- 共通ヘッダーを読み込み -->
-  <header th:replace="~{base/header :: header}"></header>
+    <header th:replace="~{base/header :: header}"></header>
 
-  <main class="attendance-list-container">
-    <h2>授業出席一覧</h2>
+    <main class="attendance-list-container">
+        <h2>授業出席一覧</h2>
 
-    <!-- 検索フォーム -->
-    <form class="search-form">
-      <label for="subject">授業名：</label>
+        <form id="attendanceSearchForm" action="/student/attendance" method="get" class="search-form">
+            <label for="subject">授業名：</label>
+            <select id="subject" name="subjectId">
+                <option value="">すべて</option>
+                <option th:each="s : ${subjects}" 
+                        th:value="${s.subjectId}" 
+                        th:text="${s.subjectName}">
+                </option>
+            </select>
 
-      <!-- ▼ 修正：入力欄 → 選択欄に変更 -->
-      <select id="subject" name="subject">
-        <option value="">すべて</option>
-        <option value="情報処理">情報処理</option>
-        <option value="データベース">データベース</option>
-        <option value="ネットワーク基礎">ネットワーク基礎</option>
-      </select>
-      <!-- ▲ 修正ここまで -->
+            <label for="date">日付：</label>
+            <input type="date" id="date" name="date" max="9999-12-31">
 
-      <label for="date">日付：</label>
-      <input type="date" id="date" name="date">
+            <button type="submit">検索</button>
+        </form>
 
-      <button type="submit">検索</button>
-    </form>
+        <section class="result-section">
+            <h3>検索結果</h3>
+            <table class="attendance-table" id="attendanceTable">
+                <thead>
+                    <tr>
+                        <th>日付</th>
+                        <th>授業名</th>
+                        <th>出席人数</th> 
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="a : ${attendances}">
+                        <th:block th:with="lessonKey=${a.subject.subjectId + '_' + #temporals.format(a.sessionDatetime,'yyyy-MM-dd''T''HH:mm:ss')}">
+                            <td th:text="${#temporals.format(a.sessionDatetime, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${a.subject.subjectName}"></td>
+                            <td th:text="${duplicateCounts.get(lessonKey)}">0</td>
+                            <td>
+                                <a th:href="@{/attendance/detail(
+                                    subjectId=${a.subject.subjectId},
+                                    datetime=${#temporals.format(a.sessionDatetime, 'yyyy-MM-dd''T''HH:mm:ss')}
+                                )}">
+                                    詳細
+                                </a>
+                            </td>
+                        </th:block>
+                    </tr>
+                </tbody>
 
-    <section class="result-section">
-      <h3>検索結果</h3>
-      <table class="attendance-table" id="attendanceTable">
-        <thead>
-          <tr>
-            <th>日付</th>
-            <th>授業名</th>
-            <th>出席人数</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- JSで動的に生成 -->
-        </tbody>
-      </table>
-    </section>
+            </table>
+        </section>
 
-  </main>
+    </main>
+    
 </body>
 </html>
