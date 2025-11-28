@@ -44,3 +44,20 @@ INSERT IGNORE INTO certificate (certificate_id, certificate_name, price) VALUES 
 INSERT IGNORE INTO certificate (certificate_id, certificate_name, price) VALUES ('03', '健康診断書', 500);
 INSERT IGNORE INTO certificate (certificate_id, certificate_name, price) VALUES ('04', '成績証明書', 600);
 INSERT IGNORE INTO certificate (certificate_id, certificate_name, price) VALUES ('05', '卒業見込み証明書', 600);
+
+-- DESCRIBE cert_manage;
+INSERT IGNORE INTO cert_manage 
+(application_id, certificate_id, user_id, quantity, receive, payment, requested_on, is_printed, situation)
+VALUES (1,'01','2201001',1,'1','1','2025-01-10',FALSE,'1');
+
+INSERT IGNORE INTO cert_manage 
+(application_id, certificate_id, user_id, quantity, receive, payment, requested_on, is_printed, situation)
+VALUES (2,'02','2201002',2,'1','1','2025-01-11',FALSE,'1');
+
+INSERT IGNORE INTO cert_manage 
+(application_id, certificate_id, user_id, quantity, receive, payment, requested_on, is_printed, situation)
+VALUES (3,'04','2201001',1,'1','1','2025-01-05',TRUE,'2');
+
+INSERT IGNORE INTO cert_manage 
+(application_id, certificate_id, user_id, quantity, receive, payment, requested_on, is_printed, situation)
+VALUES (4,'05','2201002',1,'1','2','2025-01-06',TRUE,'2');
