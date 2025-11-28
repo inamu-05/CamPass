@@ -117,7 +117,7 @@ CREATE TABLE cert_manage (
     certificate_id CHAR(2) NOT NULL,
     user_id VARCHAR(7) NOT NULL,
     quantity INT(1) NOT NULL,
-    recieve CHAR(1) NOT NULL,
+    receive CHAR(1) NOT NULL,
     payment CHAR(1) NOT NULL,
     requested_on DATE NOT NULL,
     is_printed BOOLEAN NOT NULL DEFAULT FALSE,

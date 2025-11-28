@@ -114,9 +114,9 @@ public String showAttendanceDetailPage(
 
 
 
-    // 証明書ページ
-    @GetMapping("/cert/list")
-    public String showPage() {
-        return "main/certificate_list";
-    }
+    // // 証明書ページ
+    // @GetMapping("/cert/list")
+    // public String showPage() {
+    //     return "main/certificate_list";
+    // }
 }

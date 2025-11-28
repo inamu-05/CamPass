@@ -30,12 +30,13 @@
 
         <section class="result-section">
             <h3>検索結果</h3>
+
             <table class="attendance-table" id="attendanceTable">
                 <thead>
                     <tr>
                         <th>日付</th>
                         <th>授業名</th>
-                        <th>出席人数</th> 
+                        <th>受講人数</th> 
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -56,6 +57,11 @@
                         </th:block>
                     </tr>
                 </tbody>
+
+                <!-- 検索結果なし -->
+                <tr th:if="${attendances == null or attendances.empty}">
+                    <td colspan="4" class="no-data-message">該当する出席データはありません。</td>
+                </tr>
 
             </table>
         </section>

@@ -1,23 +1,35 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <title>証明書管理 - 発行一覧</title>
+
+  <!-- 共通CSS -->
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <link rel="stylesheet" th:href="@{/css/certificate_list.css}">
-  <script defer th:src="@{/js/certificate_list.js}"></script>
 </head>
+
 <body>
   <!-- 共通ヘッダー -->
   <header th:replace="~{base/header :: header}"></header>
 
   <main class="certificate-container">
-    <h1 class="text">証明書管理</h1>
-    <p id="pendingCount" class="pending-count">未発行件数：0件</p>
 
-    <!-- 未発行セクション -->
+    <!-- タイトル -->
+    <h1 class="text">証明書管理</h1>
+
+    <!-- 未発行件数 -->
+    <p id="pendingCount" class="pending-count">
+      未発行件数：<span th:text="${pendingCount}">0</span>件
+    </p>
+
+    <!-- ==========================
+         未発行セクション
+    =========================== -->
     <section class="pending-section">
       <h2>未発行</h2>
+
       <table class="certificate-table" id="pendingTable">
         <thead>
           <tr>
@@ -30,13 +42,44 @@
             <th>発行</th>
           </tr>
         </thead>
+
         <tbody>
-          <!-- JSで動的に生成 -->
+          <!-- 未発行一覧 -->
+          <tr th:each="cert : ${unprintedList}">
+            <td th:text="${cert.requestedOn}"></td>
+            <td th:text="${cert.student.userId}"></td>
+            <td th:text="${cert.student.userName}"></td>
+            <td th:text="${cert.certificate != null ? cert.certificate.certificateName : '未設定'}"></td>
+            <td th:text="${cert.quantity}"></td>
+            <td>
+              <span th:switch="${cert.receive}">
+                <span th:case="'1'">窓口受取</span>
+                <span th:case="'2'">郵送</span>
+                <span th:case="'3'">データ配布</span>
+                <span th:case="*">不明</span>
+              </span>
+            </td>            
+            <td>
+              <!-- 発行ボタン -->
+              <form th:action="@{/cert/issue/{id}(id=${cert.applicationId})}" method="post">
+                <button type="submit">発行</button>
+              </form>
+            </td>
+          </tr>
+
+          <!-- 未発行が空の場合 -->
+          <tr th:if="${#lists.isEmpty(unprintedList)}">
+            <td colspan="7" style="color:red; text-align:center;">
+              未発行の証明書はありません
+            </td>
+          </tr>
         </tbody>
       </table>
     </section>
 
-    <!-- 発行済セクション -->
+    <!-- ==========================
+         発行済みセクション
+    =========================== -->
     <section class="approved-section">
       <h2>発行済み</h2>
       <table class="certificate-table" id="approvedTable">
@@ -51,8 +94,31 @@
             <th>状態</th>
           </tr>
         </thead>
+
         <tbody>
-          <!-- JSで動的に生成 -->
+          <!-- 発行済み一覧 -->
+          <tr th:each="cert : ${printedList}">
+            <td th:text="${cert.requestedOn}"></td>
+            <td th:text="${cert.student.userId}"></td>
+            <td th:text="${cert.student.userName}"></td>
+            <td th:text="${cert.certificate != null ? cert.certificate.certificateName : '未設定'}"></td>
+            <td th:text="${cert.quantity}"></td>
+            <td>
+              <span th:switch="${cert.receive}">
+                <span th:case="'1'">窓口受取</span>
+                <span th:case="'2'">郵送</span>
+                <span th:case="'3'">データ配布</span>
+                <span th:case="*">不明</span>
+              </span>
+            </td>            
+            <td>発行済み</td>
+          </tr>
+          <!-- 発行済みが空の場合 -->
+          <tr th:if="${#lists.isEmpty(printedList)}">
+            <td colspan="7" style="color:gray; text-align:center;">
+              発行済みの証明書はありません
+            </td>
+          </tr>
         </tbody>
       </table>
     </section>
