@@ -3,18 +3,28 @@ import '../main.dart'; // CustomAppBar用
 import 'certificate_complete_screen.dart'; // ← 確定後に遷移する完了画面（後で作成）
  
 class CertificatePaymentScreen extends StatefulWidget {
-  const CertificatePaymentScreen({Key? key}) : super(key: key);
- 
+  final List<Map<String, dynamic>> appliedCertificates;
+
+  const CertificatePaymentScreen({
+    super.key,
+    required this.appliedCertificates,
+  });
+
   @override
-  State<CertificatePaymentScreen> createState() => _CertificatePaymentScreenState();
+  State<CertificatePaymentScreen> createState() =>
+      _CertificatePaymentScreenState();
 }
  
 class _CertificatePaymentScreenState extends State<CertificatePaymentScreen> {
   // 仮の申請データ（数量が1枚以上の証明書のみ）
-  final List<Map<String, dynamic>> appliedCertificates = [
-    {"name": "卒業見込証明書", "price": 600, "quantity": 2},
-    {"name": "成績証明書", "price": 600, "quantity": 1},
-  ];
+  late List<Map<String, dynamic>> appliedCertificates;
+
+  @override
+  void initState() {
+    super.initState();
+    appliedCertificates = widget.appliedCertificates;
+  }
+
  
   // プルダウン用変数
   String? selectedPaymentMethod;
@@ -113,9 +123,9 @@ class _CertificatePaymentScreenState extends State<CertificatePaymentScreen> {
               DropdownButtonFormField<String>(
                 value: selectedPaymentMethod,
                 items: const [
-                  DropdownMenuItem(value: "PayPay", child: Text("PayPay")),
-                  DropdownMenuItem(value: "コンビニ支払", child: Text("コンビニ支払")),
                   DropdownMenuItem(value: "学校支払", child: Text("学校支払")),
+                  DropdownMenuItem(value: "コンビニ支払", child: Text("コンビニ支払")),
+                  DropdownMenuItem(value: "PayPay", child: Text("PayPay")),
                 ],
                 onChanged: (value) {
                   setState(() {
@@ -167,7 +177,11 @@ class _CertificatePaymentScreenState extends State<CertificatePaymentScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const CertificateCompleteScreen(),
+                              builder: (context) => CertificateCompleteScreen(
+                                appliedCertificates: appliedCertificates,        // Payment画面から作ったリスト
+                                paymentMethod: selectedPaymentMethod!,           // 選択された支払い方法
+                                deliveryMethod: selectedDeliveryMethod!,         // 選択された受け取り方法
+                              ),
                             ),
                           );
                         }
