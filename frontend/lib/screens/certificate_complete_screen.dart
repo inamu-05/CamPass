@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import '../main.dart'; // CustomAppBar用
 import 'mainmenu_screen.dart'; // メインメニュー遷移用
- 
+
 class CertificateCompleteScreen extends StatelessWidget {
-  const CertificateCompleteScreen({Key? key}) : super(key: key);
- 
+  final List<Map<String, dynamic>> appliedCertificates;
+  final String paymentMethod;
+  final String deliveryMethod;
+
+  const CertificateCompleteScreen({
+    super.key,
+    required this.appliedCertificates,
+    required this.paymentMethod,
+    required this.deliveryMethod,
+  });
+
   @override
   Widget build(BuildContext context) {
-    // 仮の申請データ（支払い画面で選択した内容を再現）
-    final List<Map<String, dynamic>> appliedCertificates = [
-      {"name": "卒業見込証明書", "price": 600, "quantity": 2},
-      {"name": "成績証明書", "price": 600, "quantity": 1},
-    ];
- 
     // 合計金額の計算
     int total = appliedCertificates.fold(
       0,
       (sum, item) => sum + (item["price"] as int) * (item["quantity"] as int),
     );
- 
-    // 仮の選択内容
-    const paymentMethod = "PayPay";
-    const deliveryMethod = "窓口受取";
- 
+
     return Scaffold(
       appBar: const CustomAppBar(title: "証明書申請"),
       body: Padding(
@@ -39,7 +38,7 @@ class CertificateCompleteScreen extends StatelessWidget {
                   size: 100,
                 ),
                 const SizedBox(height: 20),
- 
+
                 // ✅ 完了メッセージ
                 const Text(
                   "申請完了",
@@ -50,7 +49,7 @@ class CertificateCompleteScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 40),
- 
+
                 // ✅ 確認枠
                 Container(
                   width: double.infinity,
@@ -72,7 +71,7 @@ class CertificateCompleteScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
- 
+
                       // ✅ 証明書一覧
                       Column(
                         children: appliedCertificates.map((cert) {
@@ -107,9 +106,8 @@ class CertificateCompleteScreen extends StatelessWidget {
                           );
                         }).toList(),
                       ),
- 
                       const SizedBox(height: 20),
- 
+
                       // ✅ 合計金額
                       Align(
                         alignment: Alignment.centerRight,
@@ -122,47 +120,46 @@ class CertificateCompleteScreen extends StatelessWidget {
                           ),
                         ),
                       ),
- 
                       const Divider(height: 40, thickness: 1),
- 
+
                       // ✅ 支払い方法
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             "お支払方法",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             paymentMethod,
-                            style: TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 20),
                           ),
                         ],
                       ),
                       const SizedBox(height: 16),
- 
+
                       // ✅ 受け取り方法
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             "受け取り方法",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             deliveryMethod,
-                            style: TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 20),
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
- 
+
                 const SizedBox(height: 60),
- 
+
                 // ✅ メインメニューへ戻るボタン
                 SizedBox(
                   width: double.infinity,
@@ -177,7 +174,8 @@ class CertificateCompleteScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 147, 218, 231),
+                      backgroundColor:
+                          const Color.fromARGB(255, 147, 218, 231),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

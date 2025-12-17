@@ -33,7 +33,7 @@ class CertificateHistoryScreen extends StatelessWidget {
         'quantity': 1,
         'payment': 'コンビニ支払',
         'receive': '郵送',
-        'status': '申請中'
+        'status': '未払'
       },
     ];
  
