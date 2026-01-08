@@ -103,8 +103,6 @@ class _StudentCardScreenState extends State<StudentCardScreen> {
                                 const SizedBox(height: 30),
 
                                 // ✅ 学生情報一覧
-                                _buildInfoRow("分　野", "情報処理"),
-                                const SizedBox(height: 8),
                                 _buildInfoRow("学　科", studentData?['courseName'] ?? ""),
                                 const SizedBox(height: 8),
                                 _buildInfoRow("学生番号", studentData?['userId'] ?? ""),
