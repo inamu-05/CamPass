@@ -9,21 +9,21 @@
     <style>
         /* Re-use your large display styles */
         .otp-display-container {
-            min-height: 100vh;
+            /* min-height: 100vh; */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        .otp-code { font-size: 10rem; }
-        .timer-display { font-size: 5rem; }
+        .otp-code { font-size: 6rem; }
+        .timer-display { font-size: 3rem; }
         /* Add CSS to hide the print button on the main screen */
         @media print {
             #print-btn { display: none; }
         }
     </style>
 </head>
-<body class="bg-teal-50">
+<body class="bg-teal-50, otp-display-container">
     <div id="otp-display-container" class="w-full max-w-4xl text-center p-10">
         <h1 class="text-3xl font-extrabold text-gray-700 mb-6">授業出席パスワード</h1>
         

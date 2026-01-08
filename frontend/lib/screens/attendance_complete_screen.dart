@@ -3,18 +3,28 @@ import '../main.dart'; // 共通AppBarを利用
 
 class AttendanceCompleteScreen extends StatelessWidget {
   final String otp; // ← 入力されたワンタイムパスワード（将来DB検索に使用）
+  final String message; // <-- Add this field
+  final String subjectName; // We will add this later
+  final DateTime attendanceTime; // We will add this later
 
-  const AttendanceCompleteScreen({Key? key, required this.otp}) : super(key: key);
+  const AttendanceCompleteScreen({
+    Key? key, 
+    required this.otp, 
+    required this.message,
+    required this.subjectName,
+    required this.attendanceTime,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // ✅ 現在時刻を取得
-    final now = DateTime.now();
+    // final now = DateTime.now();
     final formattedTime =
-        "${now.year}年${now.month}月${now.day}日 ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+        "${attendanceTime.year}年${attendanceTime.month}月${attendanceTime.day}日 ${attendanceTime.hour.toString().padLeft(2, '0')}:${attendanceTime.minute.toString().padLeft(2, '0')}:${attendanceTime.second.toString().padLeft(2, '0')}";
 
-    // ✅ 仮の授業名（将来的にMySQLから取得）
-    const className = "情報処理Ⅰ";
+    // // ✅ 仮の授業名（将来的にMySQLから取得）
+    // const className = "情報処理Ⅰ";
+    // const message = "出席完了";
 
     return Scaffold(
       appBar: const CustomAppBar(title: "授業出席"),
@@ -26,7 +36,7 @@ class AttendanceCompleteScreen extends StatelessWidget {
             children: [
               // ✅ 出席時刻
               Text(
-                "出席時刻：$formattedTime",
+                "出席時刻：\n$formattedTime",
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
@@ -64,7 +74,7 @@ class AttendanceCompleteScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      className,
+                      this.subjectName,
                       style: const TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
@@ -77,9 +87,10 @@ class AttendanceCompleteScreen extends StatelessWidget {
               const SizedBox(height: 40),
 
               // ✅ 出席完了メッセージ
-              const Text(
-                "出席完了",
-                style: TextStyle(
+              Text(
+                this.message,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
                   color: Colors.green,

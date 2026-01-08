@@ -1,5 +1,7 @@
 package com.example.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,11 +26,13 @@ public class Subject {
 	// 論理名称:学科番号
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "course_id", nullable = false)
+    @JsonIgnore
 	private Course course;
 
 	// 論理名称:担当教員
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
 	private Staff staff;
 
 	// 空のコンストラクタ

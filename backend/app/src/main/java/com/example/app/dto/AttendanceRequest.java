@@ -1,4 +1,4 @@
-package com.example.app.controller;
+package com.example.app.dto;
 // dto です
 
 public class AttendanceRequest {

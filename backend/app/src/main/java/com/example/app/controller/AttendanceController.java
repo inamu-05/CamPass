@@ -1,7 +1,8 @@
 // OTP 用のコントローラー
 package com.example.app.controller;
 
-// import com.example.app.entity.Attendance;
+import com.example.app.dto.AttendanceHistoryDto;
+import com.example.app.dto.AttendanceRequest;
 import com.example.app.entity.Subject;
 import com.example.app.service.SubjectService;
 import com.example.app.service.AttendanceService;
@@ -9,6 +10,9 @@ import com.example.app.service.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +24,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -95,7 +101,7 @@ public class AttendanceController {
 
     @PostMapping("/api/validate-otp")
     @ResponseBody
-    public ResponseEntity<String> validateOtp(@RequestBody AttendanceRequest request) {
+    public ResponseEntity<Map<String, String>> validateOtp(@RequestBody AttendanceRequest request) {
         // 1. 受け取ったOTPと RedisのOTPを比べる
         String isValid = otpService.validateOtp(request.getSubjectId(), request.getPass());
         
@@ -110,23 +116,43 @@ public class AttendanceController {
                 
                 // Convert the string back to LocalDateTime
                 LocalDateTime sessionDatetime = LocalDateTime.parse(sessionDatetimeString); 
+                System.out.println(sessionDatetime);
                 // sessionDatetime = sessionDatetime.truncatedTo(ChronoUnit.SECONDS);
 
                 // System.out.println("sessionDatetime: "+sessionDatetime);
 
                 // 3. Record Attendance using the CORRECT sessionDatetime
-                attendanceService.recordAttendance(request, sessionDatetime);
+                LocalDateTime DateTimNow = attendanceService.recordAttendance(request, sessionDatetime);
+                System.out.println(ResponseEntity.ok("Attendance Recorded Successfully."));
+                System.out.println(ResponseEntity.ok("Attendance Recorded Successfully.").getBody());
+
+                String subjectId = request.getSubjectId();
+                String subjectName = subjectService.findSubjectNameById(subjectId);
+
+                Map<String, String> responseValue = new HashMap<>();
+                responseValue.put("message", "Attendance Recorded Successfully");
+                responseValue.put("subjectName", subjectName);
+                responseValue.put("attendanceTime", DateTimNow.toString());
                 
-                return ResponseEntity.ok("Attendance Recorded Successfully.");
+                return ResponseEntity.ok(responseValue);
                 
             } catch (Exception e) {
+                // Log the error for debugging
                 System.err.println("Error parsing datetime or recording attendance: " + e.getMessage());
-                // If anything goes wrong AFTER validation, report an internal error.
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error during attendance recording.");
+                
+                // Return a structured JSON error response
+                Map<String, String> errorResponse = new HashMap<>();
+                errorResponse.put("message", "サーバーエラーが発生しました。時間を置いて再度試してください。");
+                errorResponse.put("details", e.getMessage());
+
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
             }
         } else {
-            // 4. Validation failed (pass wrong, expired, or already used)
-            return ResponseEntity.status(401).body("Invalid or Expired Pass.");
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "入力されたパスは無効か、期限切れです。");
+            errorResponse.put("details", "Invalid or Expired Pass."); // Keep English for logs/debugging
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
 
@@ -134,5 +160,18 @@ public class AttendanceController {
     public String showOtpDisplayPage() {
         // This simply returns the display.html template
         return "main/display"; 
+    }
+
+    @GetMapping("/api/student/attendance-history")
+    public ResponseEntity<List<AttendanceHistoryDto>> getAttendanceHistory() {
+        // Get the authenticated student's user ID from the JWT principal
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getPrincipal());
+        User user = (User) authentication.getPrincipal();
+        String studentId = user.getUsername();
+        
+        List<AttendanceHistoryDto> history = attendanceService.getAttendanceHistory(studentId);
+        
+        return ResponseEntity.ok(history);
     }
 }
