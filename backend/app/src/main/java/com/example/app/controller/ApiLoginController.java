@@ -38,15 +38,15 @@ public class ApiLoginController {
 
         log.info("Attempting login for userId: {}", loginRequest.getUserId());
 
-        System.out.println("Student/loginついた");
+        // System.out.println("Student/loginついた");
 
         log.info("Attempting login for userId: {}", loginRequest.getUserId());
         
         // AuthService to check credentials
         User user = authService.login(loginRequest.getUserId(), loginRequest.getPassword());
 
-        System.out.println(user.getClass().getSimpleName());
-        System.out.println(authService.login(loginRequest.getUserId(), loginRequest.getPassword()).getClass().getSimpleName());
+        // System.out.println(user.getClass().getSimpleName());
+        // System.out.println(authService.login(loginRequest.getUserId(), loginRequest.getPassword()).getClass().getSimpleName());
 
         // Check if login was successful AND the user is a Student
         if (user != null && user instanceof Student) {

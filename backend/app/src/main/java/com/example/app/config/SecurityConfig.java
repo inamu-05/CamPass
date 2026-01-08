@@ -74,11 +74,15 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
             )
 
+            .exceptionHandling(exceptions -> exceptions
+                .accessDeniedPage("/login?error") // Redirect users who fail authorization (like students)
+            )
+
             .authorizeHttpRequests(auth -> auth
                 // 静的リソースとログインページは全員アクセス可能
                 .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll()
                 .requestMatchers("/save-onetime-pass").authenticated()
-                .anyRequest().authenticated()
+                .anyRequest().hasRole("STAFF")
             )
 
             .formLogin(form -> form
