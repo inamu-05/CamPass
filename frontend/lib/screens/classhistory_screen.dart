@@ -1,22 +1,37 @@
+// File: ClassHistoryScreen.dart (Modified)
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // Assuming you use a state management solution like Provider
 import '../main.dart';
- 
-class ClassHistoryScreen extends StatelessWidget {
+import '../models/attendance_history_model.dart';
+import '../services/history_service.dart';
+import '../providers/user_provider.dart'; // To get the Student ID and Name
+
+class ClassHistoryScreen extends StatefulWidget {
   const ClassHistoryScreen({Key? key}) : super(key: key);
- 
+
+  @override
+  State<ClassHistoryScreen> createState() => _ClassHistoryScreenState();
+}
+
+class _ClassHistoryScreenState extends State<ClassHistoryScreen> {
+  late Future<List<AttendanceHistory>> _historyFuture;
+  final HistoryService _historyService = HistoryService();
+
+  @override
+  void initState() {
+    super.initState();
+    // Start fetching data immediately
+    _historyFuture = _historyService.fetchClassHistory();
+  }
+
   @override
   Widget build(BuildContext context) {
-    const studentNumber = '2440091';
-    const studentName = '稲村天良';
- 
-    final classHistory = [
-      {'name': 'AWS', 'date': '2025/10/30', 'teacher': '長尾晃佑', 'remarks': ''},
-      {'name': 'オブジェクト指向', 'date': '2025/11/4', 'teacher': '長尾晃佑', 'remarks': ''},
-      {'name': 'Python', 'date': '2025/11/5', 'teacher': '長尾晃佑', 'remarks': '遅刻'},
-    ];
- 
-    classHistory.sort((a, b) => b['date']!.compareTo(a['date']!)); // 新しい順
- 
+    // Assuming you can get the current user details (ID and Name) from a provider/store
+    final currentUser = Provider.of<UserProvider>(context); 
+    final studentNumber = currentUser.userId;
+    final studentName = currentUser.userName;
+
     return Scaffold(
       appBar: const CustomAppBar(title: "授業履歴確認"),
       body: Padding(
@@ -27,66 +42,87 @@ class ClassHistoryScreen extends StatelessWidget {
               "学生番号",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const Text("2401001", style: TextStyle(fontSize: 22)),
+            Text(studentNumber, style: const TextStyle(fontSize: 22)),
             const SizedBox(height: 20),
             const Text(
               "氏名",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const Text("稲村天良", style: TextStyle(fontSize: 22)),
+            Text(studentName, style: const TextStyle(fontSize: 22)),
             const SizedBox(height: 30),
- 
+
             const Text(
               "授業履歴",
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
- 
-            ...classHistory.map((history) {
-              final hasRemarks = history['remarks']!.isNotEmpty;
- 
-              return Container(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: Colors.white, // 背景は白
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: hasRemarks
-                        ? Colors.orangeAccent
-                        : Colors.grey.shade400, // 遅刻・欠席ならオレンジ枠
-                    width: 1.2,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      history['name']!,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text("日時：${history['date']}"),
-                    Text("教員：${history['teacher']}"),
-                    if (hasRemarks) ...[
-                      const SizedBox(height: 8),
-                      Text(
-                        "備考：${history['remarks']}",
-                        style: const TextStyle(
-                          color: Colors.orange,
-                          fontWeight: FontWeight.bold,
+
+            FutureBuilder<List<AttendanceHistory>>(
+              future: _historyFuture,
+              builder: (context, snapshot) {
+                print("snapshot: ");
+                print(snapshot);
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('データのロードに失敗しました: ${snapshot.error}'),
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('履歴がありません'));
+                }
+
+                final classHistory = snapshot.data!;
+                
+                // The data is already sorted by the backend: ORDER BY session_datetime DESC
+
+                return Column(
+                  children: classHistory.map((history) {
+                    print(history);
+                    final hasRemarks = history.remarks.isNotEmpty && history.remarks != "出席"; // Check if it's not empty AND not "出席" (normal attendance)
+
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: hasRemarks ? Colors.orangeAccent : Colors.grey.shade400,
+                          width: 1.2,
                         ),
                       ),
-                    ],
-                  ],
-                ),
-              );
-            }).toList(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            history.name,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text("日時：${history.date}"),
+                          Text("教員：${history.teacher}"),
+                          if (hasRemarks) ...[
+                            const SizedBox(height: 8),
+                            Text(
+                              "備考：${history.remarks}",
+                              style: const TextStyle(
+                                color: Colors.orange,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
+            ),
           ],
         ),
       ),

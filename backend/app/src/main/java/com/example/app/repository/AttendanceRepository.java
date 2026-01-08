@@ -61,4 +61,6 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Attendan
      * Finds all records attended after a specific date/time.
      */
     List<Attendance> findByAttendedOnAfter(LocalDateTime dateTime);
+
+    List<Attendance> findByIdUserIdOrderByIdSessionDatetimeDesc(String studentId);
 }

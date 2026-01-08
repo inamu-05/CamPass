@@ -1,7 +1,8 @@
 // File: src/main/java/com/example/app/service/AttendanceService.java
 package com.example.app.service;
 
-import com.example.app.controller.AttendanceRequest;
+import com.example.app.dto.AttendanceHistoryDto;
+import com.example.app.dto.AttendanceRequest;
 import com.example.app.entity.Attendance;
 import com.example.app.entity.AttendanceId;
 import com.example.app.entity.Student;
@@ -10,6 +11,7 @@ import com.example.app.repository.AttendanceRepository;
 import com.example.app.repository.RosterRepository;
 import com.example.app.repository.StudentRepository;
 import com.example.app.repository.SubjectRepository;
+import com.example.app.repository.StaffRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,16 +19,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 // import java.util.Arrays;
 import java.util.List;
 // import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AttendanceService {
 
     @Autowired
     private AttendanceRepository attendanceRepository;
+
+    @Autowired
+    private StaffRepository staffRepository;
 
     @Autowired
     private SubjectRepository subjectRepository;
@@ -43,7 +50,7 @@ public class AttendanceService {
      * @param userId The ID of the student.
      * @param sessionDatetime The date/time of the class session (must be the same as pre-populated record).
      */
-    public void recordAttendance(AttendanceRequest request, LocalDateTime sessionDatetime) {
+    public LocalDateTime recordAttendance(AttendanceRequest request, LocalDateTime sessionDatetime) {
         String subjectId = request.getSubjectId();
         String userId = request.getUserId();
 
@@ -61,15 +68,18 @@ public class AttendanceService {
             throw new RuntimeException("Attendance record not found for this session.");
         }
 
+        LocalDateTime DateTimeNow = LocalDateTime.now(ZoneId.of("Asia/Tokyo"));
+
         // 2. Update the fields
         attendanceRecord.setIsAttended(true);
-        attendanceRecord.setAttendedOn(LocalDateTime.now());
+        attendanceRecord.setAttendedOn(DateTimeNow);
         attendanceRecord.setRemark("0"); // Example: '1' for Present
 
         // 3. Use the JpaRepository save() method!
         // Because the primary key (subjectId, userId, sessionDatetime) already exists, 
         // save() performs an SQL UPDATE operation.
-        attendanceRepository.save(attendanceRecord); 
+        attendanceRepository.save(attendanceRecord);
+        return DateTimeNow; 
     }
 
 
@@ -87,6 +97,8 @@ public class AttendanceService {
         
         // 1. Get the list of student IDs for this subject using the RosterRepository
         List<String> studentIds = rosterRepository.findStudentIdsBySubjectId(subjectId);
+        System.out.println(subjectId);
+        System.out.println(studentIds);
         
         if (studentIds.isEmpty()) {
             throw new RuntimeException("No students found for subject: " + subjectId + ". Cannot pre-populate attendance.");
@@ -120,5 +132,32 @@ public class AttendanceService {
             
             attendanceRepository.save(record); // Insert the new record
         }
+    }
+
+    // NEW METHOD
+    public List<AttendanceHistoryDto> getAttendanceHistory(String studentId) {
+        // Fetch all attendance records for the student, ordered by session date
+        System.out.println("Atendance Service");
+        List<Attendance> records = attendanceRepository.findByIdUserIdOrderByIdSessionDatetimeDesc(studentId);
+        System.out.println(records);
+        return records.stream()
+            .map(record -> {
+                // Get Subject Name (assuming Subject entity is eagerly loaded or accessible via the Attendance entity's relationship)
+                String subjectName = record.getSubject().getSubjectName(); 
+                
+                // Get Teacher Name (The subject entity has user_id which is the teacher's ID)
+                String teacherId = record.getSubject().getStaff().getUserId(); 
+                String teacherName = staffRepository.findById(teacherId)
+                                                .map(user -> user.getUserName())
+                                                .orElse("不明な教員");
+
+                return new AttendanceHistoryDto(
+                    subjectName,
+                    record.getSessionDatetime(),
+                    teacherName,
+                    record.getRemark()
+                );
+            })
+            .collect(Collectors.toList());
     }
 }
