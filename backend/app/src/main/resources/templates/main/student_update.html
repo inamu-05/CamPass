@@ -21,7 +21,13 @@
 				<span th:text="*{classGroup.classGroup}"></span>
 
 			<label>住所:</label>
+			<div class="address-block">
 				<input type="text" th:field="*{address}">
+				<p class="error-message"
+				th:if="${errorMessage}"
+				th:text="${errorMessage}">
+				</p>
+			</div>
 
 			<label>在籍状況:</label>
 				<select id="student-class" th:field="*{enrollmentStatus}">

@@ -132,11 +132,29 @@ public class StudentController {
 
     //学生情報更新処理
     @PostMapping("/update/{id}")
-    public String updateStudent(@PathVariable String id, @ModelAttribute("student") Student studentDetails) {
-        studentService.updateStudent(id, studentDetails);
-        // 更新完了ページへリダイレクト
-        return "redirect:/student/update/complete";
+    public String updateStudent(
+        @PathVariable String id,
+        @ModelAttribute("student") Student studentDetails,
+        Model model) {
+
+    // 住所が空白の場合
+    if (studentDetails.getAddress() == null || studentDetails.getAddress().isBlank()) {
+
+        // 更新前の学生情報を再取得
+        Student student = studentService.getStudentById(id);
+
+        model.addAttribute("student", student);
+        model.addAttribute("errorMessage", "住所を入力してください");
+
+        // 更新前の画面に戻す
+        return "main/student_update";
     }
+
+    // 正常時は更新
+    studentService.updateStudent(id, studentDetails);
+    return "redirect:/student/update/complete";
+    }
+
 
     // 更新完了画面表示
     @GetMapping("/update/complete")
