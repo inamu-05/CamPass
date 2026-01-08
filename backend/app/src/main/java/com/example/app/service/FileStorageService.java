@@ -13,6 +13,8 @@ import java.nio.file.*;
 @Service
 public class FileStorageService {
 
+    private static final String WEB_ACCESS_PREFIX = "/api/images/students";
+
     // application.propertiesからアップロード先のパスを読み込む
     @Value("${file.upload-dir}")
     private String uploadDirPath;
@@ -21,7 +23,7 @@ public class FileStorageService {
     public String storeFile(MultipartFile file, String filename) throws IOException {
         // ファイルが空の場合、デフォルト画像のパスを返す
         if (file.isEmpty()) {
-            return uploadDirPath + "/default.png";
+            return WEB_ACCESS_PREFIX + "/default.png";
         }
 
         // 相対パスを絶対パスに変換
@@ -32,13 +34,12 @@ public class FileStorageService {
         // ファイル名を正規化
         filename = StringUtils.cleanPath(filename);
 
-        // 保存先のパスを決定
+        // 保存先のパスを決定し、ファイルをコピー
         Path filePath = uploadDir.resolve(filename);
-
-        // ファイルをコピー
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        // DBに保存するための相対パスを返す
-        return uploadDirPath + "/" + filename;
+        // DBに保存するwebアクセス用のパスを生成
+        // パスとファイル名を結合する
+        return WEB_ACCESS_PREFIX + "/" + filename;
     }
 }
