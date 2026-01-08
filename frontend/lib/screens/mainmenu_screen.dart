@@ -96,14 +96,14 @@ class MainMenuScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: user.img.isNotEmpty 
-                    ? NetworkImage(API_BASE_URL + user.img) // careful with localhost here
-                    : null,
-                child: user.img.isEmpty ? const Icon(Icons.person, size: 50) : null,
-              ),
-              const SizedBox(height: 20),
+              // CircleAvatar(
+              //   radius: 50,
+              //   backgroundImage: user.img.isNotEmpty 
+              //       ? NetworkImage(API_BASE_URL + user.img) // careful with localhost here
+              //       : null,
+              //   child: user.img.isEmpty ? const Icon(Icons.person, size: 50) : null,
+              // ),
+              // const SizedBox(height: 20),
               
               // Display the Name!
               Text(
@@ -150,16 +150,16 @@ class MainMenuScreen extends StatelessWidget {
                   );
                 },
               ),
-              const SizedBox(height: 20),
-              _buildMainButton(
-                label: 'Testing',
-                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const TestScreen()),
-                  );
-                },
-              ),
+              // const SizedBox(height: 20),
+              // _buildMainButton(
+              //   label: 'Testing',
+              //    onPressed: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => const TestScreen()),
+              //     );
+              //   },
+              // ),
               const SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,

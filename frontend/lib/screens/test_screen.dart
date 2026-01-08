@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:student_management_system/models/attendance_result.dart';
+import 'package:student_management_system/screens/attendance_complete_screen.dart';
 import '../main.dart'; // Assuming CustomAppBar is defined here
 import '../services/attendance_service.dart';
 
@@ -44,24 +46,41 @@ class _TestScreenState extends State<TestScreen> {
     });
 
     // 2. API Call
-    final String resultMessage = await _attendanceService.recordAttendance(
-      subjectId: subjectId,
-      pass: otp,
-      userId: userId,
+    try {
+    // 1. Call the service which returns AttendanceResult on success
+    final AttendanceResult result = await AttendanceService().recordAttendance(
+      subjectId: subjectId, // Example
+      pass: otp, // Example
+      userId: userId, // Example
     );
 
+    // 2. SUCCESS: Stop loading and navigate to the complete screen
+    setState(() {
+      _isLoading = false;
+    });
+
+    // Navigate to the complete screen, passing all data from the result object
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AttendanceCompleteScreen(
+          otp: otp,
+          message: result.message, // Use the message property
+          subjectName: result.subjectName, // Pass the subject name
+          attendanceTime: result.attendanceTime, // Pass the attendance time
+        ),
+      ),
+    );
+
+  } catch (e) {
+    // 3. FAILURE: Catch the exception thrown by the service
     setState(() {
       _isLoading = false; // Stop loading
-      // 3. Check for successful message and display result
-      if (resultMessage.startsWith('出席が記録されました')) {
-        // SUCCESS: Display success message
-        _errorMessage = resultMessage; 
-      } else {
-        // FAILURE: Display error message
-        _errorMessage = resultMessage;
-      }
+      // e.toString() gets the description of the Exception (the error message)
+      _errorMessage = e.toString().replaceFirst('Exception: ', ''); 
     });
   }
+}
 
   @override
   Widget build(BuildContext context) {

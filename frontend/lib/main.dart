@@ -12,7 +12,7 @@ import 'screens/studentcard_screen.dart';
 import 'screens/classhistory_screen.dart';
 import 'screens/certificate_application_screen.dart';
 import 'screens/certificatehistory_screen.dart';
-import 'screens/test_screen.dart';
+// import 'screens/test_screen.dart';
  
 // --- CRITICAL CONNECTION LOGIC ---
  
@@ -99,7 +99,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     _buildMenuItem(Icons.history, '授業履歴'),
                     _buildMenuItem(Icons.assignment, '証明書申請'),
                     _buildMenuItem(Icons.description_outlined, '証明書履歴'),
-                    _buildMenuItem(Icons.description_outlined, 'Testing'),
+                    // _buildMenuItem(Icons.description_outlined, 'Testing'),
                     const PopupMenuDivider(),
                     _buildMenuItem(Icons.logout, 'ログアウト'),
                   ],
@@ -123,14 +123,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         );
                         break;
 
-                        case 'Testing':
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const TestScreen(),
-                          ),
-                        );
-                        break;
+                        // case 'Testing':
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const TestScreen(),
+                        //   ),
+                        // );
+                        // break;
  
                       case '授業履歴':
                         Navigator.push(
