@@ -9,10 +9,14 @@ import com.example.app.service.FileStorageService;
 import com.example.app.service.StudentService;
 import com.example.app.service.ClassGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.validation.BindingResult;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,6 +37,11 @@ public class StudentController {
     @Autowired
     private FileStorageService fileStorageService;
 
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
+
     // 学生一覧表示
     @GetMapping
     public String listStudents(Model model) {
@@ -45,8 +54,6 @@ public class StudentController {
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         Student student = new Student();
-        student.setCourse(new Course("","")); // 初期値をnullに設定
-        student.setClassGroup(new ClassGroup("","")); // 初期値をnullに設定
         model.addAttribute("student", student); 
 
         List<Course> courses = courseService.getAllCourses();
@@ -59,9 +66,33 @@ public class StudentController {
 
     // 学生登録処理
     @PostMapping("/register")
-    public String registerStudent(@ModelAttribute("student") Student student, 
-        @RequestParam("file") MultipartFile file, Model model) {
-        
+    public String registerStudent(
+        @Validated
+        @ModelAttribute("student") Student student, 
+        BindingResult bindingResult,
+        @RequestParam("file") MultipartFile file,
+        Model model
+    ) {
+        // 選択肢と写真ファイルの未選択チェック
+        if (student.getCourse() == null || student.getCourse().getCourseId() == null) {
+            bindingResult.rejectValue("course", "error.course", "所属学科は必須項目です。");
+        }
+        if (student.getClassGroup() == null || student.getClassGroup().getClassGroupId() == null) {
+            bindingResult.rejectValue("classGroup", "error.classGroup", "クラスは必須項目です。");
+        }
+        if (file.isEmpty()) {
+            model.addAttribute("fileError", "証明写真を選択してください。");
+        }
+
+        //エラーチェック
+        if (bindingResult.hasErrors() || model.containsAttribute("fileError")) {
+            List<Course> courses = courseService.getAllCourses();
+            model.addAttribute("courses", courses); 
+            List<ClassGroup> classGroups = classGroupService.getAllClassGroups();
+            model.addAttribute("classGroups", classGroups);
+            return "main/student_register";
+        }
+
         // デフォルト値の設定
         student.setEnrollmentStatus("1");
         student.setIsDisabled(false); 

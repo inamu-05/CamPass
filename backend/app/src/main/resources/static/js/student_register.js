@@ -1,16 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("photo");
-  const preview = document.getElementById("photo-preview");
+  const input = document.querySelector("input[name='file']");
+  const preview = document.getElementById("previewImage");
 
-  if (input) {
+  if (input && preview) {
     input.addEventListener("change", () => {
       const file = input.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = e => {
-          preview.innerHTML = `<img src="${e.target.result}" alt="写真" class="preview-img">`;
+          preview.src = e.target.result;
+          preview.style.display = "block";
         };
         reader.readAsDataURL(file);
+      } else {
+        preview.style.display = "none";
+        preview.src = "";
       }
     });
   }

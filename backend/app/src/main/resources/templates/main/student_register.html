@@ -10,51 +10,87 @@
   <form class="student-form" th:action="@{/student/register}" th:object="${student}" method="post" enctype="multipart/form-data">
     <div class="form-grid">
       <label>入学年度:</label>
+      <div class="input-container">
         <input type="number" th:field="*{entryYear}" placeholder="例：2025">
+        <p class="error-message" th:if="${#fields.hasErrors('entryYear')}" th:errors="*{entryYear}"></p>
+      </div>
 
       <label>所属学科:</label>
-        <select th:field="*{course}">
-          <option value="" disabled th:selected="${student.course == null}">選択して下さい</option>
+      <div class="input-container">
+        <select th:field="*{course.courseId}">
+          <option value="">選択して下さい</option>
           <option th:each="c : ${courses}" th:value="${c.courseId}" th:text="${c.courseName}"></option>
         </select>
+        <p class="error-message" th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></p>
+      </div>
 
       <label>クラス:</label>
-        <select th:field="*{classGroup}">
-          <option value="" disabled th:selected="${student.classGroup == null}">選択して下さい</option>
+      <div class="input-container">
+        <select th:field="*{classGroup.classGroupId}">
+          <option value="">選択して下さい</option>
           <option th:each="cl : ${classGroups}" th:value="${cl.classGroupId}" th:text="${cl.classGroup}"></option>
-          </option>
         </select>
+        <p class="error-message" th:if="${#fields.hasErrors('classGroup')}" th:errors="*{classGroup}"></p>
+      </div>
       
       <label>学生番号:</label>
+      <div class="input-container">
         <input type="text" th:field="*{userId}" placeholder="例：S12345">
-
+        <p class="error-message" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></p>
+      </div>
 
       <label>氏名:</label>
+      <div class="input-container">
         <input type="text" th:field="*{userName}" placeholder="山田 太郎">
+        <p class="error-message" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></p>
+      </div>
 
       <label>フリガナ:</label>
+      <div class="input-container">
         <input type="text" th:field="*{furigana}" placeholder="ヤマダ タロウ">
-
+        <p class="error-message" th:if="${#fields.hasErrors('furigana')}" th:errors="*{furigana}"></p>
+      </div>
+      
       <label>生年月日:</label>
+      <div class="input-container">
         <input type="date" th:field="*{birth}" max="9999-12-31">
+        <p class="error-message" th:if="${#fields.hasErrors('birth')}" th:errors="*{birth}"></p>
+      </div>
 
       <label>電話番号:</label>
+      <div class="input-container">
         <input type="tel" th:field="*{tel}" placeholder="例：09012345678">
+        <p class="error-message" th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}"></p>
+      </div>
 
       <label>メール:</label>
+      <div class="input-container">
         <input type="email" th:field="*{mail}" placeholder="例：example@school.jp">
+        <p class="error-message" th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"></p>
+      </div>
 
       <label>住所:</label>
+      <div class="input-container">
         <input type="text" th:field="*{address}" placeholder="札幌市中央区...">
+        <p class="error-message" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+      </div>
 
       <label>写真:</label>
         <div class="photo-upload">
+          <div class="photo-preview" id="photoPreview">
+            <img src="" alt="プレビュー" id="previewImage" 
+              style="display:none; max-width: 150px; max-height: 150px;border: 1px solid #ccc; margin-bottom: 10px;">
+          </div>
+
           <input type="file" name="file" accept="image/*">
+          <p class="error-message" th:if="${fileError}" th:text="${fileError}"></p>
         </div>
 
       <label>パスワード:</label>
+      <div class="input-container">
         <input type="text" th:field="*{userPass}" placeholder="パスワードを入力">
-    </div>
+        <p class="error-message" th:if="${#fields.hasErrors('userPass')}" th:errors="*{userPass}"></p>
+      </div>
 
     <div class="form-actions">
       <button type="submit" class="submit-btn">登録完了</button>

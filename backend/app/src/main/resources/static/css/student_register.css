@@ -39,6 +39,13 @@ body {
   align-items: center;
 }
 
+/* 入力コンテナ */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 /* ラベル */
 .form-grid label {
   font-weight: 600;
@@ -104,6 +111,7 @@ body {
 
 /* 登録ボタン */
 .form-actions {
+  grid-column: 1 / -1;
   text-align: center;
   margin-top: 40px;
 }
@@ -125,4 +133,13 @@ body {
   background-color:  #c0d1e0;
   transform: translateY(-2px);
   box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
+
+/* エラーメッセージ */
+.error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin: 4px 0 0 0;
+  padding: 0;
+  line-height: 1.2;
 }

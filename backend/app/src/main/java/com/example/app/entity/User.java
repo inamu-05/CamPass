@@ -11,6 +11,9 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "user")
@@ -18,25 +21,30 @@ import jakarta.persistence.ManyToOne;
 public class User {
 
 	// 論理名称:ユーザ番号
+	@NotBlank(message = "ユーザ番号は必須項目です。")
 	@Id
 	@Column(name = "user_id", nullable = false)
 	private String userId;
 
 	// 論理名称:ユーザ氏名
+	@NotBlank(message = "ユーザ氏名は必須項目です。")
 	@Column(name = "user_name", nullable = false)
 	private String userName;
 
 	// 論理名称:フリガナ
+	@NotBlank(message = "フリガナは必須項目です。")
 	@Column(name = "furigana", nullable = false)
 	private String furigana;
 
 	// 論理名称:所属学科
+	@NotNull(message = "所属学科を選択してください。")
 	@ManyToOne(fetch =  FetchType.LAZY)
 	@JoinColumn(name = "course_id", nullable = false)
     @JsonIgnore
 	private Course course;
 
 	// 論理名称:ユーザパスワード
+	@NotBlank(message = "パスワードは必須項目です。")
 	@Column(name = "user_pass", nullable = false)
 	private String userPass;
 

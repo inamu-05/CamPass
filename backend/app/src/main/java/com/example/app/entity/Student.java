@@ -7,33 +7,42 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "student")
 public class Student extends User {
 
 	// 論理名称:生年月日
+	@NotNull(message = "生年月日は必須項目です。")
 	@Column(name = "birth", nullable = false)
 	private LocalDate birth;
 
 	// 論理名称:電話番号
+	@NotBlank(message = "電話番号は必須項目です。")
 	@Column(name = "tel", length = 12, nullable = false)
 	private String tel;
 
 	// 論理名称:メールアドレス
+	@NotBlank(message = "メールアドレスは必須項目です。")
 	@Column(name = "mail", nullable = false)
 	private String mail;
 
 	// 論理名称:住所
+	@NotBlank(message = "住所は必須項目です。")
 	@Column(name = "address", nullable = false)
 	private String address;
 
 	// 論理名称:クラス
+	@NotNull(message = "クラスは必須項目です。")
 	@ManyToOne
 	@JoinColumn(name = "class_group_id", nullable = false)
 	private ClassGroup classGroup;
     
 	// 論理名称:証明写真
+	@NotBlank(message = "証明写真は必須項目です。")
 	@Column(name = "img", nullable = false)
 	private String img;
 
@@ -42,6 +51,7 @@ public class Student extends User {
 	private String enrollmentStatus;
 
 	// 論理名称:入学年
+	@NotBlank(message = "入学年は必須項目です。")
 	@Column(name = "entry_year",length = 4, nullable = false)
 	private String entryYear;
 
