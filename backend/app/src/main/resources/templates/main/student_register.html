@@ -11,7 +11,7 @@
     <div class="form-grid">
       <label>入学年度:</label>
       <div class="input-container">
-        <input type="number" th:field="*{entryYear}" placeholder="例：2025">
+        <input type="text" th:field="*{entryYear}" placeholder="例：2025">
         <p class="error-message" th:if="${#fields.hasErrors('entryYear')}" th:errors="*{entryYear}"></p>
       </div>
 

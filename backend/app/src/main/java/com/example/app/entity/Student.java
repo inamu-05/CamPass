@@ -7,9 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "student")
@@ -17,6 +17,7 @@ public class Student extends User {
 
 	// 論理名称:生年月日
 	@NotNull(message = "生年月日は必須項目です。")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	@Column(name = "birth", nullable = false)
 	private LocalDate birth;
 
