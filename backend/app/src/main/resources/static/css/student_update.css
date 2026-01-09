@@ -71,16 +71,17 @@ body {
   appearance: none;
 }
 
-/* 更新ボタン */
+/* ボタン */
 .form-buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
   gap: 10px;
   margin-top: 40px;
 }
 
-.update-btn {
+.form-buttons .btn {
   background-color: rgba(147, 218, 231, 1);
   color: black;
   border: none;
@@ -91,26 +92,12 @@ body {
   letter-spacing: 0.5px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.1);
   transition: all 0.25s ease;
+  text-decoration: none;
 }
 
-.update-btn:hover {
+.btn:hover {
   background-color:  #c0d1e0;
   transform: translateY(-2px);
   box-shadow: 0 2.5px 6px rgba(0,0,0,0.15);
 }
 
-/* 戻るリンク */
-.cancel {
-  align-self: flex-end;
-  color: #555;
-  transition: all 0.25s ease;
-}
-
-.cancel:hover {
-  color: #ccc;
-}
-
-.error-message {
-    color: red;
-    font-size: 0.9em;
-}
