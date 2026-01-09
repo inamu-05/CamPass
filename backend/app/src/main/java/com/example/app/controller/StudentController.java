@@ -3,6 +3,11 @@ package com.example.app.controller;
 
 import com.example.app.entity.Course;
 import com.example.app.entity.Student;
+import com.example.app.entity.Subject;
+import com.example.app.entity.SubjectClass;
+import com.example.app.repository.SubjectClassRepository;
+import com.example.app.repository.SubjectRepository;
+import com.example.app.repository.UserRepository;
 import com.example.app.entity.ClassGroup;
 import com.example.app.service.CourseService;
 import com.example.app.service.FileStorageService;
@@ -36,6 +41,15 @@ public class StudentController {
 
     @Autowired
     private FileStorageService fileStorageService;
+
+    @Autowired
+    private SubjectClassRepository subjectClassRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private SubjectRepository subjectRepository;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -113,6 +127,11 @@ public class StudentController {
 
             // 学生情報をDBに保存
             studentService.createStudent(student);
+
+            // 学生をSubjectClassに追加 
+            Subject sbj = subjectRepository.findByCourse(student.getCourse()).get(0);
+            SubjectClass subClass = new SubjectClass(sbj, userRepository.findByUserId(studentId));
+            subjectClassRepository.save(subClass);
 
             // 登録完了ページへリダイレクト
             return "redirect:/student/register/complete";
