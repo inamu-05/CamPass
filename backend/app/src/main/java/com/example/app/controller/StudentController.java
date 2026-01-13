@@ -89,10 +89,10 @@ public class StudentController {
     ) {
         // 選択肢と写真ファイルの未選択チェック
         if (student.getCourse() == null || student.getCourse().getCourseId() == null) {
-            bindingResult.rejectValue("course", "error.course", "所属学科は必須項目です。");
+            bindingResult.rejectValue("course", "error.course", "所属学科を選択してください。");
         }
         if (student.getClassGroup() == null || student.getClassGroup().getClassGroupId() == null) {
-            bindingResult.rejectValue("classGroup", "error.classGroup", "クラスは必須項目です。");
+            bindingResult.rejectValue("classGroup", "error.classGroup", "クラスを選択してください。");
         }
         if (file.isEmpty()) {
             model.addAttribute("fileError", "証明写真を選択してください。");

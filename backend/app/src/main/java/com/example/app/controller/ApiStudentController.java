@@ -76,6 +76,7 @@ public class ApiStudentController {
             response.put("birth", birthFormatted);
             response.put("address", student.getAddress());
             response.put("img", imgPath);
+            response.put("entryYear", student.getEntryYear());
             response.put("token", token);
             
             return ResponseEntity.ok().body(response);

@@ -68,7 +68,7 @@ class _StudentCardScreenState extends State<StudentCardScreen> {
         final String imageUrl = '$baseUrl/api/student/image';
 
         return Scaffold(
-            appBar: const CustomAppBar(title: "学生証表示"),
+            appBar: const CustomAppBar(title: "学生証"),
             body: isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : SingleChildScrollView(
@@ -111,7 +111,7 @@ class _StudentCardScreenState extends State<StudentCardScreen> {
                                 const SizedBox(height: 8),
                                 _buildInfoRow("生年月日", studentData?['birth'] ?? ""),
                                 const SizedBox(height: 8),
-                                _buildInfoRow("発行日", "2024年4月1日"),
+                                _buildInfoRow("発行日", "${studentData?['entryYear']}年4月1日"),
                                 const SizedBox(height: 8),
                                 _buildInfoRow("学生住所", studentData?['address'] ?? ""),
 
@@ -182,33 +182,49 @@ class _StudentCardScreenState extends State<StudentCardScreen> {
         );
     }
 
+    Widget _buildjustifiedLabel(String label) {
+      List<String> chars = label.replaceAll('　', '').replaceAll(' ', '').split('');
+      return SizedBox(
+        width: 90,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: chars.map((char) => Text(
+            char,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          )).toList(),
+        ),
+      );
+    }
+
     // ✅ 情報行を整えるための共通ウィジェット
     Widget _buildInfoRow(String label, String value, {bool bold = false}) {
-        return Row(
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                SizedBox(
-                    width: 110,
-                    child: Text(
-                        label,
-                        style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                        ),
-                    ),
+              _buildjustifiedLabel(label),
+              const Text(
+                "：",
+                style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+                    color: Colors.black87,
+                  ),
                 ),
-                Expanded(
-                    child: Text(
-                        value,
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black87,
-                            fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-                        ),
-                    ),
-                ),
+              ),
             ],
-        );
+        ),
+      );
     }
 }

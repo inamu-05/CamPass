@@ -43,7 +43,6 @@ public class Student extends User {
 	private ClassGroup classGroup;
     
 	// 論理名称:証明写真
-	@NotBlank(message = "証明写真は必須項目です。")
 	@Column(name = "img", nullable = false)
 	private String img;
 
