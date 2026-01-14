@@ -61,7 +61,7 @@ public class JwtFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(
                             userDetails, // Use UserDetails as principal
                             userId,
-                            null,
+                            // null,
                             userDetails.getAuthorities() // Pass the actual authorities!
                         );
                     //authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
