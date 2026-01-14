@@ -77,11 +77,17 @@ class _LoginScreenState extends State<LoginScreen> {
         body: body,
       ).timeout(const Duration(seconds: 10)); // Add a timeout
 
-       print(response.statusCode);
-       print(body);
+        print("=== LOGIN STATUS CODE ===");
+        print(response.statusCode);
+
+        print("=== LOGIN RESPONSE BODY ===");
+        print(utf8.decode(response.bodyBytes));
       
       // Handle the response
       if (response.statusCode == 200) {
+        print("=== LOGIN RESPONSE BODY ===");
+        print(utf8.decode(response.bodyBytes));
+
         final studentData = jsonDecode(utf8.decode(response.bodyBytes));
     
         // JWT を取り出す

@@ -12,11 +12,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
  
 import java.io.IOException;
+import java.util.List;
 // import java.util.Collections;
  
 @Component
@@ -33,7 +35,9 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
+
+            System.out.println("=== JwtFilter called ===");
  
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -47,19 +51,20 @@ public class JwtFilter extends OncePerRequestFilter {
                 if (jwtUtil.validateToken(token)) {
                     String userId = jwtUtil.extractUserId(token);
 
-                    // LOGGING ADDED
-                        System.out.println("JWT Filter: Token valid for User ID: " + userId);
-    
+                    UserDetails userDetails =
+                        userDetailsService.loadUserByUsername(userId);
+
                     // --- FIX HERE: Load UserDetails to get Authorities ---
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+                    //UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 
                     UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
                             userDetails, // Use UserDetails as principal
+                            userId,
                             null,
                             userDetails.getAuthorities() // Pass the actual authorities!
                         );
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    //authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
     
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                     authenticated = true;
@@ -84,9 +89,21 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
  
+    //@Override
+    //protected boolean shouldNotFilter(HttpServletRequest request) {
+        // PC側の画面（フォームログイン）には適用しない
+        //return !request.getServletPath().startsWith("/api/");
+    //}
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        // PC側の画面（フォームログイン）には適用しない
-        return !request.getServletPath().startsWith("/api/");
+        String path = request.getServletPath();
+
+        return
+            // API 以外は除外
+            !path.startsWith("/api/")
+            // ログイン系
+            || path.equals("/api/student/login")
+            || path.equals("/api/validate-otp");
     }
+
 }

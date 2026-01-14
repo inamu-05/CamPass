@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
 import '../main.dart'; // CustomAppBar用
 import 'certificate_complete_screen.dart'; // ← 確定後に遷移する完了画面（後で作成）
- 
+import '../services/cert_manage_service.dart';
+import '../services/auth_service.dart';
+
+
+const String dummyJwt = "DUMMY_JWT_FOR_DEBUG";
+
+String paymentCode(String value) {
+  switch (value) {
+    case "学校支払": return "1";
+    case "コンビニ支払": return "2";
+    case "PayPay": return "3";
+    default: return "0";
+  }
+}
+
+String receiveCode(String value) {
+  switch (value) {
+    case "窓口受取": return "1";
+    case "郵送": return "2";
+    case "データ配布": return "3";
+    default: return "0";
+  }
+}
+
 class CertificatePaymentScreen extends StatefulWidget {
   final List<Map<String, dynamic>> appliedCertificates;
 
@@ -173,7 +196,22 @@ class _CertificatePaymentScreenState extends State<CertificatePaymentScreen> {
                 child: ElevatedButton(
                   onPressed: (selectedPaymentMethod != null &&
                           selectedDeliveryMethod != null)
-                      ? () {
+                      ? () async {
+
+                        final jwtToken = await AuthService.getJwtToken();
+
+                        print("JWT = $jwtToken"); // デバッグ用
+
+                        for (final cert in appliedCertificates) {
+                          await CertManageService.applyCertificate(
+                            jwtToken: jwtToken,
+                            certificateId: cert["certificateId"], // ← id を必ず持たせる
+                            quantity: cert["quantity"],
+                            payment: paymentCode(selectedPaymentMethod!),
+                            receive: receiveCode(selectedDeliveryMethod!),
+                          );
+                        }
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(

@@ -15,6 +15,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 import com.example.app.security.JwtFilter;
 
@@ -41,6 +42,9 @@ public class SecurityConfig {
             .sessionManagement(sm -> sm
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
+
+            .formLogin(AbstractHttpConfigurer::disable)
+            .httpBasic(AbstractHttpConfigurer::disable)
             
             .exceptionHandling(eh -> eh
                 .authenticationEntryPoint((request, response, authException) ->
@@ -51,8 +55,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/student/login").permitAll()
                 .requestMatchers("/api/validate-otp").permitAll()
-                .requestMatchers("/api/student/image").authenticated() 
-                .anyRequest().authenticated()
+                //.requestMatchers("/api/student/image").authenticated() 
+                .anyRequest().hasRole("STUDENT")
             )
 
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

@@ -65,7 +65,7 @@ class _StudentCardScreenState extends State<StudentCardScreen> {
     @override
     Widget build(BuildContext context) {
         // 画像の相対パスを取得
-        final String imageUrl = '$baseUrl/api/student/image';
+        final String imageUrl = '$baseUrl/api/student/image?ts=${DateTime.now().millisecondsSinceEpoch}';
 
         return Scaffold(
             appBar: const CustomAppBar(title: "学生証"),

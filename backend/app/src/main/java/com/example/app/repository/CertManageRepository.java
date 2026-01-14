@@ -1,5 +1,6 @@
 package com.example.app.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,6 @@ import com.example.app.entity.CertManage;
  */
 @Repository
 public interface CertManageRepository extends JpaRepository<CertManage, Integer> {
+    // 学生IDで全申請履歴を取得
+    List<CertManage> findByStudent_UserId(String userId);
 }

@@ -179,6 +179,7 @@ class _CertificateApplicationScreenState
                   final appliedCertificates = certificates
                       .where((c) => (c.quantity ?? 0) > 0)
                       .map((c) => {
+                            "certificateId": c.certificateId,
                             "name": c.certificateName,
                             "price": c.price,
                             "quantity": c.quantity,
