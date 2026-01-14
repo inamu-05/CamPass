@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>学生情報更新完了</title>
+
+  <!-- ✅ 共通ヘッダー用CSS -->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  
+  <!-- ✅ このページ専用のCSS -->
+  <link rel="stylesheet" th:href="@{/css/complete.css}">
+    <div th:replace="base/header :: header"></div>
+
+</head>
+<body>
+  <div th:replace="base/header :: header"></div>
+  <section class="complete-container">
+    <div class="complete-card">
+      <h2>完了しました</h2>
+      <p>進級・卒業処理が正常に完了しました。</p>
+      <button class="ok-button" onclick="location.href='/student/promotion'">OK</button>
+    </div>
+  </section>
+</body>
+</html>

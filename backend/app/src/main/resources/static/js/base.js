@@ -21,6 +21,14 @@ function setupMainEvents() {
     });
   }
 
+  // 進級・卒業管理ボタン
+  const promotionBtn = document.getElementById("btn-student-promotion");
+  if (promotionBtn) {
+    promotionBtn.addEventListener("click", () => {
+      window.location.href = "/student/promotion";
+    });
+  }
+
   // ワンタイムパス作成
   const passBtn = document.getElementById("btn-pass-create");
   if (passBtn) {

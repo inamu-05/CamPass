@@ -15,7 +15,7 @@
 				<span th:text="*{userId}"></span>
 
 			<label>氏名:</label>
-				<span th:text="*{userName}"></span>
+				<input type="text" th:field="*{userName}">
 
 			<label>クラス:</label>
 				<span th:text="*{classGroup.classGroup}"></span>
@@ -32,9 +32,8 @@
 			<label>在籍状況:</label>
 				<select id="student-class" th:field="*{enrollmentStatus}">
 					<option value="1">在学</option>
-					<option value="2">休学</option>
-					<option value="3">退学</option>
-					<option value="4">卒業</option>
+					<option value="3">休学</option>
+					<option value="4">退学</option>
 				</select>
 
 			<label>学生証無効化:</label>

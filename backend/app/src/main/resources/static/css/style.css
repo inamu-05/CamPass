@@ -64,6 +64,12 @@ main {
   align-items: center;
 }
 
+.menu-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 /* ====== ドロップダウン ====== */
 .dropdown {
   position: relative;
