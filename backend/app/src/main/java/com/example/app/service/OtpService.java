@@ -28,7 +28,7 @@ public class OtpService {
 
     // This is a good practice to avoid key collisions
     private static final String KEY_PREFIX = "otp:subject:"; 
-    private static final Duration OTP_EXPIRY_DURATION = Duration.ofMinutes(5);
+    private static final Duration OTP_EXPIRY_DURATION = Duration.ofMinutes(90);
 
     /**
      * Generates a random 4-digit OTP, saves it to Redis with expiry,
