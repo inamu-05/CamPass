@@ -27,7 +27,7 @@ INSERT IGNORE INTO class_group (class_group_id, class_group) VALUES ('02', '1-2'
 
 DELETE IGNORE FROM subject;
 INSERT IGNORE INTO subject (subject_id, subject_name, course_id, user_id) VALUES ('01', '情報', '01', 'admin');
-INSERT IGNORE INTO subject (subject_id, subject_name, course_id, user_id) VALUES ('02', '簿記', '01', 'admin');
+INSERT IGNORE INTO subject (subject_id, subject_name, course_id, user_id) VALUES ('02', '簿記', '02', 'admin');
 INSERT IGNORE INTO subject (subject_id, subject_name, course_id, user_id) VALUES ('03', 'ネットワーク', '01', 'admin');
 INSERT IGNORE INTO subject (subject_id, subject_name, course_id, user_id) VALUES ('04', 'データベース', '01', 'admin');
 

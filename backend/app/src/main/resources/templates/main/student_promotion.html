@@ -9,9 +9,50 @@
 <section class="student-promotion">
   <h2>進級・卒業管理</h2>
   <p>年度末の更新対象者一覧です。留年者などの場合はチェックを外してください。</p>
+  <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red; font-weight:bold;"></p>
+
+  <div class="search">
+    <form th:action="@{/student/promotion}" method="get">
+      <label for="course">学科選択:</label>
+      <select id="course" name="course">
+        <option value="" th:selected="${selectedCourse == null}">全ての学科</option>
+        <option th:each="c : ${courses}" th:value="${c.courseId}" th:text="${c.courseName}"
+          th:selected="${c.courseId == selectedCourse}"></option>
+      </select>
+
+      <label for="classGroup">クラス選択:</label>
+      <select id="classGroup" name="classGroup">
+        <option value="" th:selected="${selectedClassGroup == null}">全てのクラス</option>
+        <option th:each="cg : ${classGroups}" th:value="${cg.classGroupId}" th:text="${cg.classGroup}"
+          th:selected="${cg.classGroupId == selectedClassGroup}"></option>
+      </select>
+      <button type="submit" class="btn">絞り込み</button>
+      <a th:href="@{/student/promotion}" th:if="${selectedCourse != null || selectedClassGroup != null}" style="font-size:14px; text-decoration:none;">絞り込み解除</a>
+    </form>
+  </div>
+
+  <div class="result" th:if="${selectedCourse != null || selectedClassGroup != null}">
+    <div class="result">
+      <span>
+        絞り込み結果：<a th:text="${candidates.size()}"></a> 名
+      </span>
+      
+      <span>
+        <span class="result-label">学科: </span>
+        <span th:each="c : ${courses}" th:if="${c.courseId == selectedCourse}" th:text="${c.courseName}"></span>
+        <span th:if="${selectedCourse == null || selectedCourse == ''}">指定なし</span>
+      </span>
+
+      <span>
+        <span class="result-label" >クラス: </span>
+        <span th:each="cg : ${classGroups}" th:if="${cg.classGroupId == selectedClassGroup}" th:text="${cg.classGroup}"></span>
+        <span th:if="${selectedClassGroup == null || selectedClassGroup == ''}">指定なし</span>
+      </span>
+    </div>
+  </div>
 
   <form class="promotion-form" th:action="@{/student/promotion}" method="post">
-    <table class="student-table">
+    <table class="students-table">
       <thead>
         <tr>
           <th>対象</th>
@@ -40,13 +81,13 @@
               <span th:if="${c.actionType == 'GRADUATION'}" class="badge-graduation">卒業</span>
               <span th:if="${c.actionType == 'STAY'}" class="badge-stay">休学継続</span>
           </td>
+        </tr>
       </tbody>
     </table>
 
     <div class="form-buttons">
       <button type="submit" onclick="return confirm('選択した学生の更新を実行しますか？')" class="btn">実行</button>
-      <button th:onclick="|location.href='@{/student}'|" class="btn">戻る</button>
+      <button type="button" th:onclick="history.back()" class="btn">戻る</button>
     </div>
   </form>
-
 </section>

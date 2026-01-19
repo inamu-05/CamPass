@@ -12,4 +12,10 @@ public interface StudentRepository extends JpaRepository<Student, String> {
     
     // 学生IDまたは学生名で部分一致検索
     List<Student> findByUserIdContainingOrUserNameContaining(String userId, String userName);
+
+    // 在籍状況でフィルタリング
+    List<Student> findByEnrollmentStatus(String enrollmentStatus);
+
+    // 学生証が無効化になっている学生を除外
+    List<Student> findByEnrollmentStatusInAndIsDisabledFalse(List<String> statuses);
 }

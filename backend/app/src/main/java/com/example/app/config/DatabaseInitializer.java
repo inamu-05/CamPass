@@ -49,17 +49,20 @@ public class DatabaseInitializer {
 
             // --- Course Data ---
             Course courseInfo = courseRepository.save(new Course("01", "情報"));
-            courseRepository.save(new Course("02", "簿記"));
+            Course courseInfo2 = courseRepository.save(new Course("02", "簿記"));
             System.out.println("-> Course data created.");
 
             // --- 3. Insert ClassGroup Data ---
             ClassGroup class1_1 = classGroupRepository.save(new ClassGroup("01", "1-1"));
             ClassGroup class1_2 = classGroupRepository.save(new ClassGroup("02", "1-2"));
+            ClassGroup class2_1 = classGroupRepository.save(new ClassGroup("03", "2-1"));
+            ClassGroup class2_2 = classGroupRepository.save(new ClassGroup("04", "2-2"));
             System.out.println("-> ClassGroup data created.");
 
             
 
             final ClassGroup classId = new ClassGroup("01","1-1");
+            final ClassGroup classId2 = new ClassGroup("02","1-2");
 
             final String initialStaffId = "admin";
             final String initialPassword = "adminpass"; // Plain text password for test user
@@ -100,7 +103,7 @@ public class DatabaseInitializer {
 
             // --- 5. Insert Subject Data ---
             Subject sub01 = subjectRepository.save(new Subject("01", "情報", courseInfo, adminStaff));
-            subjectRepository.save(new Subject("02", "簿記", courseInfo, adminStaff));
+            subjectRepository.save(new Subject("02", "簿記", courseInfo2, adminStaff));
             subjectRepository.save(new Subject("03", "ネットワーク", courseInfo, adminStaff));
             subjectRepository.save(new Subject("04", "データベース", courseInfo, adminStaff));
             System.out.println("-> Subject data created.");
@@ -125,7 +128,7 @@ public class DatabaseInitializer {
                     "東京都", // address
                     classId,
                     "/path/to/img1.jpg", // img
-                    "0", // enrollment_status
+                    "1", // enrollment_status
                     "2022", // entry_year
                     null, // graduation_year
                     false // is_disabled
@@ -152,9 +155,9 @@ public class DatabaseInitializer {
                     "090-8765-4321", // tel
                     "2201002@test.com", // mail
                     "大阪府", // address
-                    classId,
+                    classId2,
                     "/path/to/img2.jpg", // img
-                    "0", // enrollment_status
+                    "1", // enrollment_status
                     "2022", // entry_year
                     null, // graduation_year
                     false // is_disabled

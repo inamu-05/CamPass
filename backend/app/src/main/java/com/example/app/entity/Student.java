@@ -46,7 +46,7 @@ public class Student extends User {
 	@Column(name = "img", nullable = false)
 	private String img;
 
-	// 論理名称:在籍状況
+	// 論理名称:在籍状況(1:在学,2:卒業,3:休学,4:退学)
 	@Column(name = "enrollment_status",length = 1, nullable = false)
 	private String enrollmentStatus;
 

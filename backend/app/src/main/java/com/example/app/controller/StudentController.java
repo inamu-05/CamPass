@@ -8,6 +8,7 @@ import com.example.app.entity.SubjectClass;
 import com.example.app.repository.SubjectClassRepository;
 import com.example.app.repository.SubjectRepository;
 import com.example.app.repository.UserRepository;
+import com.example.app.dto.PromotionCandidateDto;
 import com.example.app.entity.ClassGroup;
 import com.example.app.service.CourseService;
 import com.example.app.service.FileStorageService;
@@ -21,10 +22,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.validation.BindingResult;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/student") // All URLs in this controller will start with /student
@@ -167,7 +171,10 @@ public class StudentController {
             students = studentService.searchStudents(keyword);
         }
 
-        model.addAttribute("students", students);
+        List<Student> sortedStudents = students.stream()
+        // 在学生を上位に、その後学生IDで昇順ソート
+            .sorted(Comparator.comparing(Student::getIsDisabled).thenComparing(Student::getUserId)).collect(Collectors.toList());
+        model.addAttribute("students", sortedStudents);
         model.addAttribute("keyword", keyword);
         return "main/student_search";
     }
@@ -187,16 +194,33 @@ public class StudentController {
         @ModelAttribute("student") Student studentDetails,
         Model model) {
 
-    // 住所が空白の場合
-    if (studentDetails.getAddress() == null || studentDetails.getAddress().isBlank()) {
+    boolean hasErrors = false;
 
-        // 更新前の学生情報を再取得
+    // 名前・フリガナ・住所が空白の場合
+    if (studentDetails.getUserName() == null || studentDetails.getUserName().isBlank()) {
+        model.addAttribute("userNameError", "氏名を入力してください");
+        hasErrors = true;
+    }
+    if (studentDetails.getFurigana() == null || studentDetails.getFurigana().isBlank()) {
+        model.addAttribute("furiganaError", "フリガナを入力してください");
+        hasErrors = true;
+    }
+    if (studentDetails.getAddress() == null || studentDetails.getAddress().isBlank()) {
+        model.addAttribute("addressError", "住所を入力してください");
+        hasErrors = true;
+    }
+
+    // エラーがある場合、再度フォームを表示
+    if (hasErrors) {
+        // 更新前の学生情報を取得
         Student student = studentService.getStudentById(id);
 
-        model.addAttribute("student", student);
-        model.addAttribute("errorMessage", "住所を入力してください");
+        // 入力した値を保持
+        student.setUserName(studentDetails.getUserName());
+        student.setFurigana(studentDetails.getFurigana());
+        student.setAddress(studentDetails.getAddress());
 
-        // 更新前の画面に戻す
+        model.addAttribute("student", student);
         return "main/student_update";
     }
 
@@ -222,4 +246,42 @@ public class StudentController {
     //     studentService.deleteStudent(id);
     //     return "redirect:/student";
     // }
+
+    // 進級・卒業処理画面表示
+    @GetMapping("/promotion")
+    public String showPromotionPage(
+            @RequestParam(required = false) String course, 
+            @RequestParam(required = false) String classGroup, 
+            Model model) {
+
+        List<PromotionCandidateDto> candidates = studentService.getPromotionCandidates(course, classGroup);
+        model.addAttribute("candidates", candidates);
+        
+        // 検索プルダウン用のデータ
+        model.addAttribute("courses", courseService.getAllCourses());
+        model.addAttribute("classGroups", classGroupService.getAllClassGroups());
+
+        // 検索プルダウンで選択した値を保持
+        model.addAttribute("selectedCourse", course);
+        model.addAttribute("selectedClassGroup", classGroup);
+
+        return "main/student_promotion";
+    }
+
+    // 進級・卒業処理実行
+    @PostMapping("/promotion")
+    public String executePromotion(@RequestParam(value="studentIds", required=false) List<String> studentIds,RedirectAttributes redirectAttributes) {
+        if (studentIds == null || studentIds.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "処理対象の学生が選択されていません。");
+            return "redirect:/student/promotion";
+        }
+        studentService.executePromotion(studentIds);
+        return "redirect:/student/promotion/complete";
+    }
+    
+    // 進級・卒業処理完了画面表示
+    @GetMapping("/promotion/complete")
+    public String showPromotionComplete() {
+        return "main/promotion_completed"; 
+    }
 }
