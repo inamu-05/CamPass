@@ -1,11 +1,14 @@
 package com.example.app.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId; // Crucial for mapping relationships
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @jakarta.persistence.Table(name = "subject_class")
@@ -27,17 +30,23 @@ public class SubjectClass {
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // Use the parent User entity since it's the FK
 
+    @NotNull(message = "クラスは必須項目です。")
+	@ManyToOne
+	@JoinColumn(name = "class_group_id", nullable = false)
+	private ClassGroup classGroup;
+
     // Default constructor is required
     public SubjectClass() {}
 
     // Convenience constructor for creating a new link
-    public SubjectClass(Subject subject, User user) {
+    public SubjectClass(Subject subject, User user, ClassGroup classGroup) {
         // Initialize the embedded ID
         this.id = new SubjectClassId(subject.getSubjectId(), user.getUserId());
         
         // Set the entity references
         this.subject = subject;
         this.user = user;
+        this.classGroup = classGroup;
     }
     
     // --- Getters and Setters ---
@@ -64,5 +73,13 @@ public class SubjectClass {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public ClassGroup getClassGroup() {
+        return classGroup;
+    }
+
+    public void setClassGroup(ClassGroup classGroup) {
+        this.classGroup = classGroup;
     }
 }

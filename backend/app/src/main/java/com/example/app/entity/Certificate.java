@@ -25,6 +25,12 @@ public class Certificate {
 	// 空のコンストラクタ
 	public Certificate() {}
 
+    public Certificate(String certificateId, String certificateName, Integer price) {
+        this.certificateId = certificateId;
+        this.certificateName = certificateName;
+        this.price = price;
+    }
+
 	// ゲッター・セッター
 	public String getCertificateId() {
 		return certificateId;

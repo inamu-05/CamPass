@@ -131,9 +131,9 @@ CREATE TABLE cert_manage (
 CREATE TABLE subject_class (
     subject_id CHAR(2) NOT NULL,
     user_id CHAR(7) NOT NULL,
-    -- class_group_id CHAR(3) NOT NULL,
+    class_group_id CHAR(3) NOT NULL,
     PRIMARY KEY (subject_id, user_id),
     FOREIGN KEY (subject_id) REFERENCES subject(subject_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id)
-    -- FOREIGN KEY (class_group_id) REFERENCES student(class_group_id), -- Assuming you create a class_group table
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
+    FOREIGN KEY (class_group_id) REFERENCES class_group(class_group_id) -- Assuming you create a class_group table
 ) ENGINE=InnoDB;

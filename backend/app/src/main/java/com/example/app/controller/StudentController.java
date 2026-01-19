@@ -134,7 +134,7 @@ public class StudentController {
 
             // 学生をSubjectClassに追加 
             Subject sbj = subjectRepository.findByCourse(student.getCourse()).get(0);
-            SubjectClass subClass = new SubjectClass(sbj, userRepository.findByUserId(studentId));
+            SubjectClass subClass = new SubjectClass(sbj, (userRepository.findByUserId(studentId)), student.getClassGroup());
             subjectClassRepository.save(subClass);
 
             // 登録完了ページへリダイレクト

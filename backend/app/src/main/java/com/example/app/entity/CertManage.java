@@ -59,6 +59,17 @@ public class CertManage {
     // ===== コンストラクタ =====
     public CertManage() {}
 
+    public CertManage(Certificate certificate, Student student, Integer quantity, String receive, String payment, LocalDate requestedOn, Boolean isPrinted, String situation) {
+        this.certificate = certificate;
+        this.student = student;
+        this.quantity = quantity;
+        this.receive = receive;
+        this.payment = payment;
+        this.requestedOn = requestedOn;
+        this.isPrinted = isPrinted;
+        this.situation = situation;
+    }
+
     // ===== ゲッター・セッター =====
 
     public Integer getApplicationId() {
