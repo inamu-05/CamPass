@@ -23,9 +23,10 @@ public class AttendanceHistoryDto {
     private String convertRemarkCode(String code) {
         if (code == null) return "";
         switch (code) {
-            case "0": return "出席";
+            case "0": return "欠席";
             case "1": return "遅刻";
-            case "2": return "欠席";
+            case "2": return "早退";
+            case "3": return "出席";
             default: return "";
         }
     }

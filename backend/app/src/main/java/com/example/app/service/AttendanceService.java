@@ -70,10 +70,21 @@ public class AttendanceService {
 
         LocalDateTime DateTimeNow = LocalDateTime.now(ZoneId.of("Asia/Tokyo"));
 
+        final Duration OTP_ONTIME_DURATION = Duration.ofMinutes(5);
+        LocalDateTime lateTime = sessionDatetime.plus(OTP_ONTIME_DURATION).truncatedTo(ChronoUnit.SECONDS);
+
+        if (DateTimeNow.isAfter(lateTime)) {
+            // Late attendance
+            attendanceRecord.setRemark("1"); // Example: '2' for Late
+        } else {
+            // On-time attendance
+            attendanceRecord.setRemark("3"); // Example: '1' for On-time
+        }
+
         // 2. Update the fields
         attendanceRecord.setIsAttended(true);
         attendanceRecord.setAttendedOn(DateTimeNow);
-        attendanceRecord.setRemark("0"); // Example: '1' for Present
+        // attendanceRecord.setRemark("0"); // Example: '1' for Present
 
         // 3. Use the JpaRepository save() method!
         // Because the primary key (subjectId, userId, sessionDatetime) already exists, 

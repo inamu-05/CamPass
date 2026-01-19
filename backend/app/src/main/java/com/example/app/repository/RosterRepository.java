@@ -17,6 +17,6 @@ public interface RosterRepository extends JpaRepository<Subject, String> {
      * * @param subjectId The ID of the subject (e.g., "01").
      * @return A list of student user_id strings.
      */
-    @Query(value = "SELECT user_id FROM subject_class WHERE subject_id = :subjectId", nativeQuery = true)
+    @Query(value = "SELECT u.user_id FROM subject s JOIN user u ON s.course_id = u.course_id JOIN student st ON u.user_id = st.user_id WHERE s.subject_id = :subjectId", nativeQuery = true)
     List<String> findStudentIdsBySubjectId(@Param("subjectId") String subjectId);
 }

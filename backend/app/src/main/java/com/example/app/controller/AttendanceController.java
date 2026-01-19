@@ -45,7 +45,11 @@ public class AttendanceController {
     // DBから選択肢のsubjectのリストを受け取り、htmlへ送る
     @GetMapping("/attendance/otp/create")
     public String showOtpCreatePage(Model model) {
-        List<Subject> subjects = subjectService.findAllSubjects();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getPrincipal());
+        User user = (User) authentication.getPrincipal();
+        String teacherId = user.getUsername();
+        List<Subject> subjects = subjectService.findSubjectsByTeacherId(teacherId);
         model.addAttribute("subjects", subjects);
         return "main/onetimepass"; 
     }
@@ -59,7 +63,7 @@ public class AttendanceController {
             ZoneId japanZoneId = ZoneId.of("Asia/Tokyo");
             LocalDateTime sessionDatetime = LocalDateTime.now(japanZoneId).truncatedTo(ChronoUnit.SECONDS);
             // System.out.println(japanZoneId);
-            final Duration OTP_EXPIRY_DURATION = Duration.ofMinutes(5);
+            final Duration OTP_EXPIRY_DURATION = Duration.ofMinutes(90);
 
             // 2. Pre-Populate Attendance Records (The "Create Class" action)
             // This inserts an 'Absent' record for every student in the class.

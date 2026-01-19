@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         if (!pass || pass.length !== 4) {
-            showMessage("4桁のワンタイムパスを作成/入力してください。", true);
+            showMessage("4桁のワンタイムパスを作成してください。", true);
             return;
         }
 
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             // 残り時間を計算
-            const secondsTotal = Math.floor(diffMs / 1000);
+            const secondsTotal = Math.floor((diffMs-85000) / 1000); // TODO
             const minutes = Math.floor(secondsTotal / 60);
             const seconds = secondsTotal % 60;
 
