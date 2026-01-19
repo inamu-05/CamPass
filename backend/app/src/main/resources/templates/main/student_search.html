@@ -33,8 +33,12 @@
         <tr th:each="student : ${students}">
           <td th:text="${student.userId}"></td>
           <td th:text="${student.userName}"></td>
-          <td th:text="${student.classGroup.classGroup}"></td>
-          <td><a th:href="@{'/student/update/' + ${student.userId}}"><button class="update-btn">更新</button></a></td>
+          <td th:text="${student.enrollmentStatus == '2' ? '卒業' : (student.enrollmentStatus == '4' ? '退学' : student.classGroup.classGroup)}"></td>
+          <td>
+            <a th:href="@{'/student/update/' + ${student.userId}}">
+              <button class="btn" th:text="${student.isDisabled} ? '詳細' : '更新'"></button>
+            </a>
+          </td>
         </tr>
       </tbody>
     </table> 

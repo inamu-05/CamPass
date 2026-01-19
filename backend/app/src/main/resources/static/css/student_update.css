@@ -61,6 +61,11 @@ body {
   justify-self: start;
 }
 
+.form-block {
+  display: flex;
+  flex-direction: column;
+}
+
 /* セレクトボックス */
 .form-group select {
   width: 40%;
@@ -99,5 +104,13 @@ body {
   background-color:  #c0d1e0;
   transform: translateY(-2px);
   box-shadow: 0 2.5px 6px rgba(0,0,0,0.15);
+}
+
+/* エラーメッセージ */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 4px;
+  display: block;
 }
 

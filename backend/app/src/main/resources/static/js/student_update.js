@@ -1,29 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const cancelBtn = document.getElementById("cancel-btn");
   const form = document.getElementById("update-form");
+  const statusSelect = document.getElementById("student-class");
+  const disableCheckbox = document.querySelector('input[name="isDisabled"]');
 
-  // ✅ localStorage から選択された学生データを取得
-  const stored = localStorage.getItem("selectedStudent");
-  if (stored) {
-    const student = JSON.parse(stored);
-    document.getElementById("student-id").value = student.id;
-    document.getElementById("student-name").value = student.name;
-    document.getElementById("student-class").value = student.class_name;
+  // ✅ 退学(4)を選択した際に「学生証無効化」にチェックを入れる
+  if (statusSelect && disableCheckbox) {
+    statusSelect.addEventListener("change", () => {
+      if (statusSelect.value === "4") {
+          disableCheckbox.checked = true;
+      }
+    });
   }
 
-    // 戻るボタン
-  cancelBtn.addEventListener("click", () => {
-    window.location.href = "/student/search"; // ✅ Springのルーティングに合わせる
-  });
-
-  // 更新ボタン（フォーム送信）
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    // ✅ 完了後に localStorage を削除
-    localStorage.removeItem("selectedStudent");
-
-    // ✅ 完了画面へ遷移（あとでcontrollerを追加する予定）
-    window.location.href = "/student/update/comp"; 
-  });
+  // ✅ フォーム送信時の処理
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      // localStorageのクリーンアップが必要な場合のみ実行
+      localStorage.removeItem("selectedStudent");
+      console.log("フォームを送信します。");
+    });
+  }
 });
