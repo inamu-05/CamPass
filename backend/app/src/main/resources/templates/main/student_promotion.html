@@ -87,7 +87,10 @@
 
     <div class="form-buttons">
       <button type="submit" onclick="return confirm('選択した学生の更新を実行しますか？')" class="btn">実行</button>
-      <button type="button" th:onclick="history.back()" class="btn">戻る</button>
+      <button type="button" class="btn" th:onclick="history.back()" th:if="${selectedCourse != null || selectedClassGroup != null}">戻る
+      </button>
+
+      <a th:href="@{/main}" class="btn" th:if="${selectedCourse == null && selectedClassGroup == null}">メインメニューへ</a>
     </div>
   </form>
 </section>

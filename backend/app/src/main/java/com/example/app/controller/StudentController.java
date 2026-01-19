@@ -172,8 +172,16 @@ public class StudentController {
         }
 
         List<Student> sortedStudents = students.stream()
-        // 在学生を上位に、その後学生IDで昇順ソート
-            .sorted(Comparator.comparing(Student::getIsDisabled).thenComparing(Student::getUserId)).collect(Collectors.toList());
+        //　表示結果の並び替え
+            .sorted(Comparator
+                // 在学生を優先表示
+                .comparing(Student::getIsDisabled)
+                // クラス名の昇順
+                .thenComparing((Student s) -> s.getClassGroup() != null ? s.getClassGroup().getClassGroup() : "", Comparator.naturalOrder())
+                // 学生番号の昇順
+                .thenComparing(Student::getUserId)
+            ).collect(Collectors.toList());
+
         model.addAttribute("students", sortedStudents);
         model.addAttribute("keyword", keyword);
         return "main/student_search";
