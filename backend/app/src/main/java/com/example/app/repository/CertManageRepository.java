@@ -2,6 +2,8 @@ package com.example.app.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.app.entity.CertManage;
@@ -18,4 +20,15 @@ import com.example.app.entity.CertManage;
 public interface CertManageRepository extends JpaRepository<CertManage, Integer> {
     // 学生IDで全申請履歴を取得
     List<CertManage> findByStudent_UserId(String userId);
+
+     // 証明書をJOIN FETCHして履歴取得（履歴画面用）
+    @Query(
+        "SELECT cm " +
+        "FROM CertManage cm " +
+        "JOIN FETCH cm.certificate " +
+        "WHERE cm.student.userId = :studentId"
+    )
+    List<CertManage> findHistoryWithCertificate(
+        @Param("studentId") String studentId);
 }
+
