@@ -49,7 +49,11 @@ public class AttendanceController {
         System.out.println(authentication.getPrincipal());
         User user = (User) authentication.getPrincipal();
         String teacherId = user.getUsername();
-        List<Subject> subjects = subjectService.findSubjectsByTeacherId(teacherId);
+        List<Subject> subjects = subjectService.findAllSubjects();
+        System.out.println(teacherId);
+        for (Subject subject : subjects) {
+            System.out.println(subject.getSubjectName());
+        }
         model.addAttribute("subjects", subjects);
         return "main/onetimepass"; 
     }
