@@ -127,7 +127,7 @@ public class DatabaseInitializer {
 
                 // 4. Save the user to the database
                 staffRepository.save(newStaff);
-                System.out.println("-> Staff 'admin' created.");
+                System.out.println("-> Staff 'New Teacher' created.");
 
                 // Console output for confirmation
                 System.out.println("-----------------------------------------------------------------");
@@ -143,8 +143,8 @@ public class DatabaseInitializer {
 
 
             // --- 5. Insert Subject Data ---
-            Subject sub01 = subjectRepository.save(new Subject("01", "情報", courseInfo, adminStaff));
-            subjectRepository.save(new Subject("02", "簿記", courseInfo, adminStaff));
+            Subject sub01 = subjectRepository.save(new Subject("01", "基本情報", courseInfo, adminStaff));
+            subjectRepository.save(new Subject("02", "Java", courseInfo, adminStaff));
             subjectRepository.save(new Subject("03", "ネットワーク", courseInfo, adminStaff));
             subjectRepository.save(new Subject("04", "データベース", courseInfo, adminStaff));
             System.out.println("-> Subject data created.");
