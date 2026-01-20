@@ -15,6 +15,13 @@
   <div class="search-bar">
     <form th:action="@{/student/search}" method="get">
       <input type="text" name="keyword" placeholder="学生名やIDを入力" th:value="${keyword}">
+      <select name="status">
+        <option value="" th:selected="${status == null || status.isEmpty()}">全ての在籍状態</option>
+        <option value="1" th:selected="${status == '1'}">在学</option>
+        <option value="2" th:selected="${status == '2'}">卒業</option>
+        <option value="3" th:selected="${status == '3'}">休学</option>
+        <option value="4" th:selected="${status == '4'}">退学</option>
+      </select>
       <button type="submit">検索</button>
     </form>
   </div>

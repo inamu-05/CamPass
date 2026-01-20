@@ -28,7 +28,8 @@ section {
   margin-right: auto;
 }
 
-.search-bar input {
+.search-bar input,
+.search-bar select {
   flex: 1;
   padding: 10px;
   border: 1px solid #ccc;

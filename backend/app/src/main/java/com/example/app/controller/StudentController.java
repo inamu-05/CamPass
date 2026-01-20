@@ -162,13 +162,24 @@ public class StudentController {
 
     // 学生検索ページ
     @GetMapping("/search")
-    public String studentSearch(Model model, @RequestParam(required = false) String keyword) {
+    public String studentSearch(
+        Model model, 
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) String status) {
+        
         List<Student> students;
         if (keyword == null || keyword.isEmpty()) {
             students = studentService.getAllStudents();
             keyword ="";            
         } else {
             students = studentService.searchStudents(keyword);
+        }
+
+        // 在籍状態でフィルタリング
+        if (status != null && !status.isEmpty()) {
+            students = students.stream()
+                .filter(s -> status.equals(s.getEnrollmentStatus()))
+                .collect(Collectors.toList());
         }
 
         List<Student> sortedStudents = students.stream()
