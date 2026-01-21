@@ -38,18 +38,16 @@ class _ClassHistoryScreenState extends State<ClassHistoryScreen> {
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
-            const Text(
-              "学生番号",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              "学生番号：${studentNumber ?? ''}",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Text(studentNumber, style: const TextStyle(fontSize: 22)),
-            const SizedBox(height: 20),
-            const Text(
-              "氏名",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            const SizedBox(height: 8),
+            Text(
+              "氏名：${studentName ?? ''}",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Text(studentName, style: const TextStyle(fontSize: 22)),
-            const SizedBox(height: 30),
+            const SizedBox(height: 24),
 
             const Text(
               "授業履歴",
@@ -82,15 +80,22 @@ class _ClassHistoryScreenState extends State<ClassHistoryScreen> {
                     final hasRemarks = history.remarks.isNotEmpty && history.remarks != "出席"; // Check if it's not empty AND not "出席" (normal attendance)
 
                     return Container(
+                      // margin: const EdgeInsets.only(bottom: 16),
+                      // padding: const EdgeInsets.all(16),
                       margin: const EdgeInsets.symmetric(vertical: 8),
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                      width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: hasRemarks ? Colors.orangeAccent : Colors.grey.shade400,
-                          width: 1.2,
-                        ),
+                        border: Border.all(color: Colors.grey.shade300),
+                        boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              blurRadius: 4,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +103,7 @@ class _ClassHistoryScreenState extends State<ClassHistoryScreen> {
                           Text(
                             history.name,
                             style: const TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
