@@ -2,16 +2,18 @@ package com.example.app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.app.entity.Attendance;
+import com.example.app.entity.Student;
 import com.example.app.repository.AttendanceListRepository;
-import com.example.app.dto.AttendanceSearchResult; // ★ 追加
+import com.example.app.dto.AttendanceSearchResult;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map; // ★ 追加
-import java.util.stream.Collectors; // ★ 追加
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AttendanceListService {
@@ -19,8 +21,9 @@ public class AttendanceListService {
     @Autowired
     private AttendanceListRepository attendanceListRepository;
 
-    // 戻り値の型を AttendanceSearchResult に変更
-    public AttendanceSearchResult searchAttendance(String subjectId, LocalDate date) { 
+    // ===== 出席一覧検索 =====
+    @Transactional(readOnly = true)
+    public AttendanceSearchResult searchAttendance(String subjectId, LocalDate date) {
 
         System.out.println("==== Service:検索条件 ====");
         System.out.println("subjectId: " + subjectId);
@@ -29,78 +32,107 @@ public class AttendanceListService {
 
         List<Attendance> result;
 
+        // ===============================
+        // 初期表示：最新授業5件
+        // ===============================
         if ((subjectId == null || subjectId.isEmpty()) && date == null) {
-            // 検索条件なし → 最新5件取得
-            result = attendanceListRepository.findTop5ByOrderById_SessionDatetimeDesc();
+
+            // 最新授業（学生分含む）を取得
+            result = attendanceListRepository.findLatestLessons();
 
         } else {
+            // ===============================
+            // 検索あり
+            // ===============================
             LocalDateTime start = null;
             LocalDateTime end = null;
 
             if (date != null) {
-                start = date.atStartOfDay();                    // 00:00
-                end = date.plusDays(1).atStartOfDay().minusNanos(1); // 23:59:59.999999999
+                start = date.atStartOfDay();
+                end = date.plusDays(1).atStartOfDay().minusNanos(1);
             }
 
             if (subjectId != null && !subjectId.isEmpty() && date != null) {
-                // 科目ID + 日付範囲
                 result = attendanceListRepository
                         .findBySubject_SubjectIdAndId_SessionDatetimeBetween(subjectId, start, end);
-
             } else if (subjectId != null && !subjectId.isEmpty()) {
-                // 科目のみ
                 result = attendanceListRepository.findBySubject_SubjectId(subjectId);
-
             } else {
-                // 日付のみ
                 result = attendanceListRepository.findById_SessionDatetimeBetween(start, end);
             }
         }
 
-        System.out.println("==== Repositoryからの結果 (重複削除前) ====");
-        result.forEach(System.out::println);
-        System.out.println("=========================================");
+        // ===============================
+        // 授業単位で1件にまとめる（表示用）
+        // ===============================
+        List<Attendance> distinctResult = result.stream()
+            .collect(Collectors.toMap(
+                a -> a.getSubject().getSubjectId() + "_" + a.getSessionDatetime(),
+                a -> a,
+                (existing, replacement) -> existing
+            ))
+            .values()
+            .stream()
+            .limit(5) // ★ 常に最大5授業
+            .collect(Collectors.toList());
 
-        // ★ 授業単位で重複を件数表示 (出席人数をカウント)
-        Map<String, Long> duplicateCounts = result.stream()
-            .collect(Collectors.groupingBy(
-                a -> a.getSubject().getSubjectId() + "_" + a.getId().getSessionDatetime(), // キー：科目＋日時
-                Collectors.counting() // 各グループの件数をカウント
+        // ===============================
+        // 受講人数は DB から正しく数える
+        // ===============================
+        Map<String, Long> duplicateCounts = distinctResult.stream()
+            .collect(Collectors.toMap(
+                a -> a.getSubject().getSubjectId() + "_" + a.getSessionDatetime(),
+                a -> attendanceListRepository
+                        .findBySubject_SubjectIdAndId_SessionDatetime(
+                            a.getSubject().getSubjectId(),
+                            a.getSessionDatetime()
+                        )
+                        .stream()
+                        .count()
             ));
 
-        System.out.println("==== 授業ごとの出席人数 (重複件数) ====");
-        duplicateCounts.forEach((key, count) -> {
-            System.out.println("キー: " + key + " - 出席人数: " + count + "人");
+        // ===============================
+        // デバッグログ（確認用）
+        // ===============================
+        System.out.println("==== 授業ごとの出席学生一覧 ====");
+        distinctResult.forEach(a -> {
+            String key = a.getSubject().getSubjectId() + "_" + a.getSessionDatetime();
+            System.out.println("授業キー: " + key);
+            System.out.println("人数: " + duplicateCounts.get(key));
+
+            attendanceListRepository
+                .findBySubject_SubjectIdAndId_SessionDatetime(
+                    a.getSubject().getSubjectId(),
+                    a.getSessionDatetime()
+                )
+                .forEach(att -> {
+                    Student s = att.getStudent();
+                    System.out.println(
+                        "  学生ID: " + (s != null ? s.getUserId() : "null")
+                        + " / 学生名: " + (s != null ? s.getUserName() : "null")
+                        + " / 出席: " + att.getIsAttended()
+                    );
+                });
+
+            System.out.println("-----------------------------");
         });
-        System.out.println("=========================================");
 
-        // ★ 授業単位で重複削除（subjectId + sessionDatetime のセットで1件のみ）
-        List<Attendance> distinctResult = result.stream()
-                .collect(Collectors.toMap(
-                        a -> a.getSubject().getSubjectId() + "_" + a.getId().getSessionDatetime(), // キー：科目＋日時
-                        a -> a,
-                        (existing, replacement) -> existing
-                ))
-                .values()
-                .stream()
-                .toList();
-
-        // ★ DTOに格納して返す
         return new AttendanceSearchResult(distinctResult, duplicateCounts);
     }
 
+    // ===== 詳細画面用 =====
+    @Transactional(readOnly = true)
     public List<Attendance> findAttendanceDetails(String subjectId, LocalDateTime sessionDatetime) {
-    
-    // Repositoryに、科目IDとセッション日時で一致するすべてのAttendanceレコードを検索させる
-    // ※ Repositoryに findBySubject_SubjectIdAndId_SessionDatetime が必要です
-    List<Attendance> details = attendanceListRepository
-        .findBySubject_SubjectIdAndId_SessionDatetime(subjectId, sessionDatetime);
 
-    System.out.println("==== Service: 詳細データ取得結果 ====");
-    System.out.println("授業キー: " + subjectId + "_" + sessionDatetime);
-    System.out.println("学生レコード件数: " + details.size());
-    System.out.println("=====================================");
+        List<Attendance> details =
+            attendanceListRepository
+                .findBySubject_SubjectIdAndId_SessionDatetime(subjectId, sessionDatetime);
 
-    return details;
+        System.out.println("==== Service: 詳細データ取得結果 ====");
+        System.out.println("授業キー: " + subjectId + "_" + sessionDatetime);
+        System.out.println("学生レコード件数: " + details.size());
+        System.out.println("=====================================");
+
+        return details;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.app.entity.Attendance;
@@ -27,8 +28,17 @@ public interface AttendanceListRepository extends JpaRepository<Attendance, Long
                 LocalDateTime end
         );
 
-        // 最新日付順で取得、上位5件
-        List<Attendance> findTop5ByOrderById_SessionDatetimeDesc();
+         // ★ 授業単位で最新順に取得
+        @Query("""
+                SELECT a
+                FROM Attendance a
+                WHERE a.id.sessionDatetime IN (
+                SELECT DISTINCT a2.id.sessionDatetime
+                FROM Attendance a2
+                )
+                ORDER BY a.id.sessionDatetime DESC
+        """)
+        List<Attendance> findLatestLessons();
 
         // 科目ID & セッション日時で完全一致
         List<Attendance> findBySubject_SubjectIdAndId_SessionDatetime(
