@@ -6,6 +6,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import com.example.app.dto.CertificateHistoryDto;
 import com.example.app.dto.CertManageRequest;
@@ -112,6 +115,38 @@ public class CertManageService {
             )
         )
         .toList();
+    }
+
+    public Page<CertificateHistoryDto> getHistoryByStudentId( // ページネーション対応版
+            String studentId,
+            int page,
+            int size
+    ) {
+
+        Page<CertManage> pageResult =
+                certManageRepository.findHistoryWithCertificate(
+                        studentId,
+                        PageRequest.of(
+                            page, 
+                            size,
+                            Sort.by("requestedOn").descending()
+                        )
+                );
+
+        return pageResult.map(cm -> {
+            CertificateHistoryDto dto = new CertificateHistoryDto();
+            dto.setPurchaseDate(cm.getRequestedOn().toString());
+            dto.setName(cm.getCertificate().getCertificateName());
+            dto.setPrice(cm.getCertificate().getPrice());
+            dto.setQuantity(cm.getQuantity());
+            dto.setPayment(convertPayment(cm.getPayment()));
+            dto.setReceive(convertReceive(cm.getReceive()));
+            dto.setStatus(convertSituationByPrinted(cm.getIsPrinted()));
+            dto.setSituationOrder(
+                    situationOrderByPrinted(cm.getIsPrinted())
+            );
+            return dto;
+        });
     }
 
     private String convertPayment(String payment) {
