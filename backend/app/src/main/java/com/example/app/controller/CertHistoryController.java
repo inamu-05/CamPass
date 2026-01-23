@@ -8,6 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
 
 import com.example.app.dto.CertificateHistoryDto;
 import com.example.app.service.CertManageService;
@@ -44,6 +46,40 @@ public class CertHistoryController {
         response.setStudentId(student.getUserId());
         response.setStudentName(student.getUserName());
         response.setHistory(history);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/api/cert/history/page")
+    public ResponseEntity<CertificateHistoryResponseDto> getMyHistoryWithPaging(
+            Authentication authentication,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        // JWT から studentId を取得
+        String studentId = authentication.getName();
+
+        Student student = studentRepository.findById(studentId)
+            .orElseThrow();
+
+        // ページ付き履歴取得
+        Page<CertificateHistoryDto> historyPage =
+                certManageService.getHistoryByStudentId(studentId, page, size);
+
+        CertificateHistoryResponseDto response =
+                new CertificateHistoryResponseDto();
+
+        response.setStudentId(student.getUserId());
+        response.setStudentName(student.getUserName());
+        response.setHistory(historyPage.getContent());
+
+        // ▼ ページ情報（Flutter用）
+        response.setPage(page);
+        response.setSize(size);
+        response.setTotalPages(historyPage.getTotalPages());
+        response.setTotalElements(historyPage.getTotalElements());
+        response.setHasNext(historyPage.hasNext());
+        response.setHasPrevious(historyPage.hasPrevious());
 
         return ResponseEntity.ok(response);
     }

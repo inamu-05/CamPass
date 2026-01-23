@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.example.app.entity.CertManage;
 // import java.util.List;
@@ -30,5 +32,17 @@ public interface CertManageRepository extends JpaRepository<CertManage, Integer>
     )
     List<CertManage> findHistoryWithCertificate(
         @Param("studentId") String studentId);
-}
 
+        
+    // ▼ ページネーション対応（履歴画面用）
+    @Query(
+        "SELECT cm " +
+        "FROM CertManage cm " +
+        "JOIN FETCH cm.certificate " +
+        "WHERE cm.student.userId = :studentId"
+    )
+    Page<CertManage> findHistoryWithCertificate(
+        @Param("studentId") String studentId,
+        Pageable pageable
+    );
+}

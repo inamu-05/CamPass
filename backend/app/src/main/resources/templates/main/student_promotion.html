@@ -1,6 +1,7 @@
 <title>進級・卒業管理</title>
 <link rel="stylesheet" th:href="@{/css/style.css}">
 <link rel="stylesheet" th:href="@{/css/student_promotion.css}">
+<script th:src="@{/js/student_promotion.js}" defer></script>
 
 <!-- サーバーサイドで base/header.html の header-content フラグメントを挿入 -->
 <div id="header-container" th:insert="~{base/header :: header}"></div>
@@ -9,7 +10,6 @@
 <section class="student-promotion">
   <h2>進級・卒業管理</h2>
   <p>年度末の更新対象者一覧です。留年者などの場合はチェックを外してください。</p>
-  <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red; font-weight:bold;"></p>
 
   <div class="search">
     <form th:action="@{/student/promotion}" method="get">
@@ -30,6 +30,9 @@
       <a th:href="@{/student/promotion}" th:if="${selectedCourse != null || selectedClassGroup != null}" style="font-size:14px; text-decoration:none;">絞り込み解除</a>
     </form>
   </div>
+
+  <p class="error-message" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
 
   <div class="result" th:if="${selectedCourse != null || selectedClassGroup != null}">
     <div class="result">
@@ -82,11 +85,16 @@
               <span th:if="${c.actionType == 'STAY'}" class="badge-stay">休学継続</span>
           </td>
         </tr>
+        <tr th:if="${#lists.isEmpty(candidates)}">
+          <td colspan="7" style="text-align: center; padding: 20px; color: red;">
+            該当する更新対象の学生が存在しません。
+          </td>
+        </tr>
       </tbody>
     </table>
 
     <div class="form-buttons">
-      <button type="submit" onclick="return confirm('選択した学生の更新を実行しますか？')" class="btn">実行</button>
+      <button type="submit" onclick="return confirmPromotion()" class="btn">実行</button>
       <button type="button" class="btn" th:onclick="history.back()" th:if="${selectedCourse != null || selectedClassGroup != null}">戻る
       </button>
 
@@ -94,3 +102,4 @@
     </div>
   </form>
 </section>
+</body>

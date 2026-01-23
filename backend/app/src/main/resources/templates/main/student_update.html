@@ -16,16 +16,16 @@
 
 			<label>氏名:</label>
 				<div class="form-block">
-					<span th:if="${student.isDisabled}" th:text="*{userName}"></span>
 					<input th:if="${!student.isDisabled}" type="text" th:field="*{userName}">
 					<p class="error-message" th:if="${userNameError}" th:text="${userNameError}"></p>
+					<span th:if="${student.isDisabled}" th:text="*{userName}"></span>
 				</div>
 
 			<label>フリガナ:</label>
 				<div class="form-block">
-					<span th:if="${student.isDisabled}" th:text="*{furigana}"></span>
 					<input th:if="${!student.isDisabled}" type="text" th:field="*{furigana}">
 					<p class="error-message" th:if="${furiganaError}" th:text="${furiganaError}"></p>
+					<span th:if="${student.isDisabled}" th:text="*{furigana}"></span>
 				</div>
 
 			<label>クラス:</label>
@@ -33,19 +33,19 @@
 
 			<label>住所:</label>
 				<div class="form-block">
-					<span th:if="${student.isDisabled}" th:text="*{address}"></span>
 					<input th:if="${!student.isDisabled}" type="text" th:field="*{address}">
 					<p class="error-message" th:if="${addressError}" th:text="${addressError}"></p>
+					<span th:if="${student.isDisabled}" th:text="*{address}"></span>
 				</div>
 
 			<label>在籍状況:</label>
 			<div>
-				<span th:if="${student.isDisabled}" th:text="${student.enrollmentStatus == '2' ? '卒業' : '退学'}"></span>
 				<select th:if="${!student.isDisabled}" id="student-class" th:field="*{enrollmentStatus}">
 					<option value="1">在学</option>
 					<option value="3">休学</option>
 					<option value="4">退学</option>
 				</select>
+				<span th:if="${student.isDisabled}" th:text="${student.enrollmentStatus == '2' ? '卒業' : '退学'}"></span>
 			</div>	
 			<label>学生証無効化:</label>
 				<input type="checkbox" th:field="*{isDisabled}" th:disabled="${student.isDisabled}">
