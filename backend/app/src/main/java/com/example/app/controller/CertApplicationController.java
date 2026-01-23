@@ -17,7 +17,7 @@ import com.example.app.service.CertManageService;
 
 @RestController
 @CrossOrigin(origins = "*")  // Flutterからのアクセスを許可
-public class CertManageController2 {
+public class CertApplicationController {
 
     @Autowired
     private CertManageService certManageService;
