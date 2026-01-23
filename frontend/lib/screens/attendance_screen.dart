@@ -151,7 +151,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           } else if (errorStr.contains('SocketException')) {
             _errorMessage = 'ネットワーク接続を確認してください。';
           } else {
-            _errorMessage = '科目かワンタイムパスワードが正しくありません。';
+            _errorMessage = '科目またはワンタイムパスワードが間違っています。';
           }
         });
     } finally {
