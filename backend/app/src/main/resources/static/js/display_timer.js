@@ -51,14 +51,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const newDate = new Date(japaneseDateTimeString);
             console.log(expiryDate); // 4 
             console.log(newDate); // 5
-            const diffMs = expiryDate.getTime() - newDate.getTime(); 
+            const diffMs = expiryDate.getTime() - newDate.getTime() - 85 * 60 * 1000; 
 
             if (diffMs <= 0) {
                 clearInterval(countdownInterval);
                 timerDisplayElement.textContent = '00:00';
                 displayContainer.classList.add('expired'); 
                 // Close the window after a few seconds, or keep it open
-                setTimeout(() => { window.close(); }, 5000); 
+                // setTimeout(() => { window.close(); }, 5000); 
                 return;
             }
 
