@@ -40,10 +40,13 @@
         <tr th:each="student : ${students}">
           <td th:text="${student.userId}"></td>
           <td th:text="${student.userName}"></td>
-          <td th:text="${student.enrollmentStatus == '2' ? '卒業' : (student.enrollmentStatus == '4' ? '退学' : student.classGroup.classGroup)}"></td>
+          <td th:text="${student.enrollmentStatus == '2' ? '卒業' : 
+            (student.enrollmentStatus == '3' ? student.classGroup.classGroup + '（休学）' : 
+            (student.enrollmentStatus == '4' ? '退学' : student.classGroup.classGroup))}">
+          </td>
           <td>
             <a th:href="@{'/student/update/' + ${student.userId}}">
-              <button class="btn" th:text="${student.isDisabled} ? '詳細' : '更新'"></button>
+              <button class="btn" th:text="${student.enrollmentStatus == '2' || student.enrollmentStatus == '4'} ? '詳細' : '更新'"></button>
             </a>
           </td>
         </tr>

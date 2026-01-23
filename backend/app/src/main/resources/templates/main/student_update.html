@@ -1,4 +1,4 @@
-<title th:text="${student.isDisabled} ? '学生情報詳細' : '学生情報更新'"></title>
+<title th:text="${student.enrollmentStatus == '2' || student.enrollmentStatus == '4'} ? '学生情報詳細' : '学生情報更新'"></title>
 <link rel="stylesheet" th:href="@{/css/student_update.css}">
 <link rel="stylesheet" th:href="@{/css/style.css}">
 <script th:src="@{/js/student_update.js}" defer></script>
@@ -8,7 +8,7 @@
 <div id="header-container" th:insert="~{base/header :: header}"></div>
 
 <section class="update-container">
-	<h2 th:text="${student.isDisabled} ? '学生情報詳細' : '学生情報更新'"></h2>
+	<h2 th:text="${student.enrollmentStatus == '2' || student.enrollmentStatus == '4'} ? '学生情報詳細' : '学生情報更新'"></h2>
 	<form id="update-form" th:action="@{'/student/update/' + ${student.userId}}" th:object="${student}" method="post">
 		<div class="form-group">
 			<label>学生番号:</label>
@@ -16,16 +16,16 @@
 
 			<label>氏名:</label>
 				<div class="form-block">
-					<input th:if="${!student.isDisabled}" type="text" th:field="*{userName}">
+					<input th:if="${student.enrollmentStatus != '2' && student.enrollmentStatus != '4'}" type="text" th:field="*{userName}">
 					<p class="error-message" th:if="${userNameError}" th:text="${userNameError}"></p>
-					<span th:if="${student.isDisabled}" th:text="*{userName}"></span>
+					<span th:if="${student.enrollmentStatus == '2' || student.enrollmentStatus == '4'}" th:text="*{userName}"></span>
 				</div>
 
 			<label>フリガナ:</label>
 				<div class="form-block">
-					<input th:if="${!student.isDisabled}" type="text" th:field="*{furigana}">
+					<input th:if="${student.enrollmentStatus != '2' && student.enrollmentStatus != '4'}" type="text" th:field="*{furigana}">
 					<p class="error-message" th:if="${furiganaError}" th:text="${furiganaError}"></p>
-					<span th:if="${student.isDisabled}" th:text="*{furigana}"></span>
+					<span th:if="${student.enrollmentStatus == '2' || student.enrollmentStatus == '4'}" th:text="*{furigana}"></span>
 				</div>
 
 			<label>クラス:</label>
@@ -33,26 +33,26 @@
 
 			<label>住所:</label>
 				<div class="form-block">
-					<input th:if="${!student.isDisabled}" type="text" th:field="*{address}">
+					<input th:if="${student.enrollmentStatus != '2' && student.enrollmentStatus != '4'}" type="text" th:field="*{address}">
 					<p class="error-message" th:if="${addressError}" th:text="${addressError}"></p>
-					<span th:if="${student.isDisabled}" th:text="*{address}"></span>
+					<span th:if="${student.enrollmentStatus == '2' || student.enrollmentStatus == '4'}" th:text="*{address}"></span>
 				</div>
 
 			<label>在籍状況:</label>
 			<div>
-				<select th:if="${!student.isDisabled}" id="student-class" th:field="*{enrollmentStatus}">
+				<select th:if="${student.enrollmentStatus != '2' && student.enrollmentStatus != '4'}" id="student-class" th:field="*{enrollmentStatus}">
 					<option value="1">在学</option>
 					<option value="3">休学</option>
 					<option value="4">退学</option>
 				</select>
-				<span th:if="${student.isDisabled}" th:text="${student.enrollmentStatus == '2' ? '卒業' : '退学'}"></span>
+				<span th:if="${student.enrollmentStatus == '2' || student.enrollmentStatus == '4'}" th:text="${student.enrollmentStatus == '2' ? '卒業' : '退学'}"></span>
 			</div>	
 			<label>学生証無効化:</label>
-				<input type="checkbox" th:field="*{isDisabled}" th:disabled="${student.isDisabled}">
+				<input type="checkbox" th:field="*{isDisabled}" th:disabled="${student.enrollmentStatus == '2' || student.enrollmentStatus == '4'}">
 		</div>
 		
 		<div class="form-buttons">
-			<button th:if="${!student.isDisabled}" type="submit" class="btn">更新</button>
+			<button th:if="${student.enrollmentStatus != '2' && student.enrollmentStatus != '4'}" type="submit" class="btn">更新</button>
 			<a th:href="@{/student/search}" class="btn">戻る</a>
 		</div>
 	</form>
