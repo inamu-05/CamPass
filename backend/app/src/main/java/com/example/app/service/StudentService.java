@@ -46,6 +46,11 @@ public class StudentService {
         student.setUserPass(passwordEncoder.encode(student.getUserPass()));
         return studentRepository.save(student);
     }
+
+    // 学生番号重複チェック
+    public boolean existsById(String userId) {
+        return studentRepository.existsById(userId);
+    }
     
     // 学生情報検索
     public List<Student> searchStudents(String keyword) {

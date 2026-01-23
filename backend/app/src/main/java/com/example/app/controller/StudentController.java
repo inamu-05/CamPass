@@ -102,6 +102,13 @@ public class StudentController {
             model.addAttribute("fileError", "証明写真を選択してください。");
         }
 
+        // 学生番号の重複チェック
+        if (student.getUserId() != null && !student.getUserId().isEmpty()) {
+            if (studentService.existsById(student.getUserId())) {
+                bindingResult.rejectValue("userId", "error.userId", "この学生番号は既に登録されています。");
+            }
+        }
+
         //エラーチェック
         if (bindingResult.hasErrors() || model.containsAttribute("fileError")) {
             List<Course> courses = courseService.getAllCourses();
