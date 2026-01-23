@@ -143,7 +143,16 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     } catch (e) {
         // Failure: Show error
         setState(() {
-            _errorMessage = e.toString().replaceFirst('Exception: ', 'エラー: ');
+          String errorStr = e.toString();
+          if (errorStr.contains('401')) {
+            _errorMessage = '認証に失敗しました。再度ログインしてください。';
+          } else if (errorStr.contains('403')) {
+            _errorMessage = '出席期間外です。';
+          } else if (errorStr.contains('SocketException')) {
+            _errorMessage = 'ネットワーク接続を確認してください。';
+          } else {
+            _errorMessage = '科目かワンタイムパスワードが正しくありません。';
+          }
         });
     } finally {
         setState(() {
