@@ -10,7 +10,7 @@
   <script src="@{/js/sregister_comp.js}" defer></script>
 </head>
 <body>
-  <div id="header-container" th:replace="base/header :: header"></div> <!-- ✅ 共通ヘッダーをここに読み込む -->
+  <div id="header-container" th:replace="~{base/header :: header}"></div> <!-- ✅ 共通ヘッダーをここに読み込む -->
 
   <main class="complete-container">
     <div class="complete-card">
